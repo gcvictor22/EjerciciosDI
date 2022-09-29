@@ -1,0 +1,18 @@
+<label for="email">Email</label>
+<br>
+<input type="text" name="email">
+<br>
+<br>
+<label for="password">Contraseña</label>
+<br>
+<input [type]="tipo" name="password">
+<br>
+<br>
+<button (click)="cambiar()">{{visibilidad}}</button>
+<br>
+<br>
+<input type="checkbox" name="" id="" [(ngModel)]="habilitar">
+<p>acepto terminos y condiciones de servicio</p>
+<br>
+<br>
+<button [disabled]="!habilitar">enviar</button>
