@@ -17,14 +17,14 @@
     <br>
     <br>
     <div>
-        <label>Float label: </label>
+        <label>Sexo: </label>
         <br>
         <br>
         <mat-radio-group [formControl]="floatLabelControl" [(ngModel)]="sexo">
-            <mat-radio-button value="auto">Hombre</mat-radio-button>
+            <mat-radio-button value="Hombre">Hombre</mat-radio-button>
             <br>
             <br>
-            <mat-radio-button value="always">Mujer</mat-radio-button>
+            <mat-radio-button value="Mujer">Mujer</mat-radio-button>
         </mat-radio-group>
     </div>
     <br>
@@ -42,10 +42,10 @@
     <mat-form-field appearance="fill">
         <mat-label>¿Cómo nos has conocido?</mat-label>
         <mat-select [(ngModel)]="conocer">
-            <mat-option value="option">Buscando en Google</mat-option>
-            <mat-option value="option">A través de un amigo</mat-option>
-            <mat-option value="option">Por mi profesor</mat-option>
-            <mat-option value="option">Otro...</mat-option>
+            <mat-option value="Buscando en Google">Buscando en Google</mat-option>
+            <mat-option value="A través de un amigo">A través de un amigo</mat-option>
+            <mat-option value="Por mi profesor">Por mi profesor</mat-option>
+            <mat-option value="Otro...">Otro...</mat-option>
         </mat-select>
         <mat-hint align="end">Elija una opción</mat-hint>
     </mat-form-field>
