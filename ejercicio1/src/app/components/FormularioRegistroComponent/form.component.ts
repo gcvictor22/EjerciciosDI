@@ -30,10 +30,10 @@ export class FormComponent implements OnInit {
 
   getErrorMessage() {
     if (this.email.hasError('required')) {
-      return 'You must enter a value';
+      return 'Introduce un email';
     }
 
-    return this.email.hasError('email') ? 'Email no válido' : '';
+    return this.email.hasError('email') ? 'Formato no válido' : '';
   }
 
   nombre='';
@@ -43,6 +43,7 @@ export class FormComponent implements OnInit {
   gmail='';
   telefono='';
   conocer='';
+  accept=false;
 
   enviarDatos() {
     console.log(this.nombre)
