@@ -1,0 +1,28 @@
+<!--<div class="caja" style="display: flex; justify-content:flex-end; padding: 10px; box-sizing: border-box;">
+  <p *ngIf="!desplegar" >
+    Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatibus ex sed
+    obcaecati error voluptatem iure iusto asperiores fugiat rerum nobis velit
+    impedit itaque delectus corporis, nam, adipisci voluptate atque? Molestiae!
+  </p>
+  <button id="boton" (click)="cambiar()" style="height: min-content;"><span *ngIf="desplegar">Desplegar</span><span *ngIf="!desplegar">Contraer</span></button>
+</div>-->
+
+<div class="caja">
+  <header>
+    <p style="text-align: center;">
+      Viruela del mono
+      <button id="boton" (click)="cambiar()" style="height: min-content">
+        <span *ngIf="desplegar">Desplegar</span
+        ><span *ngIf="!desplegar">Contraer</span>
+      </button>
+    </p>
+  </header>
+
+  <main *ngIf="desplegar">
+    <p>
+      Lorem ipsum dolor sit amet, consectetur adipisicing elit. Et modi expedita
+      ea eum alias. Esse tempore qui ipsa tenetur? Dicta eum deleniti, nobis
+      blanditiis hic ullam impedit est modi velit!
+    </p>
+  </main>
+</div>
