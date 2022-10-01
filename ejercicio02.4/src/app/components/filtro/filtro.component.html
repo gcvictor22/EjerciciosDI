@@ -1,0 +1,2 @@
+<input type="text" [(ngModel)]="buscarProducto">
+<p *ngFor="let item of productos"><span *ngIf="item.includes(buscarProducto)">{{item}}</span></p>

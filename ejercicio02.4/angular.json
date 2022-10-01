@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "ejercicio02.2": {
+    "ejercicio02.4": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -13,7 +13,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/ejercicio02.2",
+            "outputPath": "dist/ejercicio02.4",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -65,10 +65,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "ejercicio02.2:build:production"
+              "browserTarget": "ejercicio02.4:build:production"
             },
             "development": {
-              "browserTarget": "ejercicio02.2:build:development"
+              "browserTarget": "ejercicio02.4:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -76,7 +76,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "ejercicio02.2:build"
+            "browserTarget": "ejercicio02.4:build"
           }
         },
         "test": {
@@ -99,8 +99,5 @@
         }
       }
     }
-  },
-  "cli": {
-    "analytics": false
   }
 }

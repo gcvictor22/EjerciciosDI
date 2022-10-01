@@ -1,18 +1,21 @@
-<label for="email">Email</label>
-<br>
-<input type="text" name="email">
-<br>
-<br>
-<label for="password">Contraseña</label>
-<br>
-<input [type]="tipo" name="password">
-<br>
-<br>
-<button (click)="cambiar()">{{visibilidad}}</button>
-<br>
-<br>
-<input type="checkbox" name="" id="" [(ngModel)]="habilitar">
-<p>acepto terminos y condiciones de servicio</p>
-<br>
-<br>
-<button [disabled]="!habilitar">enviar</button>
+<div style="width: 100%; display:flex; justify-content:space-around">
+    <div>
+        <mat-form-field class="example-full-width" style="width: 100%;" appearance="fill">
+            <mat-label>Username</mat-label>
+            <input matInput>
+        </mat-form-field>
+        <br>
+        <mat-form-field appearance="fill">
+            <mat-label>Password</mat-label>
+            <input matInput style="width: 225px;" [type]="tipo">
+        </mat-form-field>
+        <button mat-icon-button color="primary" style="margin-left: 15px;"
+            aria-label="Example icon button with a home icon" (click)="cambiar()">
+            <mat-icon>{{visibilidad}}</mat-icon>
+        </button>
+        <br>
+        <p style="text-align: center; width:100%"><mat-checkbox class="example-margin" color="primary" [(ngModel)]="habilitar"></mat-checkbox> Acepto los terminos y condiciones</p>
+        <br>
+        <button mat-raised-button color="primary" style="width: 100%;" [disabled]="!habilitar">Primary</button>
+    </div>
+</div>

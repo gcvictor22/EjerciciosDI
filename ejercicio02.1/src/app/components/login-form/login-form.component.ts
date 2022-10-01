@@ -7,7 +7,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class LoginFormComponent implements OnInit {
   
-  visibilidad='mostrar';
+  visibilidad='visibility';
   tipo = 'password';
   change = true;
   habilitar = false;
@@ -17,10 +17,10 @@ export class LoginFormComponent implements OnInit {
 
     if (this.change) {
       this.tipo = "password"
-      this.visibilidad='mostrar'
+      this.visibilidad='visibility'
     } else {
       this.tipo = "text"
-      this.visibilidad='ocultar'
+      this.visibilidad='visibility_off'
     }    
   }
 
