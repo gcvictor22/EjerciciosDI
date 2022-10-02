@@ -9,17 +9,13 @@
 
 <div class="caja">
   <header>
-    <p style="text-align: center;">
-      Viruela del mono
-      <button id="boton" (click)="cambiar()" style="height: min-content">
-        <span *ngIf="desplegar">Desplegar</span
-        ><span *ngIf="!desplegar">Contraer</span>
-      </button>
-    </p>
+    <h1 style="text-align: center;">
+      Viruela del mono <button id="boton" (click)="cambiar()" style="height: min-content; background-color: white; border: 0;"><mat-icon>{{flecha}}</mat-icon></button>
+    </h1>
   </header>
 
   <main *ngIf="desplegar">
-    <p>
+    <p style="text-align: justify;">
       Lorem ipsum dolor sit amet, consectetur adipisicing elit. Et modi expedita
       ea eum alias. Esse tempore qui ipsa tenetur? Dicta eum deleniti, nobis
       blanditiis hic ullam impedit est modi velit!

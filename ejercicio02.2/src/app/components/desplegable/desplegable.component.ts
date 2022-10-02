@@ -8,9 +8,16 @@ import { Component, OnInit } from '@angular/core';
 export class DesplegableComponent implements OnInit {
 
   desplegar = true;
+  flecha = 'keyboard_arrow_down';
 
   cambiar(){
     this.desplegar = !this.desplegar;
+
+    if (this.desplegar) {
+      this.flecha = 'keyboard_arrow_down';
+    } else {
+      this.flecha = 'keyboard_arrow_up'
+    }
   }
 
   constructor() { }
