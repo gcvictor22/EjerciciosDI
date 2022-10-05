@@ -1,5 +1,13 @@
-<ul>
-    <li *ngFor="let item of listadoPokemon">
-        {{item.name}}
-    </li>
-</ul>
+<table>
+    <tr>
+        <td *ngFor="let item of listadoPokemon">
+            <span *ngIf="listadoPokemon.indexOf(item)!=0">{{item.name}}</span>
+        </td>
+    </tr>
+    <tr>
+        <td *ngFor="let item of listadoPokemon">
+            <img *ngIf="listadoPokemon.indexOf(item)" [src]="img+listadoPokemon.indexOf(item)+extension" alt="">
+        </td>
+    </tr>
+    <br>
+</table>
