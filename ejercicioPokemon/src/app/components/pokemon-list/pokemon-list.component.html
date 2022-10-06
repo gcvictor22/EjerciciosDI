@@ -1,13 +1,16 @@
-<table>
-    <tr>
-        <td *ngFor="let item of listadoPokemon">
-            <span>{{item.name}}</span>
-        </td>
-    </tr>
-    <tr>
-        <td *ngFor="let item of listadoPokemon">
-            <img [src]="img+[listadoPokemon.indexOf(item)+1]+extension" alt="">
-        </td>
-    </tr>
-    <br>
-</table>
+<div class="form__group field">
+  <input
+    type="search" class="form__field" placeholder="Name" name="name" id="name" required [(ngModel)]="nombreBuscador"/>
+  <label for="name" class="form__label">Nombre del pokemon</label>
+</div>
+<br />
+<div class="contenedor_cartas">
+    <div *ngFor="let item of listadoPokemon">
+        <mat-card class="example-card" *ngIf="item.name.includes(nombreBuscador)">
+          <mat-card-title-group>
+            <mat-card-title>{{ item.name }}</mat-card-title>
+            <img [src]="img + [listadoPokemon.indexOf(item) + 1] + '.png'" alt="" />
+          </mat-card-title-group>
+        </mat-card>
+    </div>
+</div>

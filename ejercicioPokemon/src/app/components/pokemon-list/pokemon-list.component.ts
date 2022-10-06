@@ -10,8 +10,8 @@ const URL_IMAGEN = 'https://raw.githubusercontent.com/PokeAPI/sprites/master/spr
 })
 export class PokemonListComponent implements OnInit {
   listadoPokemon: Pokemon[] = []
-  extension = '.png'
   img = URL_IMAGEN
+  nombreBuscador=''
 
   constructor(private pokemonService: PokemonService) { }
 
