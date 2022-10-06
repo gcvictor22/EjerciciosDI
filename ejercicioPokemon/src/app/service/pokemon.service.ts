@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { PokemonResponse } from "../interfaces/pokemon-response.interface";
 
-const API_BASE_URL = 'https://pokeapi.co/api/v2/pokemon?offset=0&limit=500'
+const API_BASE_URL = 'https://pokeapi.co/api/v2/pokemon?&limit=500'
 
 @Injectable({
   providedIn: 'root'
