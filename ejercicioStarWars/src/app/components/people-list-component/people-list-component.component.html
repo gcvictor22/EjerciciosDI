@@ -1,32 +1,16 @@
-<div class="example-5 alternate-card">
-  <div class="wrapper">
-    <div class="date">
-      <span class="day">Project</span>
-    </div>
-    <div class="data">
-      <div class="content">
-        <span class="type">Project</span>
-        <h1 class="title"><a href="#">Project Card</a></h1>
-        <li *ngFor="let item of peopleListado">
-          {{ item.name }}
-        </li>
-        <ul class="menu-content">
-          <li>
-            <a href="#"><i class="fab fa-github"></i></a>
-          </li>
-          <li>
-            <a href="#"><i class="fab fa-html5"></i></a>
-          </li>
-          <li>
-            <a href="#"><i class="fab fa-css3-alt"></i></a>
-          </li>
-          <li>
-            <a href="#"><i class="fab fa-js"></i></a>
-          </li>
-        </ul>
+<div class="display-cards">
+  <div *ngFor="let people of peopleListado" class="example-5 alternate-card">
+    <div class="wrapper">
+      <img [src]="url + [peopleListado.indexOf(people)+1] + '.jpg'" alt="" style="width: 100%;">
+      <div class="data">
+        <div class="content">
+          <h1 class="title"><a href="#">{{people.name}}</a></h1>
+          <h3><u>Películas</u></h3>
+            <p *ngFor="let film of filmsListado">
+              <span *ngIf="film.characters.includes(people.url)">{{film.title}}</span>
+            </p>
+        </div>
       </div>
     </div>
   </div>
 </div>
-
-<!--https://starwars-visualguide.com/assets/img/characters/1.jpg-->

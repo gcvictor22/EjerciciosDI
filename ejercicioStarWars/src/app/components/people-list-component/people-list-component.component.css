@@ -92,240 +92,10 @@ h1 {
   transform: translateY(-60px);
 }
 
-.example-1 .wrapper {
-  background: url(https://images.unsplash.com/photo-1547405358-4ef2671bb1bb?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80) 30% 1%/cover no-repeat;
-}
-.example-1 .date {
-  position: absolute;
-  top: 0;
-  left: 0;
-  background-color: #333;
-  color: #fff;
-  padding: 0.7em 2.5em 1.5rem 0.7em;
-  border-radius: 0 0 90% 0;
-}
-.example-1 .date span {
-  display: block;
-  text-align: center;
-}
-.example-1 .date .day {
-  font-weight: 700;
-  font-size: 24px;
-  text-shadow: 2px 3px 2px rgba(0, 0, 0, 0.18);
-}
-.example-1 .date .month {
-  text-transform: uppercase;
-}
-.example-1 .date .month,
-.example-1 .date .year {
-  font-size: 10px;
-}
-.example-1 .content {
-  background-color: #fff;
-  box-shadow: 0 5px 30px 10px rgba(0, 0, 0, 0.3);
-}
-.example-1 .title a {
-  color: gray;
-}
-.example-1 .menu-button {
-  position: absolute;
-  z-index: 999;
-  top: 18px;
-  right: 16px;
-  width: 30px;
-  text-align: center;
-  cursor: pointer;
-}
-.example-1 .menu-button span {
-  width: 6px;
-  height: 6px;
-  background-color: gray;
-  color: gray;
-  position: relative;
-  display: inline-block;
-  border-radius: 20%;
-}
-.example-1 .menu-button span::after, .example-1 .menu-button span::before {
-  content: "";
-  display: block;
-  width: 6px;
-  height: 6px;
-  background-color: currentColor;
-  position: absolute;
-  border-radius: 20%;
-}
-.example-1 .menu-button span::before {
-  left: -12px;
-}
-.example-1 .menu-button span::after {
-  right: -12px;
-}
-.example-1 .menu-content {
-  text-align: center;
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  z-index: -1;
-  transition: transform 0.3s;
-  transform: translateY(0);
-}
-.example-1 .menu-content li {
-  width: 25%;
-  float: left;
-  background-color: #333;
-  height: 60px;
-  position: relative;
-}
-.example-1 .menu-content a {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  font-size: 24px;
-}
-.example-1 .menu-content span {
-  top: -10px;
-}
-
-.example-2 .wrapper {
-  background: url(https://images.unsplash.com/photo-1547405358-4ef2671bb1bb?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80) 30% 1%/cover no-repeat;
-}
-.example-2 .date {
-  position: absolute;
-  top: 0;
-  left: 0;
-  background-color: #333;
-  color: #fff;
-  padding: 0.7em 2.5em 1.5rem 0.7em;
-  border-radius: 0 0 90% 0;
-}
-.example-2 .date span {
-  display: block;
-  text-align: center;
-}
-.example-2 .date .day {
-  font-weight: 700;
-  font-size: 24px;
-  text-shadow: 2px 3px 2px rgba(0, 0, 0, 0.18);
-}
-.example-2 .date .month {
-  text-transform: uppercase;
-}
-.example-2 .date .month,
-.example-2 .date .year {
-  font-size: 10px;
-}
-.example-2 .content {
-  background-color: rgba(0, 0, 0, 0.5);
-  color: white;
-  box-shadow: 0 5px 30px 10px rgba(0, 0, 0, 0.3);
-}
-.example-2 .title a {
-  color: white;
-}
-
-.example-3 .wrapper {
-  background: url(https://images.unsplash.com/photo-1547405358-4ef2671bb1bb?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80) 30% 1%/cover no-repeat;
-}
-.example-3 .date {
-  position: absolute;
-  top: 0;
-  right: 0;
-  background-color: #333;
-  color: #fff;
-  padding: 0.75rem;
-}
-.example-3 .date span {
-  display: block;
-  text-align: center;
-}
-.example-3 .date .day {
-  font-weight: 700;
-  font-size: 3rem;
-  text-shadow: 2px 3px 2px rgba(0, 0, 0, 0.18);
-}
-.example-3 .date .month {
-  text-transform: uppercase;
-}
-.example-3 .date .month,
-.example-3 .date .year {
-  font-size: 10px;
-}
-.example-3 .content {
-  background-color: #333;
-  color: white;
-  box-shadow: 0 5px 30px 10px rgba(0, 0, 0, 0.3);
-}
-.example-3 .title a {
-  color: white;
-}
-.example-3 .menu-content {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 0%;
-}
-.example-3 .menu-content li {
-  text-align: center;
-  width: 3rem;
-  background-color: #333;
-  height: 3rem;
-  position: relative;
-}
-.example-3 .menu-content a {
-  font-size: 24px;
-}
-
-.example-4 .wrapper {
-  background: url(https://images.unsplash.com/photo-1547405358-4ef2671bb1bb?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80) 30% 1%/cover no-repeat;
-}
-.example-4 .date {
-  position: absolute;
-  top: 0;
-  right: 0;
-  background-color: #333;
-  color: #fff;
-  padding: 0.75rem;
-}
-.example-4 .date span {
-  display: block;
-  text-align: center;
-}
-.example-4 .date .day {
-  font-weight: 700;
-  font-size: 1rem;
-  text-shadow: 2px 3px 2px rgba(0, 0, 0, 0.18);
-}
-.example-4 .content {
-  background-color: white;
-  color: black;
-  box-shadow: 0 5px 30px 10px rgba(0, 0, 0, 0.3);
-}
-.example-4 .title a {
-  color: black;
-}
-.example-4 .menu-content {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 0%;
-}
-.example-4 .menu-content li {
-  text-align: center;
-  width: 3rem;
-  background-color: #333;
-  height: 3rem;
-  position: relative;
-}
-.example-4 .menu-content a {
-  font-size: 24px;
-}
-
 .alternate-card {
   float: left;
   padding: 1rem;
-  min-width: 500px;
+  width: 500px;
 }
 .alternate-card .menu-content {
   margin: 0;
@@ -384,9 +154,6 @@ h1 {
   transform: translateY(-60px);
 }
 
-.example-5 .wrapper {
-  background: url(https://images.unsplash.com/photo-1547405358-4ef2671bb1bb?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80) 30% 1%/cover no-repeat;
-}
 .example-5 .date {
   position: absolute;
   top: 0;
@@ -426,4 +193,10 @@ h1 {
 }
 .example-5 .menu-content a {
   font-size: 3rem;
+}
+
+.display-cards{
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
 }
