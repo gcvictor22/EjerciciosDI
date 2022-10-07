@@ -4,60 +4,13 @@
   <label for="name" class="form__label">Nombre del pokemon</label>
 </div>
 <br />
-
-<!--
-  <div class="contenedor_cartas">
+<div class="contenedor_cartas">
     <div style="width: 20%;" *ngFor="let item of listadoPokemon">
         <mat-card class="example-card" *ngIf="item.name.toLowerCase().startsWith(nombreBuscador)">
           <mat-card-title-group>
             <mat-card-title>{{ item.name }}</mat-card-title>
-            <img [src]="getPokemonUrl(item)" alt="" />
+            <img [src]="img + [listadoPokemon.indexOf(item) + 1] + '.png'" alt="" />
           </mat-card-title-group>
         </mat-card>
     </div>
-</div>
--->
-
-<div class="contenedor_cartas">
-  <!-- ORGANIZES ALL CARDS ON THE PAGE -->
-<div class="grid-card-container" *ngFor="let item of listadoPokemon">
-  <!-- CARD BACKGROUND -->
-  <div class="grid-individual-card card-background-yellow" *ngIf="item.name.toLowerCase().startsWith(nombreBuscador)" style="margin: 20px;">
-    <!-- BEGIN PIKACHU -->
-    <div class="header-pokemon-name">{{ item.name }}</div>
-    <div class="header-hp">
-      <div *ngFor="let details of listadoDetailResponse">
-        <span *ngIf="details.id.toString() == getPokemonId(item)">
-          <span *ngFor="let hp of listadoHP">
-            {{hp.base_stat}}
-          </span>
-        </span>
-      </div>
-    </div>
-    <div class="header-type-icon">☻</div>
-    <div class="image-holder"><img [src]="getPokemonUrl(item)" alt="" /></div>
-    <div class="description-below-image-empty"><!-- empty cell to position description correctly --></div>
-    <div class="description-below-image"><span class="description-below-image-background">Mouse Pokémon. Length: 1'4", Weight: 13 lbs.</span></div>
-    <div class="description-below-image-empty"><!-- empty cell to position description correctly --></div>
-    <div class="attack-cost">☻</div>
-    <div class="attack-description attack-center"><span class="attack-name">Gnaw</span></div>
-    <div class="attack-damage">10</div>
-    <div class="attack-cost">☻ ☻</div>
-    <div class="attack-description"><span class="attack-name">Thundershock</span> Flip a coin. If tails, Pikachu does 10 damage to itself.</div>
-    <div class="attack-damage">10</div>
-    <div class="weakness wrr-header">weakness</div>
-    <div class="resistance wrr-header">resistance</div>
-    <div class="retreat wrr-header">retreat cost</div>
-    <div class="weakness wrr-cost">☻</div>
-    <div class="resistance wrr-cost"></div>
-    <div class="retreat wrr-cost">☻</div>
-    <div class="description-above-copyright">
-      <ul>
-        <li class="description-above-copyright-border">When several of these Pokémon gather, their electricity could build and cause lightning storms. &nbsp; LV. 12 &nbsp; #25</li>
-      </ul>
-    </div>
-    <div class="copyright"><strong>Illus. Mitsuhiro Arita</strong> ©1995, 96, 98 Nintendo Creatures, GAMEFREAK ©1999 Wizards. <strong>58/102 ●</strong></div>
-    <!-- END PIKACHU -->
-  </div>
-</div>
 </div>

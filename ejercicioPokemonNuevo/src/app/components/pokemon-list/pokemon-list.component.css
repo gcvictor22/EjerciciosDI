@@ -1,0 +1,22 @@
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body{
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.vanillaTilt{
+  width: 400px;
+  height: 500px;
+  margin: 20px;
+  background-color: #e8cd43;
+  border: 10px groove yellow;
+  border-radius: 25px;
+}
