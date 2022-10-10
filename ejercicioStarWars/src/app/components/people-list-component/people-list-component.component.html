@@ -1,7 +1,7 @@
 <div class="display-cards">
   <div *ngFor="let people of peopleListado" class="example-5 alternate-card">
     <div class="wrapper">
-      <img [src]="url + [peopleListado.indexOf(people)+1] + '.jpg'" alt="" style="width: 100%;">
+      <img [src]="getObjetoUrl(people)" alt="" style="width: 100%;">
       <div class="data">
         <div class="content">
           <h1 class="title"><a href="#">{{people.name}}</a></h1>

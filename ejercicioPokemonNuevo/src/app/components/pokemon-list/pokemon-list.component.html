@@ -1,16 +1,21 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
-</head>
-<body>
-    <div class="vanillaTilt" data-tilt data-tilt-scale="1.1" data-tilt-glare="true">
-      <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/25.png" style="width: 50%; margin: auto; display: block;" alt="">
-      <br>
-      <h1 style="width: 100%; text-align:center;">Pikachu</h1>
+<div class="form__group field">
+  <input
+    type="search"
+    class="form__field"
+    placeholder="Name"
+    name="name"
+    id="name"
+    required
+    [(ngModel)]="nombreBuscador"
+  />
+  <label for="name" class="form__label">Nombre del pokemon</label>
+</div>
+
+<div class="card-container">
+  <div *ngFor="let item of listadoPokemon" (click)="getPokemonInfo(item)">
+    <div class="card" *ngIf="item.name.toLowerCase().startsWith(nombreBuscador)">
+      <img [src]="img + [listadoPokemon.indexOf(item) + 1] + '.png'" alt="" style="width: 75%; display:block; margin:auto;"/>
+      <h3 style="width: 100%; text-align:center;">{{item.name}}</h3>
     </div>
-</body>
-</html>
+  </div>
+</div>

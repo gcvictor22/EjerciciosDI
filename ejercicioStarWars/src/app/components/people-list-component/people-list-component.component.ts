@@ -12,7 +12,6 @@ const URL_IMAGEN = 'https://starwars-visualguide.com/assets/img/characters/'
 export class PeopleListComponentComponent implements OnInit {
   peopleListado: People[] = []
   filmsListado: Peliculas[] = []
-  url = URL_IMAGEN
 
   constructor(private peopleService: PeopleServiceService) { }
 
@@ -24,6 +23,11 @@ export class PeopleListComponentComponent implements OnInit {
     this.peopleService.filmList().subscribe(response => {
       this.filmsListado = response.results
     })
+  }
+
+  getObjetoUrl(objeto: People) {
+    let id = objeto.url.split('/')[5];
+    return `${URL_IMAGEN}${id}.jpg`
   }
 
 }

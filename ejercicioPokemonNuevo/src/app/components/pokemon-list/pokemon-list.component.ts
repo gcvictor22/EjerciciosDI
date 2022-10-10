@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { Pokemon, PokemonResponse } from 'src/app/interfaces/pokemon-response.interface';
+import { Pokemon } from 'src/app/interfaces/pokemon-response.interface';
 import { PokemonService } from 'src/app/service/pokemon.service';
 import VanillaTilt from 'vanilla-tilt';
+import {MatDialog} from '@angular/material/dialog';
+import { DialogComponent } from '../dialog/dialog.component';
+import { PokemonDetailResponse } from 'src/app/interfaces/pokemon-detail-response.interface';
 
 const URL_IMAGEN = 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/'
 @Component({
@@ -11,10 +14,11 @@ const URL_IMAGEN = 'https://raw.githubusercontent.com/PokeAPI/sprites/master/spr
 })
 export class PokemonListComponent implements OnInit {
   listadoPokemon: Pokemon[] = []
+  pokemonSelected: PokemonDetailResponse | undefined;
   img = URL_IMAGEN
   nombreBuscador=''
 
-  constructor(private pokemonService: PokemonService) { }
+  constructor(private pokemonService: PokemonService, public dialog: MatDialog) { }
 
   ngOnInit(): void {
     this.pokemonService.pokemonList().subscribe(response => {
@@ -23,5 +27,15 @@ export class PokemonListComponent implements OnInit {
 
     VanillaTilt.init(document.querySelectorAll('.vanillaTilt') as any)
   }
-
+  getPokemonInfo(pokemon: Pokemon) {
+    this.pokemonService.getPokemonDetail(pokemon).subscribe(response => {
+      this.pokemonSelected = response;
+      this.dialog.open(DialogComponent, {
+        data: {
+          pokemonInfo: this.pokemonSelected,
+          color: '#FF0000'
+        },
+      });
+    });
+  }
 }
