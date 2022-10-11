@@ -12,7 +12,7 @@ export class PeopleServiceService {
 
   constructor(private http: HttpClient) { }
 
-  public peopleList(numeroPagina : string): Observable<PeopleResponse>{
+  public peopleList(numeroPagina : number): Observable<PeopleResponse>{
     return this.http.get<PeopleResponse>(`${API_BASE_URL}/people/?page=${numeroPagina}`)
   }
 
