@@ -12,11 +12,22 @@ const URL_IMAGEN = 'https://starwars-visualguide.com/assets/img/characters/'
 export class PeopleListComponentComponent implements OnInit {
   peopleListado: People[] = []
   filmsListado: Peliculas[] = []
+  numero = 1
+  page = ''
+
+  sumar(){
+    this.numero++
+  }
+
+  restar(){
+    this.numero--
+  }
 
   constructor(private peopleService: PeopleServiceService) { }
 
   ngOnInit(): void {
-    this.peopleService.peopleList().subscribe(response => {
+
+    this.peopleService.peopleList(this.page).subscribe(response => {
       this.peopleListado = response.results
     })
 

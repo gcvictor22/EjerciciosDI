@@ -12,8 +12,8 @@ export class PeopleServiceService {
 
   constructor(private http: HttpClient) { }
 
-  public peopleList(): Observable<PeopleResponse>{
-    return this.http.get<PeopleResponse>(`${API_BASE_URL}/people`)
+  public peopleList(numeroPagina : string): Observable<PeopleResponse>{
+    return this.http.get<PeopleResponse>(`${API_BASE_URL}/people/?page=${numeroPagina}`)
   }
 
   public getPeople(id: string) {

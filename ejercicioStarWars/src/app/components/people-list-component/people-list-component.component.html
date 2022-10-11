@@ -1,3 +1,8 @@
+<div>
+  <button (click)="restar()">pagina anterior</button>
+  <input type="number" id="pagina" [value]="numero" [(ngModel)]="page" name="" id="">
+  <button (click)="sumar()">pagina siguiente</button>
+</div>
 <div class="display-cards">
   <div *ngFor="let people of peopleListado" class="example-5 alternate-card">
     <div class="wrapper">
