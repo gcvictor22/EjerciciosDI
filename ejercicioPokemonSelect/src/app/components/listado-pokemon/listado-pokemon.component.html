@@ -1,0 +1,10 @@
+<div>
+  <mat-form-field appearance="fill">
+    <mat-label>Listado Pokemons</mat-label>
+    <mat-select>
+      <mat-option *ngFor="let pokemon of listadoPokemon" (click)="getPokemonInfo(pokemon)">
+        {{pokemon.name}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+</div>

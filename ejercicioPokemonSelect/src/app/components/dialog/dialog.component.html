@@ -1,0 +1,58 @@
+<div
+  [class]="getRandomBoolean(data.pokemonInfo)? 'card-background-yellow grid-individual-card vanillaTilt':'card-background-yellow-2 grid-individual-card vanillaTilt'"
+  data-tilt
+>
+  <!-- BEGIN PIKACHU -->
+  <div class="header-basic-pokemon">Basic Pokémon</div>
+  <div class="header-pokemon-name">{{ data.pokemonInfo.name }}</div>
+  <div class="header-hp">{{ data.pokemonInfo.base_experience }}</div>
+  <div class="header-type-icon">☻</div>
+  <div class="image-holder">
+    <img
+      [src]="img + data.pokemonInfo.id + '.png'"
+      alt=""
+      style="width: 97%; height: 100%"
+    />
+  </div>
+  <div class="description-below-image-empty">
+    <!-- empty cell to position description correctly -->
+  </div>
+  <div class="description-below-image">
+    <span class="description-below-image-background"
+      >{{ data.pokemonInfo.species.name }}. Length:
+      {{ data.pokemonInfo.height }}", Weight:
+      {{ data.pokemonInfo.weight }} lbs.</span
+    >
+  </div>
+  <div class="description-below-image-empty">
+    <!-- empty cell to position description correctly -->
+  </div>
+  <div class="attack-cost">☻ ☻</div>
+  <div class="attack-description">
+    <span class="attack-name">Attack</span> Flip a coin. If tails,
+    {{ data.pokemonInfo.name }} does 10 damage to itself. Else, +{{
+      getDamage(data.pokemonInfo)
+    }}
+    damage
+  </div>
+  <div class="attack-damage"></div>
+  <div class="weakness wrr-header">weakness</div>
+  <div class="resistance wrr-header">resistance</div>
+  <div class="retreat wrr-header">retreat cost</div>
+  <div class="weakness wrr-cost">☻</div>
+  <div class="resistance wrr-cost"></div>
+  <div class="retreat wrr-cost">☻</div>
+  <div class="description-above-copyright">
+    <ul>
+      <li class="description-above-copyright-border">
+        Puedes encontrar este pokemon en: {{ lugar }} &nbsp; LV.
+        {{ random }} &nbsp; #{{ data.pokemonInfo.id }}
+      </li>
+    </ul>
+  </div>
+  <div class="copyright">
+    <strong>Illus. Mitsuhiro Arita</strong> ©1995, 96, 98 Nintendo Creatures,
+    GAMEFREAK ©1999 Wizards. <strong>58/102 ●</strong>
+  </div>
+  <!-- END PIKACHU -->
+</div>
