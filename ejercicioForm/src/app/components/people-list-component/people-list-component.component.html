@@ -1,0 +1,25 @@
+<div style="padding: 50px; box-sizing:border-box; display: flex; justify-content: space-between;">
+  <div>
+    <span *ngFor="let in of counter() ;let i = index">
+      <button (click)="getPeoplePage(i+1)" style="margin: 3px;">{{i+1}}</button>
+    </span>
+  </div>
+  <button routerLink="/anhadir-editar">Añadir</button>
+</div>
+<div class="display-cards" >
+  <div *ngFor="let people of peopleListado" class="example-5 alternate-card">
+    <div class="wrapper">
+      <img [src]="getObjetoUrl(people)" alt="" style="width: 100%;">
+      <div class="data">
+        <div class="content">
+          <h1 class="title">{{people.name}}</h1>
+          <button [routerLink]="['/anhadir-editar', people.url.split('/')[5]]" (click)="cargarDatos(people)">Editar</button>
+          <h3><u>Películas</u></h3>
+            <p *ngFor="let film of filmsListado">
+              <span *ngIf="film.characters.includes(people.url)">{{film.title}}</span>
+            </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
