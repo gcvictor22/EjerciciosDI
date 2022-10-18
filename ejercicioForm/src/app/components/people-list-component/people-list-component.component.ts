@@ -1,11 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
 import { Peliculas } from 'src/app/interfaces/film-list.interface';
-import {
-  People,
-  PeopleResponse,
-} from 'src/app/interfaces/people-list.interface';
-import { PeopleServiceService } from 'src/app/service/people-service.service';
+import { People } from 'src/app/interfaces/people-list.interface';
+import { PeopleService } from 'src/app/service/people-service.service';
 
 const URL_IMAGEN = 'https://starwars-visualguide.com/assets/img/characters/';
 @Component({
@@ -17,9 +13,8 @@ export class PeopleListComponent implements OnInit {
   peopleListado: People[] = [];
   filmsListado: Peliculas[] = [];
   numPages = 0;
-  newCharacter: People = {} as People
 
-  constructor(private peopleService: PeopleServiceService, private route: ActivatedRoute) {}
+  constructor(private peopleService: PeopleService) {}
 
   ngOnInit(): void {
     this.getPeoplePage(1);
@@ -29,11 +24,11 @@ export class PeopleListComponent implements OnInit {
     this.peopleService.peopleList(page).subscribe((response) => {
       this.peopleListado = response.results;
       this.numPages = Math.ceil(response.count / 10);
-    });
+    })
 
-    this.peopleService.filmList().subscribe((response) => {
-      this.filmsListado = response.results;
-    });
+    this.peopleService.filmList().subscribe(response => {
+      this.filmsListado = response.results
+    })
   }
 
   getObjetoUrl(objeto: People) {
@@ -43,13 +38,5 @@ export class PeopleListComponent implements OnInit {
 
   counter() {
     return new Array(this.numPages);
-  }
-
-  cargarDatos(people: People) {
-    this.newCharacter.name = people.name
-    this.newCharacter.eye_color = people.eye_color
-    this.newCharacter.hair_color = people.hair_color
-    this.newCharacter.height = people.height
-    this.newCharacter.birth_year = people.birth_year
   }
 }

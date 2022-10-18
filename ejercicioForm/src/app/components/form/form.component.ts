@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { People } from 'src/app/interfaces/people-list.interface';
-import { PeopleServiceService } from 'src/app/service/people-service.service';
+import { PeopleService } from 'src/app/service/people-service.service';
 import { PeopleListComponent } from '../people-list-component/people-list-component.component';
 
 @Component({
@@ -12,8 +13,7 @@ import { PeopleListComponent } from '../people-list-component/people-list-compon
 export class FormComponent implements OnInit {
 
   newCharacter: People = {} as People
-  personaCargada!: PeopleListComponent;
-  id=this.newCharacter.url.split('/')[5]
+  personaCargada!: PeopleListComponent
 
   addEditFormGroup = new FormGroup({
     nameFormControl: new FormControl(this.newCharacter.name, [Validators.required]),
@@ -27,10 +27,17 @@ export class FormComponent implements OnInit {
     alert("Datos guardados");
   }
 
-  constructor(private peopleService : PeopleServiceService) {}
+  constructor(private peopleService : PeopleService, private router: Router) {}
 
   ngOnInit(): void {
-    this.personaCargada
+    let id = this.router.url.split('/')[2]
+    this.peopleService.getPeople(id).subscribe((resp)=>{
+      this.addEditFormGroup.controls['nameFormControl'].setValue(resp.name)
+      this.addEditFormGroup.controls['heightFormControl'].setValue(resp.height)
+      this.addEditFormGroup.controls['hair_colorFormControl'].setValue(resp.hair_color)
+      this.addEditFormGroup.controls['eye_colorFormControl'].setValue(resp.eye_color)
+      this.addEditFormGroup.controls['birth_yearFormControl'].setValue(resp.birth_year)
+    });
   }
 
 }

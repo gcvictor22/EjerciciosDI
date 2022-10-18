@@ -1,88 +1,38 @@
-<div style="width: 100%">
-  <form
-    [formGroup]="addEditFormGroup"
-    class="example-form"
-    style="
+<div style="width: 100%; padding-top: 150px;">
+  <form [formGroup]="addEditFormGroup" class="example-form" style="
       margin: auto;
       padding: 50px;
       box-sizing: border-box;
       background: #fff;
       width: 20%;
-    "
-  >
-    <mat-form-field
-      class="example-full-width"
-      style="width: 100%"
-      appearance="fill"
-    >
+    ">
+    <mat-form-field class="example-full-width" style="width: 100%" appearance="fill">
       <mat-label>Nombre</mat-label>
-      <input
-        matInput
-        placeholder="Ex. Pepito"
-        formControlName="nameFormControl" [value]="newCharacter.name"
-      />
+      <input matInput placeholder="Ex. Pepito" formControlName="nameFormControl"/>
     </mat-form-field>
 
-    <mat-form-field
-      class="example-full-width"
-      style="width: 100%"
-      appearance="fill"
-    >
+    <mat-form-field class="example-full-width" style="width: 100%" appearance="fill">
       <mat-label>Color de Pelo</mat-label>
-      <input
-        matInput
-        placeholder="Ex. Rubio"
-        formControlName="hair_colorFormControl"
-      />
+      <input matInput placeholder="Ex. Rubio" formControlName="hair_colorFormControl" />
     </mat-form-field>
 
-    <mat-form-field
-      class="example-full-width"
-      style="width: 100%"
-      appearance="fill"
-    >
+    <mat-form-field class="example-full-width" style="width: 100%" appearance="fill">
       <mat-label>Altura</mat-label>
-      <input
-        matInput
-        placeholder="Ex. 1.85"
-        formControlName="heightFormControl"
-      />
+      <input matInput placeholder="Ex. 1.85" formControlName="heightFormControl" />
     </mat-form-field>
 
-    <mat-form-field
-      class="example-full-width"
-      style="width: 100%"
-      appearance="fill"
-    >
+    <mat-form-field class="example-full-width" style="width: 100%" appearance="fill">
       <mat-label>Color de ojos</mat-label>
-      <input
-        matInput
-        placeholder="Ex. Verde"
-        formControlName="eye_colorFormControl"
-      />
+      <input matInput placeholder="Ex. Verde" formControlName="eye_colorFormControl" />
     </mat-form-field>
 
-    <mat-form-field
-    class="example-full-width"
-    style="width: 100%"
-    appearance="fill"
-  >
-    <mat-label>Edad</mat-label>
-    <input
-      matInput
-      placeholder="Ex. 21"
-      formControlName="birth_yearFormControl"
-      type="number"
-    />
-  </mat-form-field>
+    <mat-form-field class="example-full-width" style="width: 100%" appearance="fill">
+      <mat-label>Edad</mat-label>
+      <input matInput placeholder="Ex. 21" formControlName="birth_yearFormControl" type="text" />
+    </mat-form-field>
     <br />
     <br />
-    <input
-      id="inpSubmit"
-      (click)="guardar()"
-      routerLink="/listado"
-      [disabled]="!addEditFormGroup.valid"
-      value="Guardar"
-    />
+    <input id="inpSubmit" (click)="guardar()" routerLink="/listado" [disabled]="!addEditFormGroup.valid"
+      value="Guardar" />
   </form>
 </div>
