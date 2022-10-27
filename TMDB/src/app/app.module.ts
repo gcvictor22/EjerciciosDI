@@ -8,11 +8,18 @@ import { PeopleListComponent } from './components/people-list/people-list.compon
 import { HttpClientModule } from "@angular/common/http";
 import { MaterialImportsModule } from './material-imports/material-imports.module';
 import { FormsModule } from '@angular/forms';
+import { IntroComponent } from './components/intro/intro.component';
+import { FlexLayoutModule } from '@angular/flex-layout';
+import { FilmListComponent } from './components/film-list/film-list.component';
+import { DialogComponent } from './components/dialog/dialog.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    PeopleListComponent
+    PeopleListComponent,
+    IntroComponent,
+    FilmListComponent,
+    DialogComponent
   ],
   imports: [
     BrowserModule,
@@ -20,7 +27,8 @@ import { FormsModule } from '@angular/forms';
     BrowserAnimationsModule,
     HttpClientModule,
     MaterialImportsModule,
-    FormsModule
+    FormsModule,
+    FlexLayoutModule
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div class="container">
+        <div class="sub">
+            <iframe [src]="transform(key)" height="300px" width="400px"  frameborder="0" allowfullscreen></iframe>
+            <div class="datos">
+                <h1>{{data.film.title}}</h1>
+                <br>
+                <br>
+                <p>Estreno: {{data.film.release_date}}</p>
+                <p>V.O.:{{data.film.original_language}}</p>
+                <p>Título original: {{data.film.original_title}}</p>
+            </div>
+        </div>
+        <br>
+        <br>
+        <p>{{data.film.overview}}</p>
+    </div>
+</body>
+</html>

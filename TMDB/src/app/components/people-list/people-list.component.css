@@ -1,6 +1,12 @@
+body{
+  background: #000;
+  height: min-content;
+}
+
 .example-card {
-  max-width: 200px;
-  margin: auto;
+  width: 300px;
+  height: min-content;
+  margin: 50px;
 }
 
 .example-header-image {

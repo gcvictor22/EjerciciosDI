@@ -1,25 +1,31 @@
-<div class="container">
-  <mat-card class="example-card" *ngFor="let people of peopleList">
-    <mat-card-header>
-      <div mat-card-avatar class="example-header-image"></div>
-      <mat-card-title>{{ people.name }}</mat-card-title>
-      <mat-card-subtitle>Dog Breed</mat-card-subtitle> </mat-card-header
-    ><img
-      [src]="getPeopleImg(people)"
-      alt=""
-      onerror="this.src='https://i.ibb.co/xS8L4fy/donmiguel.png'"
-    />
-    <mat-card-content>
-      <p>
-        The Shiba Inu is the smallest of the six original and distinct spitz
-        breeds of dog from Japan. A small, agile dog that copes very well with
-        mountainous terrain, the Shiba Inu was originally bred for hunting.
-      </p>
-    </mat-card-content>
-    <mat-card-actions style="display: flex;">
-      <button mat-button>LIKE</button>
-      <button mat-button>SHARE</button>
-      <button mat-button><mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="favorite"></mat-icon></button>
-    </mat-card-actions>
-  </mat-card>
-</div>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <div class="container">
+    <mat-card class="example-card" *ngFor="let people of peopleList">
+      <mat-card-header>
+        <div mat-card-avatar class="example-header-image"></div>
+        <mat-card-title>{{ people.name }}</mat-card-title>
+        <mat-card-subtitle>{{people.popularity}}</mat-card-subtitle>
+      </mat-card-header><img [src]="getPeopleImg(people)" alt=""
+        onerror="this.src='https://i.ibb.co/7jB5Hmg/Proyecto-nuevo.png'" />
+      <mat-card-actions style="display: flex; justify-content: space-between;">
+        <button mat-button>LIKE</button>
+        <button mat-button>SHARE</button>
+        <button mat-button>
+          <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="favorite"></mat-icon>
+        </button>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+</body>
+
+</html>

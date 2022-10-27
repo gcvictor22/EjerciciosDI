@@ -1,0 +1,26 @@
+.container{
+    width: 800px;
+    height: 500px;
+    display: flex;
+}
+
+.sub{
+    width: 100%;
+    height: 300px;
+    display: flex;
+}
+
+.container{
+    flex-direction: column;
+}
+
+.datos{
+    margin-left: 20px;
+    width: 400px;
+    height: 500px;
+    text-align: center;
+}
+
+.datos h1, p{
+    width: 100%;
+}

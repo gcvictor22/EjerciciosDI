@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { interval } from 'rxjs';
 import { Result } from 'src/app/interfaces/people.interface';
 import { PeopleService } from 'src/app/services/people.service';
 
@@ -9,34 +10,17 @@ import { PeopleService } from 'src/app/services/people.service';
 })
 export class PeopleListComponent implements OnInit {
 
-  peopleList : Result[] = []
-  fav = true
-  favorite = 'favorite_border'
+  peopleList: Result[] = []
 
-  constructor(private peopleService : PeopleService) { }
+  constructor(private peopleService: PeopleService) { }
 
   ngOnInit(): void {
-    this.peopleService.getPeople().subscribe((a)=>{
+    this.peopleService.getPeople().subscribe((a) => {
       this.peopleList = a.results
-
-      console.log(this.fav)
     })
-
-    this.change()
   }
 
-  getPeopleImg(p:Result){
-    return 'https://image.tmdb.org/t/p/w500'+p.profile_path
+  getPeopleImg(p: Result) {
+    return 'https://image.tmdb.org/t/p/w500' + p.profile_path
   }
-
-  change(){
-    this.fav = !this.fav
-
-    if (this.fav == false) {
-      this.favorite = 'favorite_border'
-    }else{
-      this.favorite = 'favorite'
-    }
-  }
-
 }
