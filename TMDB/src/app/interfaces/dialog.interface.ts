@@ -1,6 +1,5 @@
-import { Film, FilmResponse } from "./film.interface";
+import { Film, FilmResponse } from './film.interface';
 
 export interface DialogData {
-    film: Film;
-    color: string;
-  }
+  film: Film;
+}

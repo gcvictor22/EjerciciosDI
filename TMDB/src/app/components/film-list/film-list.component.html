@@ -1,20 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
-</head>
+  </head>
 
-<body>
-    <h1>Películar populares</h1>
-    <div class="scrollH">
+  <body>
+    <div class="container">
+      <h1>Películar populares</h1>
+      <br>
+      <div class="scrollH">
         <div class="card" *ngFor="let pelicula of listadoFilms">
-            <button (click)="filmDialog(pelicula)"><img [src]="getFilmImg(pelicula)" alt=""></button>
+          <button (click)="filmDialog(pelicula)">
+            <img [src]="getFilmImg(pelicula)" alt="" />
+          </button>
         </div>
+      </div>
+      <div style="margin: 200px 0"></div>
+      <h1>Actores populares</h1>
+      <br>
+        <app-people-list></app-people-list>
     </div>
-</body>
-
+  </body>
 </html>

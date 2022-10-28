@@ -3,7 +3,6 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { Film } from '../interfaces/film.interface';
-import { FilmDetailsResponse } from '../interfaces/filmDetails.interface';
 import { VideoResponse } from '../interfaces/filmVideos.interface';
 
 @Injectable({

@@ -1,0 +1,22 @@
+<div>
+  <div class="info">Biography: {{ data.people.biography }}</div>
+  <br />
+  <div class="info">Birthday: {{ data.people.birthday }}</div>
+  <br />
+  <div class="info">Gender: {{ data.people.gender }}</div>
+  <br />
+  <div class="info">Homepage: {{ data.people.homepage }}</div>
+  <br />
+  <div class="info">Department: {{ data.people.known_for_department }}</div>
+  <br />
+  <div class="info">Place of Born: {{ data.people.place_of_birth }}</div>
+  <br />
+  <div class="info">popularity: {{ data.people.popularity }}</div>
+  <br />
+  <div class="info">
+    Films:
+    <ul *ngFor="let item of peopleSelectedById.known_for">
+      <li>{{ item.title }}</li>
+    </ul>
+  </div>
+</div>

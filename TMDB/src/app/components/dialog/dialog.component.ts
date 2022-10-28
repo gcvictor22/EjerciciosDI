@@ -2,8 +2,6 @@ import { Component, Inject, OnInit, PipeTransform } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { DomSanitizer } from '@angular/platform-browser';
 import { DialogData } from 'src/app/interfaces/dialog.interface';
-import { Film } from 'src/app/interfaces/film.interface';
-import { FilmDetailsResponse } from 'src/app/interfaces/filmDetails.interface';
 import { Videos } from 'src/app/interfaces/filmVideos.interface';
 import { VideosService } from 'src/app/services/videos.service';
 

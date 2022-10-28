@@ -3,24 +3,54 @@ body{
   height: min-content;
 }
 
-.example-card {
-  width: 300px;
-  height: min-content;
-  margin: 50px;
-}
-
-.example-header-image {
-  background-image: url("https://material.angular.io/assets/img/examples/shiba1.jpg");
-  background-size: cover;
-}
-
-.example-card img {
+.scrollH{
+  top: 150px;
   width: 100%;
-}
-
-.container {
-  width: 100%;
+  height: 370px;
+  margin: auto;
+  overflow-x: auto;
   display: flex;
-  justify-content: space-around;
-  flex-wrap: wrap;
+}
+
+.card{
+  min-width: 250px;
+  height: 90%;
+  margin-right: 30px;
+  background: white;
+  padding: 10px;
+  box-sizing: border-box;
+  border-radius: 5px;
+}
+
+.card:last-child{
+  margin-right: 0;
+}
+
+.divImg{
+  width: 80%;
+  height: 80%;
+  margin: auto;
+}
+
+.divImg img{
+  width: 100%;
+  height: 100%;
+  border: 3px solid white;
+  border-radius: 5px;
+}
+
+h3{
+  width: 80%;
+  margin: auto;
+  text-align: center;
+  margin-top: 20px;
+}
+
+button{
+  height: 100%;
+  width: 100%;
+  background: white;
+  border: 0;
+  margin: auto;
+  cursor: pointer;
 }
