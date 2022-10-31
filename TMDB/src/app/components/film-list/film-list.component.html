@@ -8,6 +8,25 @@
   </head>
 
   <body>
+    <mat-toolbar color="primary">
+      <span>NESLI</span>
+      <span class="example-spacer"></span>
+      <button style="margin: auto 50px;" mat-icon-button class="example-icon favorite-icon" aria-label="Example icon-button with heart icon" *ngIf="approved == false">
+        <a (click)="login()">Log in</a> <mat-icon>login</mat-icon>
+      </button>
+      <div *ngIf="approved == true" style="display: flex; margin-right: 50px;">
+        <div style="display: flex;">
+          <p>
+            {{userSessionLogin.username}}
+          </p>
+          <img [src]="'https://www.themoviedb.org/t/p/w150_and_h150_face'+userSessionLogin.avatar.tmdb.avatar_path" style="width: 35px; height: 35px; border-radius: 50%; margin-left: 20px; margin-top: 16px;" alt="">
+        </div>
+        <button style="margin: auto 50px; margin-top: 16px;" mat-icon-button class="example-icon favorite-icon" aria-label="Example icon-button with heart icon">
+          <a (click)="logoutAlert()" style="text-decoration: none; color: white;">Cerrar sesión</a><mat-icon>logout</mat-icon>
+        </button>
+      </div>
+    </mat-toolbar>
+  
     <div class="container">
       <h1>Películar populares</h1>
       <br>
