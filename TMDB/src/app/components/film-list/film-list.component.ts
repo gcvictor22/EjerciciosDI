@@ -33,7 +33,7 @@ export class FilmListComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private userSession: UserSessionService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.filmService.getFilms().subscribe((a) => {
@@ -85,23 +85,39 @@ export class FilmListComponent implements OnInit {
     });
   }
 
-  logout() {
-    let deleteSession = new DeleteSessionDto();
-    deleteSession.session_id = localStorage.getItem('session_id') as string;
-    this.authService.logOutSession(deleteSession).subscribe((a) => {
-      if (a.success) {
-        localStorage.removeItem('session_id');
-        window.location.href = 'http://localhost:4200/films';
-      }
-    });
-  }
+  // logout() {
+  //   let deleteSession = new DeleteSessionDto();
+  //   deleteSession.session_id = localStorage.getItem('session_id') as string;
+  //   this.authService.logOutSession(deleteSession).subscribe((a) => {
+  //     if (a.success) {
+  //       localStorage.removeItem('session_id');
+  //       window.location.href = 'http://localhost:4200/films';
+  //     }
+  //   });
+  // }
 
-  logoutAlert(){
-    Swal.fire(
-      'Alerta',
-      '¿Seguro que quieres cerrar sesión?',
-      'question'
-    )
-    this.logout()
+  logoutAlert() {
+    Swal.fire({
+      title: '¿Seguro que quieres cerrar sesión?',
+      text: "Podras volver a iniciar sesión si lo necesitas",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      cancelButtonText: 'Cancelar',
+      showCloseButton: true,
+      confirmButtonText: 'Si, cerrar sesión'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        let deleteSession = new DeleteSessionDto();
+        deleteSession.session_id = localStorage.getItem('session_id') as string;
+        this.authService.logOutSession(deleteSession).subscribe((a) => {
+          if (a.success) {
+            localStorage.removeItem('session_id');
+            window.location.href = 'http://localhost:4200/films';
+          }
+        });
+      }
+    })
   }
 }
