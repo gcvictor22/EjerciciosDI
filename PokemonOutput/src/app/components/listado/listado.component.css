@@ -1,0 +1,25 @@
+.container{
+    width: 100%;
+    min-height: 100vh;
+    height: max-content;
+    background: lightseagreen;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    padding: 100px;
+    box-sizing: border-box;
+}
+
+#nombre{
+    width: 500px;
+    background: #fff;
+    border-radius: 5px;
+    height: 40px;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    position: absolute;
+    top: 60px;
+    left: 72vh;
+    padding: 10px;
+    box-sizing: border-box;
+    text-align: center;
+}

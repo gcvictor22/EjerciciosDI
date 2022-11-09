@@ -1,0 +1,2 @@
+<p id="nombre">Pokemon seleccionado: {{pokemonSelected.name}}</p>
+<div class="container"><app-pokemon *ngFor="let item of listadoPokemons" [pokemon]="item" (pokemonSelected)="getPokemon($event)"></app-pokemon></div>

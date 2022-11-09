@@ -1,0 +1,27 @@
+.card{
+    width: 200px;
+    height: 280px;
+    display: flex;
+    flex-direction: column;
+    margin: 75px;
+    background: #fff;
+    box-shadow: 2px 2px black;
+}
+
+.card img, p{
+    width: 100%;
+    text-align: center;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+.card button{
+    width: 100%;
+    height: 30px;
+    text-align: center;
+    background: #fff;
+    cursor: pointer;
+    border: 0;
+    color: brown;
+    font-weight: bolder;
+    font-size: 20px;
+}
