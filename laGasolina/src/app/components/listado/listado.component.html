@@ -8,7 +8,10 @@
 </head>
 <body>
     <div class="container">
-        <p *ngFor="let item of listadoGasolineras">{{item['Rótulo']}}</p>
+        <div class="card" *ngFor="let item of listadoGasolineras">
+            <img [src]="getGasolineraImg(item)" alt="">
+            <p>{{item['Rótulo']}}</p>
+        </div>
     </div>
 </body>
 </html>
