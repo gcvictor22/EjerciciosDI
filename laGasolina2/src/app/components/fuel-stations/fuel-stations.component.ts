@@ -11,6 +11,7 @@ export class FuelStationsComponent implements OnInit {
   fuelStationList: FuelStation[] = [];
   minPrice = '';
   maxPrice = '';
+  priceSelect = '';
 
   constructor(private fuelStationService: FuelStationsService) {}
 
@@ -28,9 +29,13 @@ export class FuelStationsComponent implements OnInit {
         }
       });
 
-      this.minPrice = this.fuelStationList[0]['Precio Gasolina 95 E5']
-      this.maxPrice = this.fuelStationList.reverse()[0]['Precio Gasolina 95 E5']
-      
+      this.minPrice = this.fuelStationList[0]['Precio Gasolina 95 E5'].split(',')[0]+('.'+this.fuelStationList[0]['Precio Gasolina 95 E5'].split(',')[1])
+      this.maxPrice = this.fuelStationList.reverse()[0]['Precio Gasolina 95 E5'].split(',')[0]+('.'+this.fuelStationList[0]['Precio Gasolina 95 E5'].split(',')[1])
+
+      console.log(parseFloat(this.minPrice), parseFloat(this.maxPrice))
+
+      this.priceSelect = this.minPrice
+
     });
   }
 }

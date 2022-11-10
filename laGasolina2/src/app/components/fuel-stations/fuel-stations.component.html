@@ -1,4 +1,6 @@
 <p>{{maxPrice}}</p>
 <p>{{minPrice}}</p>
 
+<input type="range" name="" id="" step="0.01" [min]="minPrice" [max]="maxPrice" [(ngModel)]="priceSelect"><span>{{priceSelect}}</span>
+
 <p *ngFor="let item of fuelStationList">{{item['Precio Gasolina 95 E5']}}€/L</p>
