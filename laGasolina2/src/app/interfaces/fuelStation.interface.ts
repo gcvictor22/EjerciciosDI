@@ -1,12 +1,12 @@
 export interface FuelStation {
     'C.P.': string;
     'Dirección': string;
-    Horario: string;
-    Latitud: string;
-    Localidad: string;
+    'Horario': string;
+    'Latitud': string;
+    'Localidad': string;
     'Longitud (WGS84)': string;
-    Margen: string;
-    Municipio: string;
+    'Margen': string;
+    'Municipio': string;
     'Precio Biodiesel': string;
     'Precio Bioetanol': string;
     'Precio Gas Natural Comprimido': string;
@@ -21,16 +21,16 @@ export interface FuelStation {
     'Precio Gasolina 98 E10': string;
     'Precio Gasolina 98 E5': string;
     'Precio Hidrogeno': string;
-    Provincia: string;
-    Remisión: string;
+    'Provincia': string;
+    'Remisión': string;
     'Rótulo': string;
     'Tipo Venta': string;
     '% BioEtanol': string;
     '% Éster metílico': string;
-    IDEESS: string;
-    IDMunicipio: string;
-    IDProvincia: string;
-    IDCCAA: string;
+    'IDEESS': string;
+    'IDMunicipio': string;
+    'IDProvincia': string;
+    'IDCCAA': string;
 }
 
 export interface FuelStationResponse {
