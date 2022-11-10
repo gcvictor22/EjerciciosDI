@@ -7,6 +7,7 @@ import { PokemonService } from 'src/app/services/pokemon.service';
   templateUrl: './listado.component.html',
   styleUrls: ['./listado.component.css']
 })
+
 export class ListadoComponent implements OnInit {
 
   listadoPokemons : Pokemon[] = [];
@@ -23,7 +24,5 @@ export class ListadoComponent implements OnInit {
   getPokemon(event : Pokemon){
     this.pokemonSelected = event
     console.log(this.pokemonSelected);
-    
   }
-
 }
