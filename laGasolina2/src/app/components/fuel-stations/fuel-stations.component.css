@@ -8,3 +8,30 @@ mat-form-field{
     margin: auto;
     display: block;
 }
+
+.filtroPrecio{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.card{
+    width: 250px;
+    margin: 75px;
+    min-height: max-content;
+    border: 1px solid black;
+    border-radius: 5px;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+.card h2{
+    margin-bottom: 5px;
+}
+
+.container{
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}

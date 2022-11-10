@@ -8,12 +8,16 @@
   </mat-select>
 </mat-form-field>
 
-<span>{{minPrice}}€/L</span><input type="range" name="" id="" step="0.001" [min]="minPrice" [max]="maxPrice" [(ngModel)]="priceSelect"><span>{{priceSelect}}€/L</span>
+<div class="filtroPrecio">
+    <span>{{minPrice}}€/L</span><input type="range" name="" id="" step="0.001" [min]="minPrice" [max]="maxPrice" [(ngModel)]="priceSelect"><span>{{priceSelect}}€/L</span>
+</div>
 
-<p *ngFor="let item of fuelStationList">
-    <span *ngIf="changePriceToNumber(item[fuelTypeValue]) <= priceSelect && item[fuelTypeValue] != ''">{{item['Rótulo']}}: {{item[fuelTypeValue]}}€/L | {{item['Localidad']}}</span>
-</p>
-
-<select name="" id="">
-    <option value="" *ngFor="let item of fuelStationList"><span>{{item.Provincia}}</span></option>
-</select>
+<div class="container">
+    <div *ngFor="let item of fuelStationList">
+        <div class="card" *ngIf="changePriceToNumber(item[fuelTypeValue]) <= priceSelect && item[fuelTypeValue] != ''">
+            <h2>{{item['Rótulo']}}</h2>
+            <small>{{item['Localidad']}}</small>
+            <p>{{item[fuelTypeValue]}}€/L</p>
+        </div>
+    </div>
+</div>
