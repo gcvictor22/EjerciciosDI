@@ -1,45 +1,46 @@
 <h4>Fuel Service</h4>
 <mat-form-field appearance="fill">
-  <mat-label>Select a type of fuel</mat-label>
-  <mat-select
-    [(ngModel)]="fuelTypeValue"
-    (selectionChange)="selectTypeOfFuel(fuelTypeValue)"
-  >
+  <mat-label>{{fuelTypeValue}}</mat-label>
+  <mat-select [(ngModel)]="fuelTypeValue" (selectionChange)="selectTypeOfFuel(fuelTypeValue)">
     <mat-option *ngFor="let fuel of fuelName" [value]="fuel">
       {{ fuel }}
     </mat-option>
   </mat-select>
 </mat-form-field>
 
-<mat-form-field appearance="fill">
-    <mat-label>Toppings</mat-label>
+<div style="width: 20%; margin: auto; display: flex; justify-content: space-between;">
+  <mat-form-field appearance="fill" style="width: 45%; margin: 0;">
+    <mat-label>Provincia</mat-label>
     <mat-select [(ngModel)]="provincesSelected" multiple (selectionChange)="changeFuelType()">
-      <mat-option *ngFor="let province of provincesList" [value]="province.Provincia">{{province.Provincia}}</mat-option>
+      <mat-option *ngFor="let province of provincesList" [value]="province.Provincia">{{province.Provincia}}
+      </mat-option>
     </mat-select>
-</mat-form-field>
+  </mat-form-field>
+
+  <mat-form-field appearance="fill" style="width: 45%; margin: 0;">
+    <mat-label>Ordenar</mat-label>
+    <mat-select [(ngModel)]="typeOfSort" (selectionChange)="sortBy(fuelTypeValue, fuelStationList)">
+      <mat-option [value]="1">Menor a mayor precio</mat-option>
+      <mat-option [value]="2">Cercanía</mat-option>
+    </mat-select>
+  </mat-form-field>
+</div>
 
 <div class="filtroPrecio">
-  <span>{{ minPrice }}€/L</span
-  ><input
-    type="range"
-    name=""
-    id=""
-    step="0.001"
-    [min]="minPrice"
-    [max]="maxPrice"
-    [(ngModel)]="priceSelect"
-  /><span>{{ priceSelect }}€/L</span>
+  <span>{{ minPrice }}€/L</span><input type="range" name="" id="" step="0.001" [min]="minPrice" [max]="maxPrice"
+    [(ngModel)]="priceSelect" /><span>{{ priceSelect }}€/L</span>
 </div>
 
 <div class="container">
-    <mat-spinner style="position: fixed; top: 50%;" *ngIf="fuelStationList.length === 0 && provincesSelected.length > 0"></mat-spinner>
+  <mat-spinner style="position: fixed; top: 50%;" *ngIf="fuelStationList.length === 0 && provincesSelected.length > 0">
+  </mat-spinner>
   <div *ngFor="let item of fuelStationList">
-    <div
-      class="card"
+    <div class="card"
       *ngIf="changePriceToNumber(item[fuelTypeValue]) <= priceSelect && item[fuelTypeValue] != '' && provincesSelected.includes(item['Provincia'])">
       <h2>{{ item["Rótulo"] }}</h2>
-      <small>{{ item["Localidad"] }}</small>
+      <small>{{ item["Localidad"] }}, {{item['Dirección']}}</small>
       <p>{{ item[fuelTypeValue] }}€/L</p>
+      <button (click)="findFuelStation(item['Latitud'], item['Longitud (WGS84)'])" mat-raised-button>Ir</button>
     </div>
   </div>
 </div>

@@ -5,6 +5,7 @@ import { FuelStation } from 'src/app/interfaces/fuelStation.interface';
 import { Province } from 'src/app/interfaces/provinces.interface';
 import { FuelStationsService } from 'src/app/services/fuel-stations.service';
 
+const RADIO_TIERRA_EN_KILOMETROS = 6371;
 @Component({
   selector: 'app-fuel-stations',
   templateUrl: './fuel-stations.component.html',
@@ -17,43 +18,41 @@ export class FuelStationsComponent implements OnInit {
   priceSelect = '';
   fuelType: FuelStation = {} as FuelStation;
   fuelTypeValue: keyof typeof this.fuelType = 'Precio Gasolina 95 E5'
-  fuelName : string[] = ['Biodesel', 'Bioetanol', 'Gas Natural Comprimido', 'Gas Natural Licuado', 'Gases Licuados del Petróleo',
-  'Gasóleo A', 'Gasóleo B', 'Gasóleo Premium', 'Gasolina 95 E10', 'Gasolina 95 E5', 'Gasolina 95 E5 Premium', 'Gasolina 98 E10', 'Gasolina 98 E5', 'Hidrógeno'];
-  
+  fuelName: string[] = ['Biodesel', 'Bioetanol', 'Gas Natural Comprimido', 'Gas Natural Licuado', 'Gases Licuados del Petróleo',
+    'Gasóleo A', 'Gasóleo B', 'Gasóleo Premium', 'Gasolina 95 E10', 'Gasolina 95 E5', 'Gasolina 95 E5 Premium', 'Gasolina 98 E10', 'Gasolina 98 E5', 'Hidrógeno'];
   provincesList: Province[] = [];
   provincesSelected: string[] = [];
+  typeOfSort !: number;
+  successCallback!: PositionCallback;
+  lat !: number;
+  lng !: number;
 
-  constructor(private fuelStationService: FuelStationsService) {}
+  constructor(private fuelStationService: FuelStationsService) { }
 
   ngOnInit(): void {
     this.fuelStationService.getAllProvinces().subscribe(resp => {
       this.provincesList = resp;
     });
+
+    this.fuelTypeValue = 'Precio Gasolina 95 E5'
+    this.typeOfSort = 1;
+
+    this.getLocation();
   }
 
-  changeFuelType(type: keyof typeof this.fuelType = 'Precio Gasolina 95 E5'){
+  changeFuelType(type: keyof typeof this.fuelType = 'Precio Gasolina 95 E5') {
     this.fuelStationService.getAllFuelStations().subscribe((resp) => {
       this.fuelStationList = resp.ListaEESSPrecio.filter(fuelS => fuelS[type] != '' && this.provincesSelected.includes(fuelS['Provincia']));
 
-      this.fuelStationList.sort((a, b) => {
-        if (a[type] > b[type]) {
-          return 1;
-        } else if (a[type] < b[type]) {
-          return -1;
-        } else {
-          return 0;
-        }
-      });
+      this.sortBy(type, this.fuelStationList);
 
-      this.minPrice = this.fuelStationList[0][type].split(',')[0]+('.'+this.fuelStationList[0][type].split(',')[1]);
-      this.maxPrice = this.fuelStationList.reverse()[0][type].split(',')[0]+('.'+this.fuelStationList[0][type].split(',')[1]);
+      this.minPrice = this.sortToFind(type, this.fuelStationList)[0].replace(',','.');
+      this.maxPrice = this.sortToFind(type, this.fuelStationList)[1].replace(',','.');
       this.priceSelect = this.maxPrice;
-      
-      this.fuelStationList.reverse();
     });
   }
 
-  selectTypeOfFuel(str:string){
+  selectTypeOfFuel(str: string) {
     switch (str) {
       case 'Biodesel':
         this.fuelTypeValue = "Precio Biodiesel";
@@ -114,7 +113,117 @@ export class FuelStationsComponent implements OnInit {
     }
   }
 
-  changePriceToNumber(str : string){
-    return str.split(',')[0]+('.'+str.split(',')[1]);
+  sortBy(t: keyof typeof this.fuelType = 'Precio Gasolina 95 E5', fSL: FuelStation[]) {
+    switch (this.typeOfSort) {
+      case 1:
+        fSL.sort((a, b) => {
+          if (a[t] > b[t]) {
+            return 1;
+          } else if (a[t] < b[t]) {
+            return -1;
+          } else {
+            return 0;
+          }
+        });
+        break;
+      case 2:
+        if (this.lat != undefined && this.lng != undefined) {
+          fSL.sort((a, b) => {
+            if (this.getDistanciaMetros(a['Latitud'], a['Longitud (WGS84)']) > this.getDistanciaMetros(b['Latitud'], b['Longitud (WGS84)'])) {
+              return 1;
+            }else if (this.getDistanciaMetros(a['Latitud'], a['Longitud (WGS84)']) < this.getDistanciaMetros( b['Latitud'],b['Longitud (WGS84)'])) {
+              return -1;
+            }else{
+              return 0;
+            }
+          })
+        } else {
+          alert('cargando ubicación, vuelva a intentarlo en unos segundos')
+        }
+        break;
+    }
+  }
+
+  changePriceToNumber(str: string) {
+    return str.split(',')[0] + ('.' + str.split(',')[1]);
+  }
+
+  getLocation() {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition((position) => {
+        if (position) {
+          console.log("Latitude: " + position.coords.latitude +
+            "Longitude: " + position.coords.longitude);
+          this.lat = position.coords.latitude;
+          this.lng = position.coords.longitude;
+          console.log(this.lat);
+          console.log(this.lng);
+        }
+      },
+        (error) => console.log(error));
+    } else {
+      alert("Geolocation is not supported by this browser.");
+    }
+  }
+
+  getDistanciaMetros(lat2: string, lon2: string) {
+    lat2 = this.changePriceToNumber(lat2);
+    let lat2N = Number(lat2);
+
+    lon2 = this.changePriceToNumber(lon2);
+    let lon2N = Number(lon2);
+
+    let lat1 = this.gradosARadiantes(this.lat);
+    lat2N = this.gradosARadiantes(lat2N);
+    let lon1 = this.gradosARadiantes(this.lng);
+    lon2N = this.gradosARadiantes(lon2N);
+
+    var R = 6378.137; //Radio de la tierra en km 
+    var dLat = (lat2N - lat1);
+    var dLong = (lon2N - lon1);
+    var a = Math.sin(dLat / 2) * Math.sin(dLat / 2) + Math.cos((lat1)) *
+      Math.cos((lat2N)) * Math.sin(dLong / 2) * Math.sin(dLong / 2);
+    var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+    //aquí obtienes la distancia en metros por la conversion 1Km =1000m
+    var d = R * c * 1000;
+    return d;
+  }
+
+
+  gradosARadiantes(n: number) {
+    return n * Math.PI / 180;
+  }
+
+  findFuelStation(lat2 : string, lon2 : string){
+    lat2 = this.changePriceToNumber(lat2);
+    let lat2N = Number(lat2);
+
+    lon2 = this.changePriceToNumber(lon2);
+    let lon2N = Number(lon2);
+
+    window.open(`https://www.google.es/maps/dir/${this.lat},${this.lng}/${lat2N},${lon2N}/`, `_blank`);
+  }
+
+  sortToFind(ty: keyof typeof this.fuelType = 'Precio Gasolina 95 E5', sss : FuelStation[]){
+
+    let mayor = sss[0][ty];
+    let menor = sss[0][ty];
+
+    let aux: string[] = [];
+
+    for (let i = 0; i < sss.length; i++) {
+      if (sss[i][ty] > mayor) {
+        mayor = sss[i][ty];
+      }
+      if (sss[i][ty] < menor) {
+        menor = sss[i][ty]
+      }
+    }
+
+    aux.push(menor);
+    aux.push(mayor);
+
+    return aux;
   }
 }
