@@ -35,7 +35,7 @@ export class FuelStationsComponent implements OnInit {
     });
 
     this.fuelTypeValue = 'Precio Gasolina 95 E5'
-    this.typeOfSort = 1;
+    this.typeOfSort = 0;
 
     this.getLocation();
   }
@@ -115,6 +115,10 @@ export class FuelStationsComponent implements OnInit {
 
   sortBy(t: keyof typeof this.fuelType = 'Precio Gasolina 95 E5', fSL: FuelStation[]) {
     switch (this.typeOfSort) {
+      case 0:
+        fSL
+        break;
+
       case 1:
         fSL.sort((a, b) => {
           if (a[t] > b[t]) {
@@ -126,6 +130,7 @@ export class FuelStationsComponent implements OnInit {
           }
         });
         break;
+
       case 2:
         if (this.lat != undefined && this.lng != undefined) {
           fSL.sort((a, b) => {
