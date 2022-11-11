@@ -231,5 +231,4 @@ export class FuelStationsComponent implements OnInit {
 
     return aux;
   }
-  
 }
