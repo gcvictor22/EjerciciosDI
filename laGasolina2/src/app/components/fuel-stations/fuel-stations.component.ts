@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { FormControl } from '@angular/forms';
+import { MatSelectChange } from '@angular/material/select';
 import { FuelStation } from 'src/app/interfaces/fuelStation.interface';
 import { Province } from 'src/app/interfaces/provinces.interface';
 import { FuelStationsService } from 'src/app/services/fuel-stations.service';
@@ -16,8 +18,10 @@ export class FuelStationsComponent implements OnInit {
   fuelType: FuelStation = {} as FuelStation;
   fuelTypeValue: keyof typeof this.fuelType = 'Precio Gasolina 95 E5'
   fuelName : string[] = ['Biodesel', 'Bioetanol', 'Gas Natural Comprimido', 'Gas Natural Licuado', 'Gases Licuados del Petróleo',
-  'Gasóleo A', 'Gasóleo B', 'Gasóleo Premium', 'Gasolina 95 E10', 'Gasolina 95 E5', 'Gasolina 95 E5 Premium', 'Gasolina 98 E10', 'Gasolina 98 E5', 'Hidrógeno']
+  'Gasóleo A', 'Gasóleo B', 'Gasóleo Premium', 'Gasolina 95 E10', 'Gasolina 95 E5', 'Gasolina 95 E5 Premium', 'Gasolina 98 E10', 'Gasolina 98 E5', 'Hidrógeno'];
+  
   provincesList: Province[] = [];
+  provincesSelected: string[] = [];
 
   constructor(private fuelStationService: FuelStationsService) {}
 
@@ -29,7 +33,7 @@ export class FuelStationsComponent implements OnInit {
 
   changeFuelType(type: keyof typeof this.fuelType = 'Precio Gasolina 95 E5'){
     this.fuelStationService.getAllFuelStations().subscribe((resp) => {
-      this.fuelStationList = resp.ListaEESSPrecio.filter(fuelS => fuelS[type] != '');
+      this.fuelStationList = resp.ListaEESSPrecio.filter(fuelS => fuelS[type] != '' && this.provincesSelected.includes(fuelS['Provincia']));
 
       this.fuelStationList.sort((a, b) => {
         if (a[type] > b[type]) {
@@ -111,6 +115,6 @@ export class FuelStationsComponent implements OnInit {
   }
 
   changePriceToNumber(str : string){
-    return str.split(',')[0]+('.'+str.split(',')[1])
+    return str.split(',')[0]+('.'+str.split(',')[1]);
   }
 }

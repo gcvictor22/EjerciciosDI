@@ -6,7 +6,7 @@ import { Province } from '../interfaces/provinces.interface';
 
 //https://sedeaplicaciones.minetur.gob.es/ServiciosRESTCarburantes/PreciosCarburantes/EstacionesTerrestres/
 
-const API_BASE_URL = 'https://raw.githubusercontent.com/gcvictor22/LohCangri/main/fuelstationlist4everyone.json'
+const API_BASE_URL = 'https://sedeaplicaciones.minetur.gob.es/ServiciosRESTCarburantes/PreciosCarburantes/EstacionesTerrestres/'
 const API_PROVINCES_URL = 'https://sedeaplicaciones.minetur.gob.es/ServiciosRESTCarburantes/PreciosCarburantes/Listados/Provincias'
 
 @Injectable({

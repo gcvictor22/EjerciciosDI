@@ -1,23 +1,45 @@
 <h4>Fuel Service</h4>
 <mat-form-field appearance="fill">
   <mat-label>Select a type of fuel</mat-label>
-  <mat-select [(ngModel)]="fuelTypeValue" (selectionChange)="selectTypeOfFuel(fuelTypeValue)">
+  <mat-select
+    [(ngModel)]="fuelTypeValue"
+    (selectionChange)="selectTypeOfFuel(fuelTypeValue)"
+  >
     <mat-option *ngFor="let fuel of fuelName" [value]="fuel">
-        {{fuel}}
+      {{ fuel }}
     </mat-option>
   </mat-select>
 </mat-form-field>
 
+<mat-form-field appearance="fill">
+    <mat-label>Toppings</mat-label>
+    <mat-select [(ngModel)]="provincesSelected" multiple (selectionChange)="changeFuelType()">
+      <mat-option *ngFor="let province of provincesList" [value]="province.Provincia">{{province.Provincia}}</mat-option>
+    </mat-select>
+</mat-form-field>
+
 <div class="filtroPrecio">
-    <span>{{minPrice}}€/L</span><input type="range" name="" id="" step="0.001" [min]="minPrice" [max]="maxPrice" [(ngModel)]="priceSelect"><span>{{priceSelect}}€/L</span>
+  <span>{{ minPrice }}€/L</span
+  ><input
+    type="range"
+    name=""
+    id=""
+    step="0.001"
+    [min]="minPrice"
+    [max]="maxPrice"
+    [(ngModel)]="priceSelect"
+  /><span>{{ priceSelect }}€/L</span>
 </div>
 
 <div class="container">
-    <div *ngFor="let item of fuelStationList">
-        <div class="card" *ngIf="changePriceToNumber(item[fuelTypeValue]) <= priceSelect && item[fuelTypeValue] != ''">
-            <h2>{{item['Rótulo']}}</h2>
-            <small>{{item['Localidad']}}</small>
-            <p>{{item[fuelTypeValue]}}€/L</p>
-        </div>
+    <mat-spinner style="position: fixed; top: 50%;" *ngIf="fuelStationList.length === 0 && provincesSelected.length > 0"></mat-spinner>
+  <div *ngFor="let item of fuelStationList">
+    <div
+      class="card"
+      *ngIf="changePriceToNumber(item[fuelTypeValue]) <= priceSelect && item[fuelTypeValue] != '' && provincesSelected.includes(item['Provincia'])">
+      <h2>{{ item["Rótulo"] }}</h2>
+      <small>{{ item["Localidad"] }}</small>
+      <p>{{ item[fuelTypeValue] }}€/L</p>
     </div>
+  </div>
 </div>
