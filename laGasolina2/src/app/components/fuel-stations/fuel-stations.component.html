@@ -8,6 +8,14 @@
   </mat-select>
 </mat-form-field>
 
+<mat-form-field appearance="fill">
+  <mat-label>Gasolinera</mat-label>
+  <mat-select [(ngModel)]="rotuloSelected" multiple (selectionChange)="changeFuelType()">
+    <input type="text" placeholder="Ej: Repsol" aria-label="Number" matInput [(ngModel)]="searchFuelStation" style="height: 50px; padding: 5px; box-sizing: border-box;">
+    <span *ngFor="let rotulo of rotuloList"><mat-option *ngIf="rotulo.toLowerCase().includes(searchFuelStation.toLowerCase())" [value]="rotulo">{{rotulo}}</mat-option></span>
+  </mat-select>
+</mat-form-field>
+
 <div style="width: 20%; margin: auto; display: flex; justify-content: space-between;">
   <mat-form-field appearance="fill" style="width: 45%; margin: 0;">
     <mat-label>Provincia</mat-label>
@@ -27,20 +35,21 @@
 </div>
 
 <div class="filtroPrecio">
-  <span>{{ minPrice }}€/L</span><input type="range" name="" id="" step="0.001" [min]="minPrice" [max]="maxPrice"
-    [(ngModel)]="priceSelect" /><span>{{ priceSelect }}€/L</span>
+  <span>{{ minPrice }}€/L</span>
+  <mat-slider thumbLabel [(ngModel)]="priceSelect" step="0.01" [min]="minPrice" [max]="maxPrice" aria-label="units"></mat-slider>
+  <span>{{ maxPrice }}€/L</span>
 </div>
 
 <div class="container">
   <mat-spinner style="position: fixed; top: 50%;" *ngIf="fuelStationList.length === 0 && provincesSelected.length > 0">
   </mat-spinner>
   <div *ngFor="let item of fuelStationList">
-    <div class="card"
-      *ngIf="changePriceToNumber(item[fuelTypeValue]) <= priceSelect && item[fuelTypeValue] != '' && provincesSelected.includes(item['Provincia'])">
+    <div class="card" id="stationCard" *ngIf="changePriceToNumber(item[fuelTypeValue]) <= priceSelect && item[fuelTypeValue] != '' && provincesSelected.includes(item['Provincia'])">
+      <img [src]="getBackImg(item['Rótulo'])" alt="">
       <h2>{{ item["Rótulo"] }}</h2>
       <small>{{ item["Localidad"] }}, {{item['Dirección']}}</small>
       <p>{{ item[fuelTypeValue] }}€/L</p>
-      <button (click)="findFuelStation(item['Latitud'], item['Longitud (WGS84)'])" mat-raised-button>Ir</button>
+      <button (click)="findFuelStation(item['Latitud'], item['Longitud (WGS84)'])" mat-raised-button><mat-icon> directions</mat-icon> Ruta</button>
     </div>
   </div>
 </div>

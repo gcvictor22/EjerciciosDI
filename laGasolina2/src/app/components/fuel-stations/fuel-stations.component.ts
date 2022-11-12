@@ -23,9 +23,11 @@ export class FuelStationsComponent implements OnInit {
   provincesList: Province[] = [];
   provincesSelected: string[] = [];
   typeOfSort !: number;
-  successCallback!: PositionCallback;
   lat !: number;
   lng !: number;
+  rotuloList: string[] = [];
+  rotuloSelected: string[] = [];
+  searchFuelStation = '';
 
   constructor(private fuelStationService: FuelStationsService) { }
 
@@ -41,15 +43,51 @@ export class FuelStationsComponent implements OnInit {
   }
 
   changeFuelType(type: keyof typeof this.fuelType = 'Precio Gasolina 95 E5') {
-    this.fuelStationService.getAllFuelStations().subscribe((resp) => {
-      this.fuelStationList = resp.ListaEESSPrecio.filter(fuelS => fuelS[type] != '' && this.provincesSelected.includes(fuelS['Provincia']));
 
-      this.sortBy(type, this.fuelStationList);
+    if (this.rotuloSelected.length === 0) {
+      this.fuelStationService.getAllFuelStations().subscribe((resp) => {
+        this.fuelStationList = resp.ListaEESSPrecio.filter(fuelS => fuelS[type] != '' && this.provincesSelected.includes(fuelS['Provincia']));
+        
+        for (let it of this.fuelStationList) {
+    
+          if (!this.rotuloList.includes(it['Rótulo'])) {
+            this.rotuloList.push(it['Rótulo']);
+          }
+        }
+    
+        console.log(this.rotuloList);
+    
+    
+        this.sortBy(type, this.fuelStationList);
+    
+        this.minPrice = this.sortToFind(type, this.fuelStationList)[0].replace(',', '.');
+        this.maxPrice = this.sortToFind(type, this.fuelStationList)[1].replace(',', '.');
+        this.priceSelect = this.maxPrice;
+      });
 
-      this.minPrice = this.sortToFind(type, this.fuelStationList)[0].replace(',','.');
-      this.maxPrice = this.sortToFind(type, this.fuelStationList)[1].replace(',','.');
-      this.priceSelect = this.maxPrice;
-    });
+    }else{
+      this.fuelStationService.getAllFuelStations().subscribe((resp) => {
+        this.fuelStationList = resp.ListaEESSPrecio.filter(fuelS => fuelS[type] != '' && this.provincesSelected.includes(fuelS['Provincia']) && this.rotuloSelected.includes(fuelS['Rótulo']));
+        
+        for (let it of this.fuelStationList) {
+    
+          if (!this.rotuloList.includes(it['Rótulo'])) {
+            this.rotuloList.push(it['Rótulo']);
+          }
+        }
+    
+        console.log(this.rotuloList);
+    
+    
+        this.sortBy(type, this.fuelStationList);
+    
+        this.minPrice = this.sortToFind(type, this.fuelStationList)[0].replace(',', '.');
+        this.maxPrice = this.sortToFind(type, this.fuelStationList)[1].replace(',', '.');
+        this.priceSelect = this.maxPrice;
+      });
+      
+    }
+    
   }
 
   selectTypeOfFuel(str: string) {
@@ -136,9 +174,9 @@ export class FuelStationsComponent implements OnInit {
           fSL.sort((a, b) => {
             if (this.getDistanciaMetros(a['Latitud'], a['Longitud (WGS84)']) > this.getDistanciaMetros(b['Latitud'], b['Longitud (WGS84)'])) {
               return 1;
-            }else if (this.getDistanciaMetros(a['Latitud'], a['Longitud (WGS84)']) < this.getDistanciaMetros( b['Latitud'],b['Longitud (WGS84)'])) {
+            } else if (this.getDistanciaMetros(a['Latitud'], a['Longitud (WGS84)']) < this.getDistanciaMetros(b['Latitud'], b['Longitud (WGS84)'])) {
               return -1;
-            }else{
+            } else {
               return 0;
             }
           })
@@ -186,8 +224,7 @@ export class FuelStationsComponent implements OnInit {
     var R = 6378.137; //Radio de la tierra en km 
     var dLat = (lat2N - lat1);
     var dLong = (lon2N - lon1);
-    var a = Math.sin(dLat / 2) * Math.sin(dLat / 2) + Math.cos((lat1)) *
-      Math.cos((lat2N)) * Math.sin(dLong / 2) * Math.sin(dLong / 2);
+    var a = Math.sin(dLat / 2) * Math.sin(dLat / 2) + Math.cos((lat1)) * Math.cos((lat2N)) * Math.sin(dLong / 2) * Math.sin(dLong / 2);
     var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 
     //aquí obtienes la distancia en metros por la conversion 1Km =1000m
@@ -200,7 +237,7 @@ export class FuelStationsComponent implements OnInit {
     return n * Math.PI / 180;
   }
 
-  findFuelStation(lat2 : string, lon2 : string){
+  findFuelStation(lat2: string, lon2: string) {
     lat2 = this.changePriceToNumber(lat2);
     let lat2N = Number(lat2);
 
@@ -210,7 +247,7 @@ export class FuelStationsComponent implements OnInit {
     window.open(`https://www.google.es/maps/dir/${this.lat},${this.lng}/${lat2N},${lon2N}/`, `_blank`);
   }
 
-  sortToFind(ty: keyof typeof this.fuelType = 'Precio Gasolina 95 E5', sss : FuelStation[]){
+  sortToFind(ty: keyof typeof this.fuelType = 'Precio Gasolina 95 E5', sss: FuelStation[]) {
 
     let mayor = sss[0][ty];
     let menor = sss[0][ty];
@@ -230,5 +267,26 @@ export class FuelStationsComponent implements OnInit {
     aux.push(mayor);
 
     return aux;
+  }
+
+  getBackImg(str: string) {
+
+    if (str === 'REPSOL' || str.split(' ')[0] === 'REPSOL') {
+      return 'https://companieslogo.com/img/orig/REP.MC-08c996b0.png';
+    } else if (str === 'BP' || str.split(' ')[0] === 'BP') {
+      return 'https://logos-world.net/wp-content/uploads/2020/08/BP-Emblem.png';
+    } else if (str === 'PETROPRIX' || str === 'PERTROPRIX') {
+      return 'https://www.cre100do.org/media/petroprix.png'
+    } else if (str === 'CEPSA' || str.split(' ')[0] === 'CEPSA') {
+      return 'https://upload.wikimedia.org/wikipedia/commons/2/2e/Cepsa_Logo.png';
+    } else if (str === 'GALP' || str.split(' ')[0] === 'GALP') {
+      return 'https://seeklogo.com/images/G/Galp_Energia-logo-0F3DF7DF37-seeklogo.com.png';
+    } else if (str === 'CARREFOUR' || str.split(' ')[0] === 'CARREFOUR') {
+      return 'https://cdn.worldvectorlogo.com/logos/carrefour-c.svg';
+    } else if (str === 'SHELL' || str.split(' ')[0] === 'SHELL') {
+      return 'https://www.seekpng.com/png/full/141-1410342_shell-logo-royal-dutch-shell.png';
+    } else {
+      return 'https://cdn-icons-png.flaticon.com/512/1074/1074740.png'
+    }
   }
 }

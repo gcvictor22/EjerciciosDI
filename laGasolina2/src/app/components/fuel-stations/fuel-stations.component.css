@@ -26,7 +26,14 @@ mat-form-field{
 }
 
 .card h2{
-    margin-bottom: 5px;
+    margin: 10px 0 20px 0;
+}
+
+.card img{
+    position: relative;
+    top: 12px;
+    float: right;
+    width: 45px;
 }
 
 .container{
@@ -39,4 +46,8 @@ mat-form-field{
 .example-additional-selection {
     opacity: 0.75;
     font-size: 0.75em;
-  }
+}
+
+mat-slider{
+    width: 20%;
+}
