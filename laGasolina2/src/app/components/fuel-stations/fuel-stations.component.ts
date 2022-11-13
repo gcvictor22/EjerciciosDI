@@ -1,11 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl } from '@angular/forms';
-import { MatSelectChange } from '@angular/material/select';
 import { FuelStation } from 'src/app/interfaces/fuelStation.interface';
 import { Province } from 'src/app/interfaces/provinces.interface';
 import { FuelStationsService } from 'src/app/services/fuel-stations.service';
+import Swal from 'sweetalert2';
 
-const RADIO_TIERRA_EN_KILOMETROS = 6371;
 @Component({
   selector: 'app-fuel-stations',
   templateUrl: './fuel-stations.component.html',
@@ -85,7 +83,7 @@ export class FuelStationsComponent implements OnInit {
         this.maxPrice = this.sortToFind(type, this.fuelStationList)[1].replace(',', '.');
         this.priceSelect = this.maxPrice;
       });
-      
+
     }
     
   }
@@ -288,5 +286,26 @@ export class FuelStationsComponent implements OnInit {
     } else {
       return 'https://cdn-icons-png.flaticon.com/512/1074/1074740.png'
     }
+  }
+
+  showMoreFuels(str : string, str2 : string, str3 : string, str4 : string){
+    if (str === '') {
+      str = 'No disponible'
+    }
+    if (str2 === '') {
+      str2 = 'No disponible'
+    }
+
+    Swal.fire({
+      html: 
+      `
+      <div>
+        <p><b>Precio Gasolina 95:</b> ${str}</p>
+        <p><b>Precio Gasolina 98:</b> ${str2}</p>
+        <p><b>Tipo de venta:</b> ${str3}</p>
+        <p><b>Horario:</b> ${str4}</p>
+      </div>
+      `
+    });
   }
 }
