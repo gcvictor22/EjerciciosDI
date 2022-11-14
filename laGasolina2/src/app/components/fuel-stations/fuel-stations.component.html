@@ -1,77 +1,111 @@
-<h4>Fuel Service</h4>
-<mat-form-field appearance="fill">
-  <mat-label>{{fuelTypeValue}}</mat-label>
-  <mat-select [(ngModel)]="fuelTypeValue" (selectionChange)="selectTypeOfFuel(fuelTypeValue)">
-    <mat-option *ngFor="let fuel of fuelName" [value]="fuel">
-      {{ fuel }}
-    </mat-option>
-  </mat-select>
-</mat-form-field>
-
-<mat-form-field appearance="fill">
-  <mat-label>Gasolinera</mat-label>
-  <mat-select [(ngModel)]="rotuloSelected" multiple (selectionChange)="changeFuelType()">
-    <input type="text" placeholder="Ej: Repsol" aria-label="Number" matInput [(ngModel)]="searchFuelStation" style="height: 50px; padding: 5px; box-sizing: border-box;">
-    <span *ngFor="let rotulo of rotuloList"><mat-option *ngIf="rotulo.toLowerCase().includes(searchFuelStation.toLowerCase())" [value]="rotulo">{{rotulo}}</mat-option></span>
-  </mat-select>
-</mat-form-field>
-
-<div style="width: 20%; margin: auto; display: flex; justify-content: space-between;">
-  <mat-form-field appearance="fill" style="width: 45%; margin: 0;">
-    <mat-label>Provincia</mat-label>
-    <mat-select [(ngModel)]="provincesSelected" multiple (selectionChange)="changeFuelType()">
-      <mat-option *ngFor="let province of provincesList" [value]="province.Provincia">{{province.Provincia}}
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
-
-  <mat-form-field appearance="fill" style="width: 45%; margin: 0;">
-    <mat-label>Ordenar</mat-label>
-    <mat-select [(ngModel)]="typeOfSort" (selectionChange)="sortBy(fuelTypeValue, fuelStationList)">
-      <mat-option [value]="1">Menor a mayor precio</mat-option>
-      <mat-option [value]="2">Cercanía</mat-option>
-    </mat-select>
-  </mat-form-field>
-</div>
-
-<div class="filtroPrecio">
-  <span>{{ minPrice }}€/L</span>
-  <mat-slider thumbLabel [(ngModel)]="priceSelect" step="0.01" [min]="minPrice" [max]="maxPrice" aria-label="units"></mat-slider>
-  <span>{{ maxPrice }}€/L</span>
-</div>
-
-<form class="example-form">
-  <mat-form-field class="example-full-width" appearance="fill">
-    <mat-label>Municipio</mat-label>
-    <input type="text"
-           placeholder="Elije uno"
-           aria-label="Municipio"
-           matInput
-           [formControl]="myControl"
-           [matAutocomplete]="auto"
-           [(ngModel)]="municipioSelected">
-    <mat-autocomplete #auto="matAutocomplete">
-      <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
-        {{option}}
-      </mat-option>
-    </mat-autocomplete>
-  </mat-form-field>
-</form>
-
-<div class="container">
-  <mat-spinner style="position: fixed; top: 50%;" *ngIf="fuelStationList.length === 0 && provincesSelected.length > 0">
-  </mat-spinner>
-  <div *ngFor="let item of fuelStationList">
-    <div class="card" id="stationCard" *ngIf="changePriceToNumber(item[fuelTypeValue]) <= priceSelect && item[fuelTypeValue] != '' && provincesSelected.includes(item['Provincia']) && item['Municipio'].includes(municipioSelected)">
-      <img [src]="getBackImg(item['Rótulo'])" alt="">
-      <h2>{{ item["Rótulo"] }}</h2>
-      <small>{{ item["Localidad"] }}, {{item['Dirección']}}</small>
-      <small>{{item['Municipio']}}</small>
-      <p>{{ item[fuelTypeValue] }}€/L</p>
-      <div style="width: 100%; display: flex; justify-content: space-between; margin-top: 40px;">
-        <button style="width: 45%;" (click)="findFuelStation(item['Latitud'], item['Longitud (WGS84)'])" mat-raised-button><mat-icon> directions</mat-icon> Ruta</button>
-        <button style="width: 45%;" (click)="showMoreFuels(item['Precio Gasolina 95 E5'], item['Precio Gasolina 98 E5'], item['Tipo Venta'], item['Horario'], item['Precio Gasoleo A'], item['Precio Gasoleo B'])" mat-raised-button><mat-icon> info</mat-icon> +Info</button>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <button (click)="backToTop()" class="goToTop" mat-raised-button color="primary"><mat-icon>arrow_upward</mat-icon></button>
+  <div class="filtersContainer" name="inicio">
+    <div class="divmatformfield">
+      <mat-form-field appearance="fill">
+        <mat-label>{{fuelTypeValue}}</mat-label>
+        <mat-select [(ngModel)]="fuelTypeValue" (selectionChange)="selectTypeOfFuel(fuelTypeValue)">
+          <mat-option *ngFor="let fuel of fuelName" [value]="fuel">
+            {{ fuel }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+  
+    <div class="divmatformfield">
+      <mat-form-field appearance="fill">
+        <mat-label>Gasolinera</mat-label>
+        <mat-select [(ngModel)]="rotuloSelected" multiple (selectionChange)="changeFuelType()">
+          <input type="text" placeholder="Ej: Repsol" aria-label="Number" matInput [(ngModel)]="searchFuelStation"
+            style="height: 50px; padding: 5px; box-sizing: border-box;">
+          <span *ngFor="let rotulo of rotuloList">
+            <mat-option *ngIf="rotulo.toLowerCase().includes(searchFuelStation.toLowerCase())" [value]="rotulo">
+              {{rotulo}}
+            </mat-option>
+          </span>
+        </mat-select>
+      </mat-form-field>
+    </div>
+  
+    <div class="divmatformfield">
+      <mat-form-field appearance="fill">
+        <mat-label>Provincia</mat-label>
+        <mat-select [(ngModel)]="provincesSelected" multiple (selectionChange)="changeFuelType()">
+          <mat-option *ngFor="let province of provincesList" [value]="province.Provincia">{{province.Provincia}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+  
+    <div class="divmatformfield">
+      <mat-form-field appearance="fill">
+        <mat-label>Ordenar</mat-label>
+        <mat-select [(ngModel)]="typeOfSort" (selectionChange)="sortBy(fuelTypeValue, fuelStationList)">
+          <mat-option [value]="0">Por defecto</mat-option>
+          <mat-option [value]="1">Menor a mayor precio</mat-option>
+          <mat-option [value]="2">Cercanía</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+  
+    <div class="divmatformfield">
+      <div class="filtroPrecio">
+        <span>{{ minPrice }}€/L</span>
+        <mat-slider thumbLabel [(ngModel)]="priceSelect" color="primary" step="0.01" [min]="minPrice" [max]="maxPrice" aria-label="units"
+          style="width: 50%;">
+        </mat-slider>
+        <span>{{ maxPrice }}€/L</span>
+      </div>
+    </div>
+  
+    <div class="divmatformfield">
+      <form class="example-form">
+        <mat-form-field class="example-full-width" appearance="fill">
+          <mat-label>Municipio</mat-label>
+          <input type="text" placeholder="Elije un municipio" aria-label="Municipio" matInput [formControl]="myControl"
+            [matAutocomplete]="auto" [(ngModel)]="municipioSelected">
+          <mat-autocomplete #auto="matAutocomplete">
+            <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+              {{option}}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+      </form>
+    </div>
+  
+  </div>
+  
+  <div class="container">
+    <mat-spinner class="spinner" *ngIf="fuelStationList.length === 0 && provincesSelected.length > 0">
+    </mat-spinner>
+    <div *ngFor="let item of fuelStationList">
+      <div class="card" id="stationCard"
+        *ngIf="changePriceToNumber(item[fuelTypeValue]) <= priceSelect && item[fuelTypeValue] != '' && provincesSelected.includes(item['Provincia']) && item['Municipio'].toLowerCase().includes(municipioSelected.toLowerCase())">
+        <img [src]="getBackImg(item['Rótulo'])" alt="">
+        <h2>{{ item["Rótulo"] }}</h2>
+        <small>{{ item["Localidad"] }}, {{item['Dirección']}}</small>
+        <p>{{ item[fuelTypeValue] }}€/L</p>
+        <div style="width: 100%; display: flex; justify-content: space-between; margin-top: 40px;">
+          <button style="width: 45%;" (click)="findFuelStation(item['Latitud'], item['Longitud (WGS84)'])"
+            mat-raised-button>
+            <mat-icon> directions</mat-icon> Ruta
+          </button>
+          <button style="width: 45%;"
+            (click)="showMoreFuels(item['Precio Gasolina 95 E5'], item['Precio Gasolina 98 E5'], item['Tipo Venta'], item['Horario'], item['Precio Gasoleo A'], item['Precio Gasoleo B'])"
+            mat-raised-button>
+            <mat-icon> info</mat-icon> +Info
+          </button>
+        </div>
       </div>
     </div>
   </div>
-</div>
+</body>
+</html>

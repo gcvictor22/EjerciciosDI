@@ -29,6 +29,7 @@ export class FuelStationsComponent implements OnInit {
   rotuloSelected: string[] = [];
   searchFuelStation = '';
   municipioSelected = '';
+  cross = false;
 
 
   constructor(private fuelStationService: FuelStationsService) { }
@@ -47,10 +48,6 @@ export class FuelStationsComponent implements OnInit {
 
     this.getLocation();
 
-    this.filteredOptions = this.myControl.valueChanges.pipe(
-      startWith(''),
-      map(value => this._filter(value || '')),
-    );
   }
 
   private _filter(value: string): string[] {
@@ -60,6 +57,14 @@ export class FuelStationsComponent implements OnInit {
   }
 
   changeFuelType(type: keyof typeof this.fuelType = 'Precio Gasolina 95 E5') {
+
+    this.filteredOptions = this.myControl.valueChanges.pipe(
+      startWith(''),
+      map(value => this._filter(value || '')),
+    );
+
+    this.options = [];
+    
 
     if (this.rotuloSelected.length === 0) {
       this.fuelStationService.getAllFuelStations().subscribe((resp) => {
@@ -101,7 +106,7 @@ export class FuelStationsComponent implements OnInit {
         }
 
         for (let it of this.fuelStationList) {
-    
+
           if (!this.options.includes(it['Municipio'])) {
             this.options.push(it['Municipio']);
           }
@@ -348,5 +353,9 @@ export class FuelStationsComponent implements OnInit {
       </div>
       `
     });
+  }
+
+  backToTop(){
+    document.body.scrollIntoView();
   }
 }
