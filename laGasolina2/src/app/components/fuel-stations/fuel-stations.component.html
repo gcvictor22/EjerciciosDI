@@ -40,18 +40,37 @@
   <span>{{ maxPrice }}€/L</span>
 </div>
 
+<form class="example-form">
+  <mat-form-field class="example-full-width" appearance="fill">
+    <mat-label>Municipio</mat-label>
+    <input type="text"
+           placeholder="Elije uno"
+           aria-label="Municipio"
+           matInput
+           [formControl]="myControl"
+           [matAutocomplete]="auto"
+           [(ngModel)]="municipioSelected">
+    <mat-autocomplete #auto="matAutocomplete">
+      <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+        {{option}}
+      </mat-option>
+    </mat-autocomplete>
+  </mat-form-field>
+</form>
+
 <div class="container">
   <mat-spinner style="position: fixed; top: 50%;" *ngIf="fuelStationList.length === 0 && provincesSelected.length > 0">
   </mat-spinner>
   <div *ngFor="let item of fuelStationList">
-    <div class="card" id="stationCard" *ngIf="changePriceToNumber(item[fuelTypeValue]) <= priceSelect && item[fuelTypeValue] != '' && provincesSelected.includes(item['Provincia'])">
+    <div class="card" id="stationCard" *ngIf="changePriceToNumber(item[fuelTypeValue]) <= priceSelect && item[fuelTypeValue] != '' && provincesSelected.includes(item['Provincia']) && item['Municipio'].includes(municipioSelected)">
       <img [src]="getBackImg(item['Rótulo'])" alt="">
       <h2>{{ item["Rótulo"] }}</h2>
       <small>{{ item["Localidad"] }}, {{item['Dirección']}}</small>
+      <small>{{item['Municipio']}}</small>
       <p>{{ item[fuelTypeValue] }}€/L</p>
       <div style="width: 100%; display: flex; justify-content: space-between; margin-top: 40px;">
         <button style="width: 45%;" (click)="findFuelStation(item['Latitud'], item['Longitud (WGS84)'])" mat-raised-button><mat-icon> directions</mat-icon> Ruta</button>
-        <button style="width: 45%;" (click)="showMoreFuels(item['Precio Gasolina 95 E5'], item['Precio Gasolina 98 E5'], item['Tipo Venta'], item['Horario'])" mat-raised-button><mat-icon> directions</mat-icon> Ruta</button>
+        <button style="width: 45%;" (click)="showMoreFuels(item['Precio Gasolina 95 E5'], item['Precio Gasolina 98 E5'], item['Tipo Venta'], item['Horario'], item['Precio Gasoleo A'], item['Precio Gasoleo B'])" mat-raised-button><mat-icon> info</mat-icon> +Info</button>
       </div>
     </div>
   </div>

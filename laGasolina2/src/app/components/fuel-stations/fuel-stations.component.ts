@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { FormControl } from '@angular/forms';
+import { map, Observable, startWith } from 'rxjs';
 import { FuelStation } from 'src/app/interfaces/fuelStation.interface';
-import { Province } from 'src/app/interfaces/provinces.interface';
+import { Municipio, Province } from 'src/app/interfaces/provinces.interface';
 import { FuelStationsService } from 'src/app/services/fuel-stations.service';
 import Swal from 'sweetalert2';
 
@@ -26,8 +28,14 @@ export class FuelStationsComponent implements OnInit {
   rotuloList: string[] = [];
   rotuloSelected: string[] = [];
   searchFuelStation = '';
+  municipioSelected = '';
+
 
   constructor(private fuelStationService: FuelStationsService) { }
+
+  myControl = new FormControl('');
+  options: string[] = [];
+  filteredOptions: Observable<string[]> | undefined;
 
   ngOnInit(): void {
     this.fuelStationService.getAllProvinces().subscribe(resp => {
@@ -38,6 +46,17 @@ export class FuelStationsComponent implements OnInit {
     this.typeOfSort = 0;
 
     this.getLocation();
+
+    this.filteredOptions = this.myControl.valueChanges.pipe(
+      startWith(''),
+      map(value => this._filter(value || '')),
+    );
+  }
+
+  private _filter(value: string): string[] {
+    const filterValue = value.toLowerCase();
+
+    return this.options.filter(option => option.toLowerCase().includes(filterValue));
   }
 
   changeFuelType(type: keyof typeof this.fuelType = 'Precio Gasolina 95 E5') {
@@ -50,6 +69,13 @@ export class FuelStationsComponent implements OnInit {
     
           if (!this.rotuloList.includes(it['Rótulo'])) {
             this.rotuloList.push(it['Rótulo']);
+          }
+        }
+
+        for (let it of this.fuelStationList) {
+    
+          if (!this.options.includes(it['Municipio'])) {
+            this.options.push(it['Municipio']);
           }
         }
     
@@ -71,6 +97,13 @@ export class FuelStationsComponent implements OnInit {
     
           if (!this.rotuloList.includes(it['Rótulo'])) {
             this.rotuloList.push(it['Rótulo']);
+          }
+        }
+
+        for (let it of this.fuelStationList) {
+    
+          if (!this.options.includes(it['Municipio'])) {
+            this.options.push(it['Municipio']);
           }
         }
     
@@ -219,14 +252,14 @@ export class FuelStationsComponent implements OnInit {
     let lon1 = this.gradosARadiantes(this.lng);
     lon2N = this.gradosARadiantes(lon2N);
 
-    var R = 6378.137; //Radio de la tierra en km 
-    var dLat = (lat2N - lat1);
-    var dLong = (lon2N - lon1);
-    var a = Math.sin(dLat / 2) * Math.sin(dLat / 2) + Math.cos((lat1)) * Math.cos((lat2N)) * Math.sin(dLong / 2) * Math.sin(dLong / 2);
-    var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    let R = 6378.137; //Radio de la tierra en km 
+    let dLat = (lat2N - lat1);
+    let dLong = (lon2N - lon1);
+    let a = Math.sin(dLat / 2) * Math.sin(dLat / 2) + Math.cos((lat1)) * Math.cos((lat2N)) * Math.sin(dLong / 2) * Math.sin(dLong / 2);
+    let c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 
     //aquí obtienes la distancia en metros por la conversion 1Km =1000m
-    var d = R * c * 1000;
+    let d = R * c * 1000;
     return d;
   }
 
@@ -288,20 +321,28 @@ export class FuelStationsComponent implements OnInit {
     }
   }
 
-  showMoreFuels(str : string, str2 : string, str3 : string, str4 : string){
+  showMoreFuels(str : string, str2 : string, str3 : string, str4 : string, str5 : string, str6 : string){
     if (str === '') {
       str = 'No disponible'
     }
     if (str2 === '') {
       str2 = 'No disponible'
     }
+    if (str5 === '') {
+      str5 = 'No disponible'
+    }
+    if (str6 === '') {
+      str6 = 'No disponible'
+    }
 
     Swal.fire({
       html: 
       `
       <div>
-        <p><b>Precio Gasolina 95:</b> ${str}</p>
-        <p><b>Precio Gasolina 98:</b> ${str2}</p>
+        <p><b>Precio Gasolina 95:</b> ${str}€/L</p>
+        <p><b>Precio Gasolina 98:</b> ${str2}€/L</p>
+        <p><b>Gasoleo A:</b> ${str5}€/L</p>
+        <p><b>Gasoleo B:</b> ${str6}€/L</p>
         <p><b>Tipo de venta:</b> ${str3}</p>
         <p><b>Horario:</b> ${str4}</p>
       </div>
