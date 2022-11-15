@@ -78,6 +78,11 @@ mat-slider{
     z-index: 100;
 }
 
+.map{
+    width: 50%;
+    margin: auto;
+}
+
 @media screen and (max-width : 600px) {
     .divmatformfield{
         width: 80%;
@@ -93,5 +98,10 @@ mat-slider{
 
     .goToTop{
         left: 77%;
+    }
+
+    .map{
+        margin-top: 250px;
+        width: 95%;
     }
 }

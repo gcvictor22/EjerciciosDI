@@ -1,6 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { map, Observable, startWith } from 'rxjs';
+import { MapInfoWindow, MapMarker } from '@angular/google-maps';
+import { catchError, map, Observable, of, startWith } from 'rxjs';
 import { FuelStation } from 'src/app/interfaces/fuelStation.interface';
 import { Municipio, Province } from 'src/app/interfaces/provinces.interface';
 import { FuelStationsService } from 'src/app/services/fuel-stations.service';
@@ -12,6 +14,7 @@ import Swal from 'sweetalert2';
   styleUrls: ['./fuel-stations.component.css'],
 })
 export class FuelStationsComponent implements OnInit {
+  @ViewChild(MapInfoWindow) infoWindow!: MapInfoWindow;
   fuelStationList: FuelStation[] = [];
   minPrice = '';
   maxPrice = '';
@@ -30,13 +33,77 @@ export class FuelStationsComponent implements OnInit {
   searchFuelStation = '';
   municipioSelected = '';
   cross = false;
+  filterMunicipes = '';
+  apiLoaded: Observable<boolean>;
+  center: google.maps.LatLngLiteral = {lat: 40, lng: -4};
+  zoom = 6;
+  markerOptions: google.maps.MarkerOptions = {draggable: false};
+  markerPositions: google.maps.LatLngLiteral[] = [];
 
 
-  constructor(private fuelStationService: FuelStationsService) { }
+  constructor(private fuelStationService: FuelStationsService, httpClient: HttpClient) {
+    this.apiLoaded = httpClient.jsonp('http://maps.google.com/maps/api/js?sensor=false%22%3E', 'callback')
+      .pipe(
+        map(() => true),
+        catchError(() => of(false)),
+      );
+  }
 
   myControl = new FormControl('');
   options: string[] = [];
   filteredOptions: Observable<string[]> | undefined;
+
+  openInfoWindow(lat : number, lng : number) {
+
+    let gasolineraToChana : FuelStation = {} as FuelStation;
+
+    let lat2 = lat.toString();
+
+    let lng2 = lng.toString();
+
+    for (let it of this.fuelStationList) {
+      if (it['Latitud'] == lat2.replace('.', ',') && it['Longitud (WGS84)'] == lng2.replace('.', ',')) {
+        gasolineraToChana = it
+      }
+    }
+
+    let el1 = '€/L';
+    let el2 = '€/L';
+    let el3 = '€/L';
+    let el4 = '€/L';
+
+    if (gasolineraToChana['Precio Gasolina 95 E5'] === '') {
+      gasolineraToChana['Precio Gasolina 95 E5'] = 'No disponible';
+      el1 = '';
+    }
+    if (gasolineraToChana['Precio Gasolina 98 E5'] === '') {
+      gasolineraToChana['Precio Gasolina 98 E5'] = 'No disponible';
+      el2 = '';
+    }
+    if (gasolineraToChana['Precio Gasoleo A'] === '') {
+      gasolineraToChana['Precio Gasoleo A'] = 'No disponible';
+      el3 = '';
+    }
+    if (gasolineraToChana['Precio Gasoleo B'] === '') {
+      gasolineraToChana['Precio Gasoleo B'] = 'No disponible';
+      el4 = '';
+    }
+
+    Swal.fire({
+      html:
+        `
+      <div>
+        <h2>${gasolineraToChana['Rótulo']}</h2>
+        <p><b>Precio Gasolina 95:</b> ${gasolineraToChana['Precio Gasolina 95 E5']} ${el1}</p>
+        <p><b>Precio Gasolina 98:</b> ${gasolineraToChana['Precio Gasolina 98 E5']} ${el2}</p>
+        <p><b>Gasoleo A:</b> ${gasolineraToChana['Precio Gasoleo A']} ${el3}</p>
+        <p><b>Gasoleo B:</b> ${gasolineraToChana['Precio Gasoleo B']} ${el4}</p>
+        <p><b>Tipo de venta:</b> ${gasolineraToChana['Tipo Venta']}</p>
+        <p><b>Horario:</b> ${gasolineraToChana['Horario']}</p>
+      </div>
+      `
+    });
+  }
 
   ngOnInit(): void {
     this.fuelStationService.getAllProvinces().subscribe(resp => {
@@ -49,56 +116,57 @@ export class FuelStationsComponent implements OnInit {
     this.getLocation();
   }
 
-  private _filter(value: string): string[] {
-    const filterValue = value.toLowerCase();
-
-    return this.options.filter(option => option.toLowerCase().includes(filterValue));
-  }
-
   changeFuelType(type: keyof typeof this.fuelType = 'Precio Gasolina 95 E5') {
 
-    this.filteredOptions = this.myControl.valueChanges.pipe(
-      startWith(''),
-      map(value => this._filter(value || '')),
-    );
-
     this.options = [];
+    this.markerPositions = [];
+
+    console.log(this.municipioSelected);
+    
     
 
     if (this.rotuloSelected.length === 0) {
       this.fuelStationService.getAllFuelStations().subscribe((resp) => {
         this.fuelStationList = resp.ListaEESSPrecio.filter(fuelS => fuelS[type] != '' && this.provincesSelected.includes(fuelS['Provincia']));
-        
+
         for (let it of this.fuelStationList) {
-    
+
           if (!this.rotuloList.includes(it['Rótulo'])) {
             this.rotuloList.push(it['Rótulo']);
           }
         }
 
         for (let it of this.fuelStationList) {
-    
+
           if (!this.options.includes(it['Municipio'])) {
             this.options.push(it['Municipio']);
           }
         }
-    
+
         console.log(this.rotuloList);
-    
-    
+
+
         this.sortBy(type, this.fuelStationList);
-    
+
         this.minPrice = this.sortToFind(type, this.fuelStationList)[0].replace(',', '.');
         this.maxPrice = this.sortToFind(type, this.fuelStationList)[1].replace(',', '.');
         this.priceSelect = this.maxPrice;
+
+        for (let it of this.fuelStationList) {
+          if (this.municipioSelected.includes(it['Municipio'])) {
+            this.markerPositions.push({lat: Number(this.changePriceToNumber(it['Latitud'])), lng: Number(this.changePriceToNumber(it['Longitud (WGS84)']))});
+          }else if(this.municipioSelected === ''){
+            this.markerPositions.push({lat: Number(this.changePriceToNumber(it['Latitud'])), lng: Number(this.changePriceToNumber(it['Longitud (WGS84)']))});
+          }
+        }
       });
 
-    }else{
+    } else {
       this.fuelStationService.getAllFuelStations().subscribe((resp) => {
         this.fuelStationList = resp.ListaEESSPrecio.filter(fuelS => fuelS[type] != '' && this.provincesSelected.includes(fuelS['Provincia']) && this.rotuloSelected.includes(fuelS['Rótulo']));
-        
+
         for (let it of this.fuelStationList) {
-    
+
           if (!this.rotuloList.includes(it['Rótulo'])) {
             this.rotuloList.push(it['Rótulo']);
           }
@@ -110,19 +178,27 @@ export class FuelStationsComponent implements OnInit {
             this.options.push(it['Municipio']);
           }
         }
-    
+
         console.log(this.rotuloList);
-    
-    
+
+
         this.sortBy(type, this.fuelStationList);
-    
+
         this.minPrice = this.sortToFind(type, this.fuelStationList)[0].replace(',', '.');
         this.maxPrice = this.sortToFind(type, this.fuelStationList)[1].replace(',', '.');
         this.priceSelect = this.maxPrice;
+
+        for (let it of this.fuelStationList) {
+          if (this.municipioSelected.includes(it['Municipio'])) {
+            this.markerPositions.push({lat: Number(this.changePriceToNumber(it['Latitud'])), lng: Number(this.changePriceToNumber(it['Longitud (WGS84)']))});
+          }else if(this.municipioSelected === '' || this.municipioSelected === 'all'){
+            this.markerPositions.push({lat: Number(this.changePriceToNumber(it['Latitud'])), lng: Number(this.changePriceToNumber(it['Longitud (WGS84)']))});
+          }
+        }
       });
 
     }
-    
+
   }
 
   selectTypeOfFuel(str: string) {
@@ -325,12 +401,12 @@ export class FuelStationsComponent implements OnInit {
     }
   }
 
-  showMoreFuels(str : string, str2 : string, str3 : string, str4 : string, str5 : string, str6 : string){
+  showMoreFuels(str: string, str2: string, str3: string, str4: string, str5: string, str6: string) {
     let el1 = '€/L';
     let el2 = '€/L';
     let el3 = '€/L';
     let el4 = '€/L';
-    
+
     if (str === '') {
       str = 'No disponible';
       el1 = '';
@@ -349,8 +425,8 @@ export class FuelStationsComponent implements OnInit {
     }
 
     Swal.fire({
-      html: 
-      `
+      html:
+        `
       <div>
         <p><b>Precio Gasolina 95:</b> ${str} ${el1}</p>
         <p><b>Precio Gasolina 98:</b> ${str2} ${el2}</p>
@@ -363,14 +439,14 @@ export class FuelStationsComponent implements OnInit {
     });
   }
 
-  backToTop(){
+  backToTop() {
     document.body.scrollIntoView();
   }
 
   reproducir() {
     const audio = new Audio();
-    audio.src= '../../aud/lagasolina.mp3'
+    audio.src = '../../aud/lagasolina.mp3'
     audio.load();
     audio.play();
-}
+  }
 }

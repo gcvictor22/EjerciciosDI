@@ -1,14 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
 </head>
+
 <body>
-  <button (click)="reproducir()">Play</button>
-  <button (click)="backToTop()" class="goToTop" mat-raised-button color="primary"><mat-icon>arrow_upward</mat-icon></button>
+  <button (click)="backToTop()" class="goToTop" mat-raised-button color="primary">
+    <mat-icon>arrow_upward</mat-icon>
+  </button>
   <div class="filtersContainer" name="inicio">
     <div class="divmatformfield">
       <mat-form-field appearance="fill">
@@ -20,13 +23,13 @@
         </mat-select>
       </mat-form-field>
     </div>
-  
+
     <div class="divmatformfield">
       <mat-form-field appearance="fill">
         <mat-label>Gasolinera</mat-label>
         <mat-select [(ngModel)]="rotuloSelected" multiple (selectionChange)="changeFuelType()">
-          <input type="text" placeholder="Ej: Repsol" aria-label="Number" matInput [(ngModel)]="searchFuelStation"
-            style="height: 50px; padding: 5px; box-sizing: border-box;">
+          <input type="search" placeholder="Ej: Repsol" aria-label="Number" matInput [(ngModel)]="searchFuelStation"
+            style="height: 50px; padding-left: 15px; border-bottom: 3px solid rgb(61, 61, 195);">
           <span *ngFor="let rotulo of rotuloList">
             <mat-option *ngIf="rotulo.toLowerCase().includes(searchFuelStation.toLowerCase())" [value]="rotulo">
               {{rotulo}}
@@ -35,7 +38,7 @@
         </mat-select>
       </mat-form-field>
     </div>
-  
+
     <div class="divmatformfield">
       <mat-form-field appearance="fill">
         <mat-label>Provincia</mat-label>
@@ -45,7 +48,7 @@
         </mat-select>
       </mat-form-field>
     </div>
-  
+
     <div class="divmatformfield">
       <mat-form-field appearance="fill">
         <mat-label>Ordenar</mat-label>
@@ -56,34 +59,41 @@
         </mat-select>
       </mat-form-field>
     </div>
-  
+
     <div class="divmatformfield">
       <div class="filtroPrecio">
         <span>{{ minPrice }}€/L</span>
-        <mat-slider thumbLabel [(ngModel)]="priceSelect" color="primary" step="0.01" [min]="minPrice" [max]="maxPrice" aria-label="units"
-          style="width: 50%;">
+        <mat-slider thumbLabel [(ngModel)]="priceSelect" color="primary" step="0.01" [min]="minPrice" [max]="maxPrice"
+          aria-label="units" style="width: 50%;">
         </mat-slider>
         <span>{{ maxPrice }}€/L</span>
       </div>
     </div>
-  
+
     <div class="divmatformfield">
-      <form class="example-form">
-        <mat-form-field class="example-full-width" appearance="fill">
-          <mat-label>Municipio</mat-label>
-          <input type="text" placeholder="Elije un municipio" aria-label="Municipio" matInput [formControl]="myControl"
-            [matAutocomplete]="auto" [(ngModel)]="municipioSelected">
-          <mat-autocomplete #auto="matAutocomplete">
-            <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
-              {{option}}
+      <mat-form-field appearance="fill">
+        <mat-label>Provincia</mat-label>
+        <mat-select (selectionChange)="changeFuelType()" [(ngModel)]="municipioSelected">
+          <input type="search" placeholder="Ej. Dos Hermanas" [(ngModel)]="filterMunicipes" matInput style="height: 50px; padding-left: 15px; border-bottom: 3px solid rgb(61, 61, 195);">
+          <mat-option [value]="''">Todos los municipios</mat-option>
+          <span *ngFor="let option of options">
+            <mat-option *ngIf="option.toLowerCase().includes(filterMunicipes.toLowerCase())" [value]="option">{{option}}
             </mat-option>
-          </mat-autocomplete>
-        </mat-form-field>
-      </form>
+          </span>
+        </mat-select>
+      </mat-form-field>
     </div>
-  
   </div>
-  
+
+  <div class="map">
+    <google-map height="400px" width="100%" style="margin: 0 auto; display: block;" [center]="center" [zoom]="zoom">
+      <map-marker #marker="mapMarker" *ngFor="let markerPosition of markerPositions" [position]="markerPosition"
+        [options]="markerOptions" (mapClick)="openInfoWindow(markerPosition.lat, markerPosition.lng)">
+      </map-marker>
+      <map-info-window>Info Window content</map-info-window>
+    </google-map>
+  </div>
+
   <div class="container">
     <mat-spinner class="spinner" *ngIf="fuelStationList.length === 0 && provincesSelected.length > 0">
     </mat-spinner>
@@ -109,4 +119,5 @@
     </div>
   </div>
 </body>
+
 </html>
