@@ -63,8 +63,8 @@
     <div class="divmatformfield">
       <div class="filtroPrecio">
         <span>{{ minPrice }}€/L</span>
-        <mat-slider thumbLabel [(ngModel)]="priceSelect" color="primary" step="0.01" [min]="minPrice" [max]="maxPrice"
-          aria-label="units" style="width: 50%;">
+        <mat-slider thumbLabel [(ngModel)]="priceSelect" (valueChange)="changeFuelType()" color="primary" step="0.01"
+          [min]="minPrice" [max]="maxPrice" aria-label="units" style="width: 50%;">
         </mat-slider>
         <span>{{ maxPrice }}€/L</span>
       </div>
@@ -72,10 +72,13 @@
 
     <div class="divmatformfield">
       <mat-form-field appearance="fill">
-        <mat-label>Provincia</mat-label>
+        <mat-label>Municipio</mat-label>
         <mat-select (selectionChange)="changeFuelType()" [(ngModel)]="municipioSelected">
-          <input type="search" placeholder="Ej. Dos Hermanas" [(ngModel)]="filterMunicipes" matInput style="height: 50px; padding-left: 15px; border-bottom: 3px solid rgb(61, 61, 195);">
-          <mat-option [value]="''">Todos los municipios</mat-option>
+          <div style="position: sticky; top: 0; background: white; z-index: 100;">
+            <input type="search" placeholder="Ej. Dos Hermanas" [(ngModel)]="filterMunicipes" matInput
+              style="height: 50px; padding-left: 15px; border-bottom: 3px solid rgb(61, 61, 195);">
+            <mat-option [value]="''">Todos los municipios</mat-option>
+          </div>
           <span *ngFor="let option of options">
             <mat-option *ngIf="option.toLowerCase().includes(filterMunicipes.toLowerCase())" [value]="option">{{option}}
             </mat-option>
@@ -87,10 +90,13 @@
 
   <div class="map">
     <google-map height="400px" width="100%" style="margin: 0 auto; display: block;" [center]="center" [zoom]="zoom">
+      <map-marker [position]="markerPositionSelf"></map-marker>
       <map-marker #marker="mapMarker" *ngFor="let markerPosition of markerPositions" [position]="markerPosition"
-        [options]="markerOptions" (mapClick)="openInfoWindow(markerPosition.lat, markerPosition.lng)">
+        [options]="markerOptions" (mapClick)="openInfoWindow(marker, markerPosition)">
       </map-marker>
-      <map-info-window>Info Window content</map-info-window>
+      <map-info-window>
+        <h3>{{gasolineraToChanaGoku['Rótulo']}}</h3>
+      </map-info-window>
     </google-map>
   </div>
 

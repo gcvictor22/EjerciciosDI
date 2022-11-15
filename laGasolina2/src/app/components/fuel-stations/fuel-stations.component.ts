@@ -2,9 +2,9 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MapInfoWindow, MapMarker } from '@angular/google-maps';
-import { catchError, map, Observable, of, startWith } from 'rxjs';
+import { catchError, map, Observable, of } from 'rxjs';
 import { FuelStation } from 'src/app/interfaces/fuelStation.interface';
-import { Municipio, Province } from 'src/app/interfaces/provinces.interface';
+import { Province } from 'src/app/interfaces/provinces.interface';
 import { FuelStationsService } from 'src/app/services/fuel-stations.service';
 import Swal from 'sweetalert2';
 
@@ -38,8 +38,13 @@ export class FuelStationsComponent implements OnInit {
   center: google.maps.LatLngLiteral = {lat: 40, lng: -4};
   zoom = 6;
   markerOptions: google.maps.MarkerOptions = {draggable: false};
+  markerPositionSelf: google.maps.LatLngLiteral = {} as google.maps.LatLngLiteral;
   markerPositions: google.maps.LatLngLiteral[] = [];
-
+  strstr = '';
+  gasolineraToChanaGoku : FuelStation = {} as FuelStation
+  myControl = new FormControl('');
+  options: string[] = [];
+  filteredOptions: Observable<string[]> | undefined;
 
   constructor(private fuelStationService: FuelStationsService, httpClient: HttpClient) {
     this.apiLoaded = httpClient.jsonp('http://maps.google.com/maps/api/js?sensor=false%22%3E', 'callback')
@@ -49,11 +54,31 @@ export class FuelStationsComponent implements OnInit {
       );
   }
 
-  myControl = new FormControl('');
-  options: string[] = [];
-  filteredOptions: Observable<string[]> | undefined;
+  ngOnInit(): void {
+    this.fuelStationService.getAllProvinces().subscribe(resp => {
+      this.provincesList = resp;
+    });
 
-  openInfoWindow(lat : number, lng : number) {
+    this.fuelTypeValue = 'Precio Gasolina 95 E5'
+    this.typeOfSort = 0;
+
+    this.priceSelect = '50';
+
+    this.getLocation();
+  }
+
+  openInfoWindow(marker: MapMarker, position : google.maps.LatLngLiteral) {
+
+    this.infoWindow.open(marker);
+
+    for (let it of this.fuelStationList) {
+      if (it['Latitud'] == position.lat.toString().replace('.', ',') && it['Longitud (WGS84)'] == position.lng.toString().replace('.', ',')) {
+        this.gasolineraToChanaGoku = it
+      }
+    }
+  }
+
+  openInfoWindowSwal(lat : number, lng : number) {
 
     let gasolineraToChana : FuelStation = {} as FuelStation;
 
@@ -105,17 +130,6 @@ export class FuelStationsComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {
-    this.fuelStationService.getAllProvinces().subscribe(resp => {
-      this.provincesList = resp;
-    });
-
-    this.fuelTypeValue = 'Precio Gasolina 95 E5'
-    this.typeOfSort = 0;
-
-    this.getLocation();
-  }
-
   changeFuelType(type: keyof typeof this.fuelType = 'Precio Gasolina 95 E5') {
 
     this.options = [];
@@ -143,22 +157,18 @@ export class FuelStationsComponent implements OnInit {
           }
         }
 
-        console.log(this.rotuloList);
-
+        for (let it of this.fuelStationList) {
+          if (this.municipioSelected.includes(it['Municipio']) && this.changePriceToNumber(it[type]) < this.priceSelect) {
+            this.markerPositions.push({lat: Number(this.changePriceToNumber(it['Latitud'])), lng: Number(this.changePriceToNumber(it['Longitud (WGS84)']))});
+          }else if(this.municipioSelected === '' && this.changePriceToNumber(it[type]) < this.priceSelect){
+            this.markerPositions.push({lat: Number(this.changePriceToNumber(it['Latitud'])), lng: Number(this.changePriceToNumber(it['Longitud (WGS84)']))});
+          }
+        }
 
         this.sortBy(type, this.fuelStationList);
 
         this.minPrice = this.sortToFind(type, this.fuelStationList)[0].replace(',', '.');
         this.maxPrice = this.sortToFind(type, this.fuelStationList)[1].replace(',', '.');
-        this.priceSelect = this.maxPrice;
-
-        for (let it of this.fuelStationList) {
-          if (this.municipioSelected.includes(it['Municipio'])) {
-            this.markerPositions.push({lat: Number(this.changePriceToNumber(it['Latitud'])), lng: Number(this.changePriceToNumber(it['Longitud (WGS84)']))});
-          }else if(this.municipioSelected === ''){
-            this.markerPositions.push({lat: Number(this.changePriceToNumber(it['Latitud'])), lng: Number(this.changePriceToNumber(it['Longitud (WGS84)']))});
-          }
-        }
       });
 
     } else {
@@ -179,22 +189,18 @@ export class FuelStationsComponent implements OnInit {
           }
         }
 
-        console.log(this.rotuloList);
-
+        for (let it of this.fuelStationList) {
+          if (this.municipioSelected.includes(it['Municipio']) && this.changePriceToNumber(it[type]) < this.priceSelect) {
+            this.markerPositions.push({lat: Number(this.changePriceToNumber(it['Latitud'])), lng: Number(this.changePriceToNumber(it['Longitud (WGS84)']))});
+          }else if(this.municipioSelected === '' && this.changePriceToNumber(it[type]) < this.priceSelect){
+            this.markerPositions.push({lat: Number(this.changePriceToNumber(it['Latitud'])), lng: Number(this.changePriceToNumber(it['Longitud (WGS84)']))});
+          }
+        }
 
         this.sortBy(type, this.fuelStationList);
 
         this.minPrice = this.sortToFind(type, this.fuelStationList)[0].replace(',', '.');
         this.maxPrice = this.sortToFind(type, this.fuelStationList)[1].replace(',', '.');
-        this.priceSelect = this.maxPrice;
-
-        for (let it of this.fuelStationList) {
-          if (this.municipioSelected.includes(it['Municipio'])) {
-            this.markerPositions.push({lat: Number(this.changePriceToNumber(it['Latitud'])), lng: Number(this.changePriceToNumber(it['Longitud (WGS84)']))});
-          }else if(this.municipioSelected === '' || this.municipioSelected === 'all'){
-            this.markerPositions.push({lat: Number(this.changePriceToNumber(it['Latitud'])), lng: Number(this.changePriceToNumber(it['Longitud (WGS84)']))});
-          }
-        }
       });
 
     }
@@ -312,6 +318,9 @@ export class FuelStationsComponent implements OnInit {
           this.lng = position.coords.longitude;
           console.log(this.lat);
           console.log(this.lng);
+
+          this.markerPositionSelf.lat = this.lat;
+          this.markerPositionSelf.lng = this.lng;
         }
       },
         (error) => console.log(error));
