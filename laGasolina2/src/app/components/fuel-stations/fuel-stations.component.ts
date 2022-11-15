@@ -47,7 +47,6 @@ export class FuelStationsComponent implements OnInit {
     this.typeOfSort = 0;
 
     this.getLocation();
-
   }
 
   private _filter(value: string): string[] {
@@ -327,27 +326,36 @@ export class FuelStationsComponent implements OnInit {
   }
 
   showMoreFuels(str : string, str2 : string, str3 : string, str4 : string, str5 : string, str6 : string){
+    let el1 = '€/L';
+    let el2 = '€/L';
+    let el3 = '€/L';
+    let el4 = '€/L';
+    
     if (str === '') {
-      str = 'No disponible'
+      str = 'No disponible';
+      el1 = '';
     }
     if (str2 === '') {
-      str2 = 'No disponible'
+      str2 = 'No disponible';
+      el2 = '';
     }
     if (str5 === '') {
-      str5 = 'No disponible'
+      str5 = 'No disponible';
+      el3 = '';
     }
     if (str6 === '') {
-      str6 = 'No disponible'
+      str6 = 'No disponible';
+      el4 = '';
     }
 
     Swal.fire({
       html: 
       `
       <div>
-        <p><b>Precio Gasolina 95:</b> ${str}€/L</p>
-        <p><b>Precio Gasolina 98:</b> ${str2}€/L</p>
-        <p><b>Gasoleo A:</b> ${str5}€/L</p>
-        <p><b>Gasoleo B:</b> ${str6}€/L</p>
+        <p><b>Precio Gasolina 95:</b> ${str} ${el1}</p>
+        <p><b>Precio Gasolina 98:</b> ${str2} ${el2}</p>
+        <p><b>Gasoleo A:</b> ${str5} ${el3}</p>
+        <p><b>Gasoleo B:</b> ${str6} ${el4}</p>
         <p><b>Tipo de venta:</b> ${str3}</p>
         <p><b>Horario:</b> ${str4}</p>
       </div>
@@ -358,4 +366,11 @@ export class FuelStationsComponent implements OnInit {
   backToTop(){
     document.body.scrollIntoView();
   }
+
+  reproducir() {
+    const audio = new Audio();
+    audio.src= '../../aud/lagasolina.mp3'
+    audio.load();
+    audio.play();
+}
 }
