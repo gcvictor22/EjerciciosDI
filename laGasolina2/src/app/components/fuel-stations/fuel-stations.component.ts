@@ -69,13 +69,12 @@ export class FuelStationsComponent implements OnInit {
 
   openInfoWindow(marker: MapMarker, position : google.maps.LatLngLiteral) {
 
-    this.infoWindow.open(marker);
-
     for (let it of this.fuelStationList) {
       if (it['Latitud'] == position.lat.toString().replace('.', ',') && it['Longitud (WGS84)'] == position.lng.toString().replace('.', ',')) {
         this.gasolineraToChanaGoku = it
       }
     }
+    this.infoWindow.open(marker);
   }
 
   openInfoWindowSwal(lat : number, lng : number) {
@@ -131,6 +130,7 @@ export class FuelStationsComponent implements OnInit {
   }
 
   changeFuelType(type: keyof typeof this.fuelType = 'Precio Gasolina 95 E5') {
+    this.markerPositionSelf = ({lat: this.lat, lng : this.lng,});
 
     this.options = [];
     this.markerPositions = [];
@@ -450,12 +450,5 @@ export class FuelStationsComponent implements OnInit {
 
   backToTop() {
     document.body.scrollIntoView();
-  }
-
-  reproducir() {
-    const audio = new Audio();
-    audio.src = '../../aud/lagasolina.mp3'
-    audio.load();
-    audio.play();
   }
 }

@@ -12,7 +12,7 @@
   <button (click)="backToTop()" class="goToTop" mat-raised-button color="primary">
     <mat-icon>arrow_upward</mat-icon>
   </button>
-  <div class="filtersContainer" name="inicio">
+  <div class="filtersContainer">
     <div class="divmatformfield">
       <mat-form-field appearance="fill">
         <mat-label>{{fuelTypeValue}}</mat-label>
@@ -87,18 +87,28 @@
       </mat-form-field>
     </div>
   </div>
-
+<!-- https://i.ibb.co/xS8L4fy/donmiguel.png -->
   <div class="map">
     <google-map height="400px" width="100%" style="margin: 0 auto; display: block;" [center]="center" [zoom]="zoom">
-      <map-marker [position]="markerPositionSelf"></map-marker>
+      <map-marker [position]="markerPositionSelf" [icon]="'https://i.ibb.co/n1cRCKJ/Proyecto-nuevo.png'"></map-marker>
       <map-marker #marker="mapMarker" *ngFor="let markerPosition of markerPositions" [position]="markerPosition"
         [options]="markerOptions" (mapClick)="openInfoWindow(marker, markerPosition)">
       </map-marker>
       <map-info-window>
         <h3>{{gasolineraToChanaGoku['Rótulo']}}</h3>
+        <div>
+          <p><b>Precio Gasolina 95:</b> {{gasolineraToChanaGoku['Precio Gasolina 95 E5']}}</p>
+          <p><b>Precio Gasolina 98:</b> {{gasolineraToChanaGoku['Precio Gasolina 98 E5']}}</p>
+          <p><b>Gasoleo A:</b> {{gasolineraToChanaGoku['Precio Gasoleo A']}}</p>
+          <p><b>Gasoleo B:</b> {{gasolineraToChanaGoku['Precio Gasoleo B']}}</p>
+          <p><b>Tipo de venta:</b> {{gasolineraToChanaGoku['Tipo Venta']}}</p>
+          <p><b>Horario:</b> {{gasolineraToChanaGoku['Horario']}}</p>
+        </div>
       </map-info-window>
     </google-map>
   </div>
+
+  <h1 style="width: 100%; text-align: center;">{{fuelStationList.length}} resultados <span *ngIf="fuelStationList.length <= 0">(Seleccione una provincia)</span></h1>
 
   <div class="container">
     <mat-spinner class="spinner" *ngIf="fuelStationList.length === 0 && provincesSelected.length > 0">
