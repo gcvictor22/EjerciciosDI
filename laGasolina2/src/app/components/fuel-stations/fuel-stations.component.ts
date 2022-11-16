@@ -409,8 +409,6 @@ export class FuelStationsComponent implements OnInit {
     return n * Math.PI / 180;
   }
 
-
-
   findFuelStation(lat2: string, lon2: string) {
     lat2 = this.changePriceToNumber(lat2);
     let lat2N = Number(lat2);

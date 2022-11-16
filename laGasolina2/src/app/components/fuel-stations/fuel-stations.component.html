@@ -107,7 +107,7 @@
     </google-map>
   </div>
 
-  <h1 style="width: 100%; text-align: center;">{{fuelStationList.length}} resultados <span *ngIf="fuelStationList.length <= 0">(Seleccione una provincia)</span></h1>
+  <h1 style="width: 100%; text-align: center;">{{markerPositions.length}} resultados <span *ngIf="fuelStationList.length <= 0">(Seleccione una provincia)</span></h1>
 
   <div class="container">
     <mat-spinner class="spinner" *ngIf="fuelStationList.length === 0 && provincesSelected.length > 0">
