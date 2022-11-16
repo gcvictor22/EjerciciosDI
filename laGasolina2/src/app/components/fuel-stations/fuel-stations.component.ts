@@ -37,11 +37,11 @@ export class FuelStationsComponent implements OnInit {
   apiLoaded: Observable<boolean>;
   center: google.maps.LatLngLiteral = {} as google.maps.LatLngLiteral;
   zoom !: number;
-  markerOptions: google.maps.MarkerOptions = {draggable: false};
+  markerOptions: google.maps.MarkerOptions = { draggable: false };
   markerPositionSelf: google.maps.LatLngLiteral = {} as google.maps.LatLngLiteral;
   markerPositions: google.maps.LatLngLiteral[] = [];
   strstr = '';
-  gasolineraToChanaGoku : FuelStation = {} as FuelStation
+  gasolineraToChanaGoku: FuelStation = {} as FuelStation
   myControl = new FormControl('');
   options: string[] = [];
   filteredOptions: Observable<string[]> | undefined;
@@ -67,13 +67,13 @@ export class FuelStationsComponent implements OnInit {
     this.getLocation();
 
     this.zoom = 6
-    this.center = {lat: 40, lng: -4};
+    this.center = { lat: 40, lng: -4 };
 
     this.maxPrice = '100';
     this.minPrice = '0';
   }
 
-  openInfoWindow(marker: MapMarker, position : google.maps.LatLngLiteral) {
+  openInfoWindow(marker: MapMarker, position: google.maps.LatLngLiteral) {
 
     for (let it of this.fuelStationList) {
       if (it['Latitud'] == position.lat.toString().replace('.', ',') && it['Longitud (WGS84)'] == position.lng.toString().replace('.', ',')) {
@@ -83,9 +83,9 @@ export class FuelStationsComponent implements OnInit {
     this.infoWindow.open(marker);
   }
 
-  openInfoWindowSwal(lat : number, lng : number) {
+  openInfoWindowSwal(lat: number, lng: number) {
 
-    let gasolineraToChana : FuelStation = {} as FuelStation;
+    let gasolineraToChana: FuelStation = {} as FuelStation;
 
     let lat2 = lat.toString();
 
@@ -136,16 +136,12 @@ export class FuelStationsComponent implements OnInit {
   }
 
   changeFuelType(type: keyof typeof this.fuelType = 'Precio Gasolina 95 E5') {
-    this.markerPositionSelf = ({lat: this.lat, lng : this.lng,});
+    this.markerPositionSelf = ({ lat: this.lat, lng: this.lng, });
 
     this.options = [];
     this.markerPositions = [];
-    this.maxPrice = '100';
-    this.minPrice = '0';
 
     console.log(this.municipioSelected);
-    
-    
 
     if (this.rotuloSelected.length === 0) {
       this.fuelStationService.getAllFuelStations().subscribe((resp) => {
@@ -167,7 +163,7 @@ export class FuelStationsComponent implements OnInit {
 
         for (let it of this.fuelStationList) {
           if (this.municipioSelected.includes(it['Municipio']) && this.changePriceToNumber(it[type]) < this.priceSelect) {
-            this.markerPositions.push({lat: Number(this.changePriceToNumber(it['Latitud'])), lng: Number(this.changePriceToNumber(it['Longitud (WGS84)']))});
+            this.markerPositions.push({ lat: Number(this.changePriceToNumber(it['Latitud'])), lng: Number(this.changePriceToNumber(it['Longitud (WGS84)'])) });
             let mediaLat = 0;
             let mediaLng = 0;
             for (let it of this.markerPositions) {
@@ -175,10 +171,10 @@ export class FuelStationsComponent implements OnInit {
               mediaLng += it.lng;
             }
 
-            this.center = {lat: mediaLat / this.markerPositions.length, lng : mediaLng / this.markerPositions.length};
+            this.center = { lat: mediaLat / this.markerPositions.length, lng: mediaLng / this.markerPositions.length };
             this.zoom = 11;
-          }else if(this.municipioSelected === '' && this.changePriceToNumber(it[type]) < this.priceSelect){
-            this.markerPositions.push({lat: Number(this.changePriceToNumber(it['Latitud'])), lng: Number(this.changePriceToNumber(it['Longitud (WGS84)']))});
+          } else if (this.municipioSelected === '' && this.changePriceToNumber(it[type]) < this.priceSelect) {
+            this.markerPositions.push({ lat: Number(this.changePriceToNumber(it['Latitud'])), lng: Number(this.changePriceToNumber(it['Longitud (WGS84)'])) });
             let mediaLat = 0;
             let mediaLng = 0;
             for (let it of this.markerPositions) {
@@ -186,10 +182,10 @@ export class FuelStationsComponent implements OnInit {
               mediaLng += it.lng;
             }
 
-            this.center = {lat: mediaLat / this.markerPositions.length, lng : mediaLng / this.markerPositions.length};
+            this.center = { lat: mediaLat / this.markerPositions.length, lng: mediaLng / this.markerPositions.length };
             if (this.provincesSelected.length === 1) {
               this.zoom = 8;
-            }else{
+            } else {
               this.zoom = 7;
             }
           }
@@ -197,8 +193,15 @@ export class FuelStationsComponent implements OnInit {
 
         this.sortBy(type, this.fuelStationList);
 
-        this.minPrice = this.sortToFind(type, this.fuelStationList)[0].replace(',', '.');
-        this.maxPrice = this.sortToFind(type, this.fuelStationList)[1].replace(',', '.');
+        if (this.municipioSelected.length <= 0) {
+          this.minPrice = this.sortToFind(type, this.fuelStationList)[0].replace(',', '.');
+          this.maxPrice = this.sortToFind(type, this.fuelStationList)[1].replace(',', '.');
+          this.priceSelect = this.maxPrice;
+        } else {
+          this.minPrice = this.sortToFind(type, this.fuelStationList.filter(a => this.municipioSelected.includes(a['Municipio'])))[0].replace(',', '.');
+          this.maxPrice = this.sortToFind(type, this.fuelStationList.filter(a => this.municipioSelected.includes(a['Municipio'])))[1].replace(',', '.');
+          this.priceSelect = this.maxPrice;
+        }
       });
 
     } else {
@@ -221,7 +224,7 @@ export class FuelStationsComponent implements OnInit {
 
         for (let it of this.fuelStationList) {
           if (this.municipioSelected.includes(it['Municipio']) && this.changePriceToNumber(it[type]) < this.priceSelect) {
-            this.markerPositions.push({lat: Number(this.changePriceToNumber(it['Latitud'])), lng: Number(this.changePriceToNumber(it['Longitud (WGS84)']))});
+            this.markerPositions.push({ lat: Number(this.changePriceToNumber(it['Latitud'])), lng: Number(this.changePriceToNumber(it['Longitud (WGS84)'])) });
             let mediaLat = 0;
             let mediaLng = 0;
             for (let it of this.markerPositions) {
@@ -229,10 +232,10 @@ export class FuelStationsComponent implements OnInit {
               mediaLng += it.lng;
             }
 
-            this.center = {lat: mediaLat / this.markerPositions.length, lng : mediaLng / this.markerPositions.length};
+            this.center = { lat: mediaLat / this.markerPositions.length, lng: mediaLng / this.markerPositions.length };
             this.zoom = 11;
-          }else if(this.municipioSelected === '' && this.changePriceToNumber(it[type]) < this.priceSelect){
-            this.markerPositions.push({lat: Number(this.changePriceToNumber(it['Latitud'])), lng: Number(this.changePriceToNumber(it['Longitud (WGS84)']))});
+          } else if (this.municipioSelected === '' && this.changePriceToNumber(it[type]) < this.priceSelect) {
+            this.markerPositions.push({ lat: Number(this.changePriceToNumber(it['Latitud'])), lng: Number(this.changePriceToNumber(it['Longitud (WGS84)'])) });
             let mediaLat = 0;
             let mediaLng = 0;
             for (let it of this.markerPositions) {
@@ -240,10 +243,10 @@ export class FuelStationsComponent implements OnInit {
               mediaLng += it.lng;
             }
 
-            this.center = {lat: mediaLat / this.markerPositions.length, lng : mediaLng / this.markerPositions.length};
+            this.center = { lat: mediaLat / this.markerPositions.length, lng: mediaLng / this.markerPositions.length };
             if (this.provincesSelected.length === 1) {
               this.zoom = 8;
-            }else{
+            } else {
               this.zoom = 7;
             }
           }
@@ -251,8 +254,15 @@ export class FuelStationsComponent implements OnInit {
 
         this.sortBy(type, this.fuelStationList);
 
-        this.minPrice = this.sortToFind(type, this.fuelStationList)[0].replace(',', '.');
-        this.maxPrice = this.sortToFind(type, this.fuelStationList)[1].replace(',', '.');
+        if (this.municipioSelected.length <= 0) {
+          this.minPrice = this.sortToFind(type, this.fuelStationList)[0].replace(',', '.');
+          this.maxPrice = this.sortToFind(type, this.fuelStationList)[1].replace(',', '.');
+          this.priceSelect = this.maxPrice;
+        } else {
+          this.minPrice = this.sortToFind(type, this.fuelStationList.filter(a => this.municipioSelected.includes(a['Municipio'])))[0].replace(',', '.');
+          this.maxPrice = this.sortToFind(type, this.fuelStationList.filter(a => this.municipioSelected.includes(a['Municipio'])))[1].replace(',', '.');
+          this.priceSelect = this.maxPrice;
+        }
       });
 
     }
