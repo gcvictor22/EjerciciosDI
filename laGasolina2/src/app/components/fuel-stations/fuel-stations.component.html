@@ -87,10 +87,9 @@
       </mat-form-field>
     </div>
   </div>
-<!-- https://i.ibb.co/xS8L4fy/donmiguel.png -->
   <div class="map">
     <google-map height="400px" width="100%" style="margin: 0 auto; display: block;" [center]="center" [zoom]="zoom">
-      <map-marker [position]="markerPositionSelf" [icon]="'https://i.ibb.co/n1cRCKJ/Proyecto-nuevo.png'"></map-marker>
+      <map-marker [position]="markerPositionSelf" [icon]="'https://i.ibb.co/vcYnGgp/Proyecto-nuevo-1.png'"></map-marker>
       <map-marker #marker="mapMarker" *ngFor="let markerPosition of markerPositions" [position]="markerPosition"
         [options]="markerOptions" (mapClick)="openInfoWindow(marker, markerPosition)">
       </map-marker>

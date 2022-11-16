@@ -35,8 +35,8 @@ export class FuelStationsComponent implements OnInit {
   cross = false;
   filterMunicipes = '';
   apiLoaded: Observable<boolean>;
-  center: google.maps.LatLngLiteral = {lat: 40, lng: -4};
-  zoom = 6;
+  center: google.maps.LatLngLiteral = {} as google.maps.LatLngLiteral;
+  zoom !: number;
   markerOptions: google.maps.MarkerOptions = {draggable: false};
   markerPositionSelf: google.maps.LatLngLiteral = {} as google.maps.LatLngLiteral;
   markerPositions: google.maps.LatLngLiteral[] = [];
@@ -65,6 +65,12 @@ export class FuelStationsComponent implements OnInit {
     this.priceSelect = '50';
 
     this.getLocation();
+
+    this.zoom = 6
+    this.center = {lat: 40, lng: -4};
+
+    this.maxPrice = '100';
+    this.minPrice = '0';
   }
 
   openInfoWindow(marker: MapMarker, position : google.maps.LatLngLiteral) {
@@ -134,6 +140,8 @@ export class FuelStationsComponent implements OnInit {
 
     this.options = [];
     this.markerPositions = [];
+    this.maxPrice = '100';
+    this.minPrice = '0';
 
     console.log(this.municipioSelected);
     
@@ -160,8 +168,19 @@ export class FuelStationsComponent implements OnInit {
         for (let it of this.fuelStationList) {
           if (this.municipioSelected.includes(it['Municipio']) && this.changePriceToNumber(it[type]) < this.priceSelect) {
             this.markerPositions.push({lat: Number(this.changePriceToNumber(it['Latitud'])), lng: Number(this.changePriceToNumber(it['Longitud (WGS84)']))});
+            let mediaLat = 0;
+            let mediaLng = 0;
+            for (let it of this.markerPositions) {
+              mediaLat += it.lat;
+              mediaLng += it.lng;
+            }
+
+            this.center = {lat: mediaLat / this.markerPositions.length, lng : mediaLng / this.markerPositions.length};
+            this.zoom = 11;
           }else if(this.municipioSelected === '' && this.changePriceToNumber(it[type]) < this.priceSelect){
             this.markerPositions.push({lat: Number(this.changePriceToNumber(it['Latitud'])), lng: Number(this.changePriceToNumber(it['Longitud (WGS84)']))});
+            this.center = this.markerPositions[0];
+            this.zoom = 7;
           }
         }
 
@@ -192,8 +211,19 @@ export class FuelStationsComponent implements OnInit {
         for (let it of this.fuelStationList) {
           if (this.municipioSelected.includes(it['Municipio']) && this.changePriceToNumber(it[type]) < this.priceSelect) {
             this.markerPositions.push({lat: Number(this.changePriceToNumber(it['Latitud'])), lng: Number(this.changePriceToNumber(it['Longitud (WGS84)']))});
+            let mediaLat = 0;
+            let mediaLng = 0;
+            for (let it of this.markerPositions) {
+              mediaLat += it.lat;
+              mediaLng += it.lng;
+            }
+
+            this.center = {lat: mediaLat / this.markerPositions.length, lng : mediaLng / this.markerPositions.length};
+            this.zoom = 11;
           }else if(this.municipioSelected === '' && this.changePriceToNumber(it[type]) < this.priceSelect){
             this.markerPositions.push({lat: Number(this.changePriceToNumber(it['Latitud'])), lng: Number(this.changePriceToNumber(it['Longitud (WGS84)']))});
+            this.center = this.markerPositions[0];
+            this.zoom = 7;
           }
         }
 
