@@ -179,8 +179,19 @@ export class FuelStationsComponent implements OnInit {
             this.zoom = 11;
           }else if(this.municipioSelected === '' && this.changePriceToNumber(it[type]) < this.priceSelect){
             this.markerPositions.push({lat: Number(this.changePriceToNumber(it['Latitud'])), lng: Number(this.changePriceToNumber(it['Longitud (WGS84)']))});
-            this.center = this.markerPositions[0];
-            this.zoom = 7;
+            let mediaLat = 0;
+            let mediaLng = 0;
+            for (let it of this.markerPositions) {
+              mediaLat += it.lat;
+              mediaLng += it.lng;
+            }
+
+            this.center = {lat: mediaLat / this.markerPositions.length, lng : mediaLng / this.markerPositions.length};
+            if (this.provincesSelected.length === 1) {
+              this.zoom = 8;
+            }else{
+              this.zoom = 7;
+            }
           }
         }
 
@@ -222,8 +233,19 @@ export class FuelStationsComponent implements OnInit {
             this.zoom = 11;
           }else if(this.municipioSelected === '' && this.changePriceToNumber(it[type]) < this.priceSelect){
             this.markerPositions.push({lat: Number(this.changePriceToNumber(it['Latitud'])), lng: Number(this.changePriceToNumber(it['Longitud (WGS84)']))});
-            this.center = this.markerPositions[0];
-            this.zoom = 7;
+            let mediaLat = 0;
+            let mediaLng = 0;
+            for (let it of this.markerPositions) {
+              mediaLat += it.lat;
+              mediaLng += it.lng;
+            }
+
+            this.center = {lat: mediaLat / this.markerPositions.length, lng : mediaLng / this.markerPositions.length};
+            if (this.provincesSelected.length === 1) {
+              this.zoom = 8;
+            }else{
+              this.zoom = 7;
+            }
           }
         }
 
@@ -386,6 +408,8 @@ export class FuelStationsComponent implements OnInit {
   gradosARadiantes(n: number) {
     return n * Math.PI / 180;
   }
+
+
 
   findFuelStation(lat2: string, lon2: string) {
     lat2 = this.changePriceToNumber(lat2);
