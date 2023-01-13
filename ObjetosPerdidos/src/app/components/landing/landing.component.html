@@ -1,0 +1,32 @@
+<google-map height="400px" width="750px" [center]="center" [zoom]="zoom" (mapClick)="placeMarker($event)"
+    (mapMousemove)="move($event)">
+    <map-marker #maker="mapMarker" [visible]="markerVisibility" [position]="markerPosition"
+        (mapClick)="openInfoWindow(maker)"></map-marker>
+    <map-info-window>
+        <b>Nombre: </b>
+        <p>{{nombreObjeto}}</p>
+        <b>Ubicación: </b>
+        <p> Lat: {{markerPosition.lat}}, Lng: {{markerPosition.lng}}</p>
+        <b>Fecha de encuentro: </b>{{fechaDeEncuentro}}
+    </map-info-window>
+</google-map>
+<br><br>
+<form action="">
+    <label for="nombre">Nombre del objeto</label>
+    <input type="text" name="nombre" id="nombre" [(ngModel)]="nombreObjeto" required> <br><br>
+    <label for="fecha">Fecha de encuentro</label>
+    <input type="date" name="fecha" id="fecha" [(ngModel)]="fechaDeEncuentro" required> <br><br>
+    <input type="submit" name="" id="" value="Añadir a objetos perdidos" (click)="addToList()">
+</form>
+<br><br>
+<div style="width: 500px; border: 1px solid black;">
+    <input type="search" name="" id="" [(ngModel)]="buscador">
+    <label for=""> buscador</label>
+    <div *ngFor="let objeto of objetosList">
+        <ul *ngIf="objeto.nombre.includes(buscador)">
+            <li><b>Nombre: </b>{{objeto.nombre}}</li>
+            <li><b>Ubicación: </b>{{objeto.latlng}}</li>
+            <li><b>Fecha de encuentro: </b>{{objeto.fechaDeEncuentro}}</li>
+        </ul>
+    </div>
+</div>
