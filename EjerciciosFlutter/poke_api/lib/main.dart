@@ -84,3 +84,41 @@ class SecondRoute extends StatelessWidget {
     );
   }
 }
+
+/*
+
+class SecondRoute extends StatelessWidget {
+
+  static int id = 0;
+  static String name = '';
+
+  const SecondRoute({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder(
+      future: PokedexService().getPokemonsList(),
+      builder: (BuildContext context, AsyncSnapshot snapshot) {
+        List<dynamic> pokemons = snapshot.data['results'];
+        return ListView.builder(
+          itemCount: pokemons.length,
+          itemBuilder: (BuildContext context, int index) {
+            return ListTile(
+              title: Text(
+                pokemons[index]['name'],
+              ),
+              leading: Image.network(
+                  'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${index + 1}.png'),
+              hoverColor: const Color.fromARGB(255, 164, 214, 255),
+              onTap: () {
+                Navigator.pop(context);
+              },
+            );
+          },
+        );
+      },
+    );
+  }
+}
+
+*/
