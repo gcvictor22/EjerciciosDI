@@ -46,7 +46,7 @@ class HomePage extends StatelessWidget {
                   MaterialPageRoute(builder: (context) => const SecondRoute()),
                 );
                 SecondRoute.id = index + 1;
-                SecondRoute.nombre = pokemons[index]['name'];
+                SecondRoute.name = pokemons[index]['name'];
               },
             );
           },
@@ -68,7 +68,7 @@ class PokedexService {
 class SecondRoute extends StatelessWidget {
 
   static int id = 0;
-  static String nombre = '';
+  static String name = '';
 
   const SecondRoute({super.key});
 
@@ -76,15 +76,10 @@ class SecondRoute extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(nombre),
+        title: Text(name),
       ),
       body: Center(
-        child: ElevatedButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          child: Text('Go back! $id'),
-        ),
+        child: Image.network('https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/$id.png'),
       ),
     );
   }
