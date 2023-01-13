@@ -37,6 +37,17 @@ class HomePage extends StatelessWidget {
               title: Text(
                 pokemons[index]['name'],
               ),
+              leading: Image.network(
+                  'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${index + 1}.png'),
+              hoverColor: const Color.fromARGB(255, 164, 214, 255),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const SecondRoute()),
+                );
+                SecondRoute.id = index + 1;
+                SecondRoute.nombre = pokemons[index]['name'];
+              },
             );
           },
         );
@@ -54,6 +65,27 @@ class PokedexService {
   }
 }
 
-/*
+class SecondRoute extends StatelessWidget {
 
-*/
+  static int id = 0;
+  static String nombre = '';
+
+  const SecondRoute({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(nombre),
+      ),
+      body: Center(
+        child: ElevatedButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          child: Text('Go back! $id'),
+        ),
+      ),
+    );
+  }
+}
