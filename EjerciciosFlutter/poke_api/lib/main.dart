@@ -47,6 +47,7 @@ class HomePage extends StatelessWidget {
                 );
                 SecondRoute.id = index + 1;
                 SecondRoute.name = pokemons[index]['name'];
+                //DetailsService.id = index + 1;
               },
             );
           },
@@ -118,6 +119,18 @@ class SecondRoute extends StatelessWidget {
         );
       },
     );
+  }
+}
+
+class DetailsService {
+
+  static int id = 0;
+
+  String url = 'https://pokeapi.co/api/v2/pokemon/$id';
+  Future<dynamic> getPokemonsList() async {
+    final response = await http.get(Uri.parse(url));
+    final res = jsonDecode(response.body);
+    return res;
   }
 }
 
