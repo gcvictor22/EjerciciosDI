@@ -43,11 +43,10 @@ class HomePage extends StatelessWidget {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const SecondRoute()),
+                  MaterialPageRoute(builder: (context) => const DetailsPage()),
                 );
                 SecondRoute.id = index + 1;
                 SecondRoute.name = pokemons[index]['name'];
-                //DetailsService.id = index + 1;
               },
             );
           },
@@ -59,6 +58,7 @@ class HomePage extends StatelessWidget {
 
 class PokedexService {
   String url = 'https://pokeapi.co/api/v2/pokemon?limit=10';
+
   Future<dynamic> getPokemonsList() async {
     final response = await http.get(Uri.parse(url));
     final res = jsonDecode(response.body);
@@ -66,72 +66,81 @@ class PokedexService {
   }
 }
 
-class SecondRoute extends StatelessWidget {
+class DetailsPage extends StatelessWidget {
+  const DetailsPage({super.key});
 
-  static int id = 0;
-  static String name = '';
-
-  const SecondRoute({super.key});
-
+  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(name),
-      ),
-      body: Center(
-        child: Image.network('https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/$id.png'),
-      ),
-    );
+    return MaterialApp(
+        title: 'Pokedex',
+        home: Scaffold(
+          appBar: AppBar(title: Text(SecondRoute.name)),
+          body: const SecondRoute(),
+        ));
   }
 }
 
-/*
-
 class SecondRoute extends StatelessWidget {
-
   static int id = 0;
   static String name = '';
 
   const SecondRoute({super.key});
+
+  Future<dynamic> getDetails(int id) async {
+    String urlDetails = 'https://pokeapi.co/api/v2/pokemon/$id/';
+    final response = await http.get(Uri.parse(urlDetails));
+    final res = jsonDecode(response.body);
+    return res;
+  }
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: PokedexService().getPokemonsList(),
+      future: getDetails(id),
       builder: (BuildContext context, AsyncSnapshot snapshot) {
-        List<dynamic> pokemons = snapshot.data['results'];
-        return ListView.builder(
-          itemCount: pokemons.length,
-          itemBuilder: (BuildContext context, int index) {
-            return ListTile(
-              title: Text(
-                pokemons[index]['name'],
+        var type = snapshot.data['types'][0]['type']['name'];
+        var weight = snapshot.data['weight'];
+        var height = snapshot.data['height'];
+        var baseExperience = snapshot.data['base_experience'];
+        return ListView(
+          children: [
+            const Center(
+              child: Text('\n\n'),
+            ),
+            Center(
+                child: Image.network(
+                    'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/$id.png')),
+            const Center(
+              child: Text('\n\n'),
+            ),
+            Center(
+              child: Text('\n Type: $type'),
+            ),
+            Center(
+              child: Text('\n Weight: ${weight / 10} kg.'),
+            ),
+            Center(
+              child: Text('\n Height: ${height / 10} m.'),
+            ),
+            Center(
+              child: Text('\n Base Experience: $baseExperience pts.'),
+            ),
+            const Center(
+              child: Text('\n\n\n\n'),
+            ),
+            Center(
+              child: ElevatedButton(
+                child: Text('Volver a la pokedex'),
+                onPressed: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => const MyApp()));
+                },
               ),
-              leading: Image.network(
-                  'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${index + 1}.png'),
-              hoverColor: const Color.fromARGB(255, 164, 214, 255),
-              onTap: () {
-                Navigator.pop(context);
-              },
-            );
-          },
+            )
+          ],
         );
       },
     );
   }
 }
-
-class DetailsService {
-
-  static int id = 0;
-
-  String url = 'https://pokeapi.co/api/v2/pokemon/$id';
-  Future<dynamic> getPokemonsList() async {
-    final response = await http.get(Uri.parse(url));
-    final res = jsonDecode(response.body);
-    return res;
-  }
-}
-
-*/
