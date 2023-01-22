@@ -164,9 +164,9 @@ class _CarrerasState extends State<Carreras> {
             time: c['time'],
             firstPractice: FirstPractice.fromJson(c['FirstPractice']),
             secondPractice: FirstPractice.fromJson(c['SecondPractice']),
-            thirdPractice: FirstPractice.fromJson(c['ThirdPractice']),
+            thirdPractice: FirstPractice.fromJson(c['FirstPractice']),
             qualifying: FirstPractice.fromJson(c['Qualifying']),
-            sprint: FirstPractice.fromJson(c['Sprint'])));
+            sprint: FirstPractice.fromJson(c['FirstPractice'])));
       }
       return carreras;
     } else {
@@ -196,26 +196,38 @@ class _CarrerasState extends State<Carreras> {
                         width: double.infinity,
                         margin: const EdgeInsets.all(10),
                         decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(5),
+                            borderRadius: BorderRadius.circular(15),
                             border: Border.all(
                                 color: const Color.fromARGB(255, 196, 13, 0),
                                 width: 2)),
                         padding: const EdgeInsets.all(20),
                         child: Column(
                           children: [
+                            Text(
+                              "${carreras[index].raceName}",
+                              style: const TextStyle(
+                                  fontSize: 20, fontWeight: FontWeight.bold),
+                            ),
+                            Text(
+                              "\nRonda ${carreras[index].round}",
+                            ),
+                            const Text(
+                              '\nHorarios',
+                              style: TextStyle(
+                                  decoration: TextDecoration.underline,
+                                  fontWeight: FontWeight.w700),
+                            ),
                             Row(
-                              children: [
+                              children: const [
                                 Text(
-                                  "${carreras[index].round} - ${carreras[index].raceName}",
-                                  style: const TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.bold),
+                                  "\nCarrera",
+                                  style: TextStyle(fontWeight: FontWeight.w700),
                                 ),
                               ],
                             ),
                             Row(
                               children: [
-                                Text("\nFecha: ${carreras[index].date}")
+                                Text("Fecha: ${carreras[index].date}")
                               ],
                             ),
                             Row(
@@ -224,7 +236,7 @@ class _CarrerasState extends State<Carreras> {
                             Row(
                               children: const [
                                 Text(
-                                  "\nLibres 1",
+                                  "\nClasificación",
                                   style: TextStyle(fontWeight: FontWeight.w700),
                                 ),
                               ],
@@ -232,60 +244,56 @@ class _CarrerasState extends State<Carreras> {
                             Row(
                               children: [
                                 Text(
-                                    "Fecha: ${carreras[index].firstPractice?.date}")
+                                    "Fecha: ${carreras[index].qualifying?.date}")
                               ],
                             ),
                             Row(
                               children: [
                                 Text(
-                                    "Hora: ${carreras[index].firstPractice?.time}")
+                                    "Hora: ${carreras[index].qualifying?.time}")
                               ],
                             ),
+                            const Text(
+                              '\nCircuito',
+                              style: TextStyle(
+                                  decoration: TextDecoration.underline,
+                                  fontWeight: FontWeight.w700),
+                            ),
                             Row(
-                              children: const [
+                              children: [
                                 Text(
-                                  "\nLibres 2",
-                                  style: TextStyle(fontWeight: FontWeight.w700),
-                                ),
+                                    "\nNombre: ${carreras[index].circuit?.circuitName}")
                               ],
                             ),
                             Row(
                               children: [
                                 Text(
-                                    "Fecha: ${carreras[index].secondPractice?.date}")
+                                    "Ubicación: ${carreras[index].circuit?.location?.locality}, ${carreras[index].circuit?.location?.country}\n")
                               ],
                             ),
-                            Row(
-                              children: [
-                                Text(
-                                    "Hora: ${carreras[index].secondPractice?.time}")
-                              ],
-                            ),
-                            Row(
-                              children: const [
-                                Text(
-                                  "\nLibres 3",
-                                  style: TextStyle(fontWeight: FontWeight.w700),
-                                ),
-                              ],
-                            ),
-                            Row(
-                              children: [
-                                Text(
-                                    "Fecha: ${carreras[index].thirdPractice?.date}")
-                              ],
-                            ),
-                            Row(
-                              children: [
-                                Text(
-                                    "Hora: ${carreras[index].thirdPractice?.time}")
-                              ],
-                            ),
+                            Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(15),
+                                color: const Color.fromARGB(255, 196, 13, 0),
+                              ),
+                              child: Image.network(
+                                'https://raw.githubusercontent.com/tmaurie/hello-f1-vue/master/src/assets/img/tracks/${carreras[index].circuit?.circuitId?.toLowerCase()}.png',
+                                width: 250,
+                                errorBuilder: (context, error, stackTrace) {
+                                  return Image.network(
+                                    'https://i.ibb.co/xS8L4fy/donmiguel.png',
+                                    width: 250,
+                                  );
+                                },
+                              ),
+                            )
                           ],
                         )),
                   );
                 },
               );
+            } else if (snapshot.hasError) {
+              print(snapshot.error);
             }
             return const Center(
               heightFactor: 18,
