@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:f1_api/models/carrera.dart';
+import 'package:f1_api/models/pilotos.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
@@ -53,9 +54,11 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-            title: Image.network(
-              'https://p4.wallpaperbetter.com/wallpaper/810/337/220/racing-f1-formula-1-logo-wallpaper-preview.jpg',
-              fit: BoxFit.cover,
+            title: Center(
+              child: Image.network(
+                'https://p4.wallpaperbetter.com/wallpaper/810/337/220/racing-f1-formula-1-logo-wallpaper-preview.jpg',
+                fit: BoxFit.cover,
+              ),
             ),
             backgroundColor: const Color.fromARGB(255, 20, 20, 20)),
         bottomNavigationBar: page,
@@ -109,10 +112,97 @@ class Pilotos extends StatefulWidget {
 }
 
 class _PilotosState extends State<Pilotos> {
+  Future<dynamic>? _listadoPilotos;
+
+  Future<dynamic> _getPilotos() async {
+    final response = await http
+        .get(Uri.parse('https://ergast.com/api/f1/2022/drivers.json'));
+
+    if (response.statusCode == 200) {
+      String body = utf8.decode(response.bodyBytes);
+      final jsonData = jsonDecode(body);
+
+      List<Drivers> pilotos = [];
+
+      for (var p in jsonData['MRData']['DriverTable']['Drivers']) {
+        pilotos.add(Drivers(
+            driverId: p['driverId'],
+            permanentNumber: p['permanentNumber'],
+            code: p['code'],
+            url: p['url'],
+            givenName: p['givenName'],
+            familyName: p['familyName'],
+            dateOfBirth: p['dateOfBirth'],
+            nationality: p['nationality']));
+      }
+      return pilotos;
+    } else {
+      throw Exception('No se han encontrado carreras');
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _listadoPilotos = _getPilotos();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return const Center(
-      child: Text('Pilotos'),
+    return Scaffold(
+      body: FutureBuilder(
+        future: _listadoPilotos,
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            List<Drivers> pilotos = snapshot.data;
+            return ListView.builder(
+              itemCount: pilotos.length,
+              itemBuilder: (context, index) {
+                return ListTile(
+                  title: Container(
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(15),
+                        border: Border.all(
+                            color: const Color.fromARGB(255, 196, 13, 0),
+                            width: 2)),
+                    child: Column(children: [
+                      Row(
+                        children: [
+                          Image.network(
+                            'https://raw.githubusercontent.com/tmaurie/hello-f1-vue/master/src/assets/img/drivers/2022/${pilotos[index].driverId}.png',
+                            width: 150,
+                            errorBuilder: (context, error, stackTrace) {
+                              return Image.network(
+                                'https://i.ibb.co/xS8L4fy/donmiguel.png',
+                                width: 150,
+                              );
+                            },
+                          ),
+                          Column(
+                            children: [
+                              Row(children: [
+                                Text(
+                              "${pilotos[index].givenName} ${pilotos[index].familyName}",
+                              style: const TextStyle(
+                                  fontSize: 20, fontWeight: FontWeight.bold),
+                            ),
+                              ],)
+                            ],
+                          )
+                        ],
+                      )
+                    ]),
+                  ),
+                );
+              },
+            );
+          }
+          return const Center(
+            heightFactor: 18,
+            child: CircularProgressIndicator(),
+          );
+        },
+      ),
     );
   }
 }
@@ -217,60 +307,28 @@ class _CarrerasState extends State<Carreras> {
                                   decoration: TextDecoration.underline,
                                   fontWeight: FontWeight.w700),
                             ),
-                            Row(
-                              children: const [
-                                Text(
-                                  "\nCarrera",
-                                  style: TextStyle(fontWeight: FontWeight.w700),
-                                ),
-                              ],
+                            const Text(
+                              "\nCarrera",
+                              style: TextStyle(fontWeight: FontWeight.w700),
                             ),
-                            Row(
-                              children: [
-                                Text("Fecha: ${carreras[index].date}")
-                              ],
+                            Text("Fecha: ${carreras[index].date}"),
+                            Text("Hora: ${carreras[index].time}"),
+                            const Text(
+                              "\nClasificación",
+                              style: TextStyle(fontWeight: FontWeight.w700),
                             ),
-                            Row(
-                              children: [Text("Hora: ${carreras[index].time}")],
-                            ),
-                            Row(
-                              children: const [
-                                Text(
-                                  "\nClasificación",
-                                  style: TextStyle(fontWeight: FontWeight.w700),
-                                ),
-                              ],
-                            ),
-                            Row(
-                              children: [
-                                Text(
-                                    "Fecha: ${carreras[index].qualifying?.date}")
-                              ],
-                            ),
-                            Row(
-                              children: [
-                                Text(
-                                    "Hora: ${carreras[index].qualifying?.time}")
-                              ],
-                            ),
+                            Text("Fecha: ${carreras[index].qualifying?.date}"),
+                            Text("Hora: ${carreras[index].qualifying?.time}"),
                             const Text(
                               '\nCircuito',
                               style: TextStyle(
                                   decoration: TextDecoration.underline,
                                   fontWeight: FontWeight.w700),
                             ),
-                            Row(
-                              children: [
-                                Text(
-                                    "\nNombre: ${carreras[index].circuit?.circuitName}")
-                              ],
-                            ),
-                            Row(
-                              children: [
-                                Text(
-                                    "Ubicación: ${carreras[index].circuit?.location?.locality}, ${carreras[index].circuit?.location?.country}\n")
-                              ],
-                            ),
+                            Text(
+                                "\nNombre: ${carreras[index].circuit?.circuitName}"),
+                            Text(
+                                "Ubicación: ${carreras[index].circuit?.location?.locality}, ${carreras[index].circuit?.location?.country}\n"),
                             Container(
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(15),
