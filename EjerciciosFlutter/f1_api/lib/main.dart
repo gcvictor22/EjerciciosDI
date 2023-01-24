@@ -114,6 +114,30 @@ class Pilotos extends StatefulWidget {
 class _PilotosState extends State<Pilotos> {
   Future<dynamic>? _listadoPilotos;
 
+  _getColor(String nombre) {
+    if (nombre == 'Alexander' || nombre == 'Nicholas' || nombre == 'Nyck') {
+      return const Color.fromARGB(255, 0, 84, 153);
+    } else if (nombre == 'Fernando' || nombre == 'Esteban') {
+      return Colors.blue;
+    } else if (nombre == 'Kevin' || nombre == 'Mick') {
+      return Colors.red;
+    } else if (nombre == 'Pierre' || nombre == 'Yuki') {
+      return Colors.blueGrey;
+    } else if (nombre == 'Lewis' || nombre == 'George') {
+      return const Color.fromARGB(255, 5, 190, 223);
+    } else if (nombre == 'Nico' || nombre == 'Lance' || nombre == 'Sebastian') {
+      return Colors.teal;
+    } else if (nombre == 'Charles' || nombre == 'Carlos') {
+      return const Color.fromARGB(255, 185, 12, 0);
+    } else if (nombre == 'Max' || nombre == 'Sergio') {
+      return Colors.blue[900];
+    } else if (nombre == 'Lando' || nombre == 'Daniel') {
+      return Colors.orange[600];
+    } else {
+      return const Color.fromARGB(255, 119, 22, 15);
+    }
+  }
+
   Future<dynamic> _getPilotos() async {
     final response = await http
         .get(Uri.parse('https://ergast.com/api/f1/2022/drivers.json'));
@@ -160,6 +184,7 @@ class _PilotosState extends State<Pilotos> {
               itemBuilder: (context, index) {
                 return ListTile(
                   title: Container(
+                    padding: const EdgeInsets.all(10),
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(15),
                         border: Border.all(
@@ -168,25 +193,43 @@ class _PilotosState extends State<Pilotos> {
                     child: Column(children: [
                       Row(
                         children: [
-                          Image.network(
-                            'https://raw.githubusercontent.com/tmaurie/hello-f1-vue/master/src/assets/img/drivers/2022/${pilotos[index].driverId}.png',
-                            width: 150,
-                            errorBuilder: (context, error, stackTrace) {
-                              return Image.network(
-                                'https://i.ibb.co/xS8L4fy/donmiguel.png',
-                                width: 150,
-                              );
-                            },
-                          ),
+                          Container(
+                              decoration: BoxDecoration(
+                                  color: _getColor(
+                                      pilotos[index].givenName.toString()),
+                                  borderRadius: BorderRadius.circular(1000)),
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(1000),
+                                child: Image.network(
+                                  'https://raw.githubusercontent.com/tmaurie/hello-f1-vue/master/src/assets/img/drivers/2022/${pilotos[index].driverId}.png',
+                                  width: 100,
+                                  fit: BoxFit.fill,
+                                  errorBuilder: (context, error, stackTrace) {
+                                    return Image.network(
+                                      'https://i.ibb.co/xS8L4fy/donmiguel.png',
+                                      width: 100,
+                                    );
+                                  },
+                                ),
+                              )),
                           Column(
                             children: [
-                              Row(children: [
-                                Text(
-                              "${pilotos[index].givenName} ${pilotos[index].familyName}",
-                              style: const TextStyle(
-                                  fontSize: 20, fontWeight: FontWeight.bold),
-                            ),
-                              ],)
+                              Container(
+                                  margin:
+                                      const EdgeInsets.fromLTRB(20, 0, 0, 0),
+                                  child: Column(
+                                    children: [
+                                      Text(
+                                        "${pilotos[index].givenName} ${pilotos[index].familyName}",
+                                        style: const TextStyle(
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      Text('Fecha de nacimiento: ${pilotos[index].dateOfBirth}'),
+                                      Text('Cod: ${pilotos[index].code}'),
+                                      Text('\nNumero: ${pilotos[index].permanentNumber}')
+                                    ],
+                                  )),
                             ],
                           )
                         ],
