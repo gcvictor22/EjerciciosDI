@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:f1_api/models/carrera.dart';
 import 'package:f1_api/models/pilotos.dart';
+import 'package:f1_api/models/ultimoResultado.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
@@ -112,7 +113,7 @@ class Pilotos extends StatefulWidget {
 }
 
 class _PilotosState extends State<Pilotos> {
-  Future<dynamic>? _listadoPilotos;
+  Future<dynamic>? _listadoPilotos; 
 
   _getColor(String nombre) {
     if (nombre == 'Alexander' || nombre == 'Nicholas' || nombre == 'Nyck') {
@@ -124,7 +125,7 @@ class _PilotosState extends State<Pilotos> {
     } else if (nombre == 'Pierre' || nombre == 'Yuki') {
       return Colors.blueGrey;
     } else if (nombre == 'Lewis' || nombre == 'George') {
-      return const Color.fromARGB(255, 5, 190, 223);
+      return const Color.fromARGB(255, 5, 223, 212);
     } else if (nombre == 'Nico' || nombre == 'Lance' || nombre == 'Sebastian') {
       return Colors.teal;
     } else if (nombre == 'Charles' || nombre == 'Carlos') {
@@ -161,7 +162,7 @@ class _PilotosState extends State<Pilotos> {
       }
       return pilotos;
     } else {
-      throw Exception('No se han encontrado carreras');
+      throw Exception('No se han encontrado pilotos');
     }
   }
 
@@ -191,49 +192,34 @@ class _PilotosState extends State<Pilotos> {
                             color: const Color.fromARGB(255, 196, 13, 0),
                             width: 2)),
                     child: Column(children: [
-                      Row(
-                        children: [
-                          Container(
-                              decoration: BoxDecoration(
-                                  color: _getColor(
-                                      pilotos[index].givenName.toString()),
-                                  borderRadius: BorderRadius.circular(1000)),
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(1000),
-                                child: Image.network(
-                                  'https://raw.githubusercontent.com/tmaurie/hello-f1-vue/master/src/assets/img/drivers/2022/${pilotos[index].driverId}.png',
+                      Container(
+                          decoration: BoxDecoration(
+                              color: _getColor(
+                                  pilotos[index].givenName.toString()),
+                              borderRadius: BorderRadius.circular(1000)),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(1000),
+                            child: Image.network(
+                              'https://raw.githubusercontent.com/tmaurie/hello-f1-vue/master/src/assets/img/drivers/2022/${pilotos[index].driverId}.png',
+                              width: 100,
+                              fit: BoxFit.fill,
+                              errorBuilder: (context, error, stackTrace) {
+                                return Image.network(
+                                  'https://i.ibb.co/xS8L4fy/donmiguel.png',
                                   width: 100,
-                                  fit: BoxFit.fill,
-                                  errorBuilder: (context, error, stackTrace) {
-                                    return Image.network(
-                                      'https://i.ibb.co/xS8L4fy/donmiguel.png',
-                                      width: 100,
-                                    );
-                                  },
-                                ),
-                              )),
-                          Column(
-                            children: [
-                              Container(
-                                  margin:
-                                      const EdgeInsets.fromLTRB(20, 0, 0, 0),
-                                  child: Column(
-                                    children: [
-                                      Text(
-                                        "${pilotos[index].givenName} ${pilotos[index].familyName}",
-                                        style: const TextStyle(
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                      Text('Fecha de nacimiento: ${pilotos[index].dateOfBirth}'),
-                                      Text('Cod: ${pilotos[index].code}'),
-                                      Text('\nNumero: ${pilotos[index].permanentNumber}')
-                                    ],
-                                  )),
-                            ],
-                          )
-                        ],
-                      )
+                                );
+                              },
+                            ),
+                          )),
+                      Text(
+                        "\n${pilotos[index].givenName} ${pilotos[index].familyName}",
+                        style: const TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.bold),
+                      ),
+                      Text(
+                          'Fecha de nacimiento: ${pilotos[index].dateOfBirth}'),
+                      Text('Cod: ${pilotos[index].code}'),
+                      Text('\nNumero: ${pilotos[index].permanentNumber}')
                     ]),
                   ),
                 );
@@ -258,11 +244,56 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+
+  Future<dynamic>? _listadoUltimoResultado;
+
+  Future<dynamic> _getUltimoResultado() async{
+    final response = await http
+      .get(Uri.parse('https://ergast.com/api/f1/current/last/results.json'));
+
+    if (response.statusCode == 200) {
+      String body = utf8.decode(response.bodyBytes);
+      final jsonData = jsonDecode(body);
+
+      List<RaceResults> lastRaceResults = [];
+
+      for (var r in jsonData['MRData']['RaceTable']['Races']['Results']) {
+        lastRaceResults.add(RaceResults(
+          number: r['number'],
+          position: r['position'],
+          positionText: r['positionText'],
+          points: r['points'],
+          driver: Driver.fromJson(r['Driver']),
+          constructor: Constructor.fromJson(r['Constructor']),
+          grid: r['grid'],
+          laps: r['laps'],
+          status: r['status'],
+          time: Time.fromJson(r['Time']),
+          fastestLap: FastestLap.fromJson(r['FastestLap'])
+        ));
+      }
+      return lastRaceResults;
+    } else {
+      throw Exception('No se han encontrado carreras');
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _listadoUltimoResultado = _getUltimoResultado();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return const Center(
-      child: Text('Home'),
-    );
+    return Scaffold(
+     body: FutureBuilder(
+      future: _listadoUltimoResultado,
+      builder: (context, snapshot) {
+        return Text(snapshot.data);
+      },
+      ),
+    ); 
   }
 }
 
