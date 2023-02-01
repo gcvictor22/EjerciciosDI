@@ -1,8 +1,8 @@
 import 'dart:convert';
 
 import 'package:f1_api/models/carrera.dart';
+import 'package:f1_api/models/equipo.dart';
 import 'package:f1_api/models/pilotos.dart';
-import 'package:f1_api/models/ultimoResultado.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
@@ -205,7 +205,7 @@ class _PilotosState extends State<Pilotos> {
                               fit: BoxFit.fill,
                               errorBuilder: (context, error, stackTrace) {
                                 return Image.network(
-                                  'https://i.ibb.co/xS8L4fy/donmiguel.png',
+                                  'https://dc722jrlp2zu8.cloudfront.net/media/teachers/miguel-campos-front.png',
                                   width: 100,
                                 );
                               },
@@ -245,34 +245,29 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
 
-  Future<dynamic>? _listadoUltimoResultado;
+  Future<dynamic>? _listadoEquipos;
 
-  Future<dynamic> _getUltimoResultado() async{
+  Future<dynamic> _getEquipos() async{
     final response = await http
-      .get(Uri.parse('https://ergast.com/api/f1/current/last/results.json'));
+      .get(Uri.parse('https://ergast.com/api/f1/2022/constructors.json'));
 
     if (response.statusCode == 200) {
       String body = utf8.decode(response.bodyBytes);
       final jsonData = jsonDecode(body);
 
-      List<RaceResults> lastRaceResults = [];
+      List<Constructors> constructors = [];
 
-      for (var r in jsonData['MRData']['RaceTable']['Races']['Results']) {
-        lastRaceResults.add(RaceResults(
-          number: r['number'],
-          position: r['position'],
-          positionText: r['positionText'],
-          points: r['points'],
-          driver: Driver.fromJson(r['Driver']),
-          constructor: Constructor.fromJson(r['Constructor']),
-          grid: r['grid'],
-          laps: r['laps'],
-          status: r['status'],
-          time: Time.fromJson(r['Time']),
-          fastestLap: FastestLap.fromJson(r['FastestLap'])
-        ));
+      for (var r in jsonData['MRData']['ConstructorTable']['Constructors']) {
+        constructors.add(
+          Constructors(
+            constructorId: r['constructorId'],
+            url: r['url'],
+            name: r['name'],
+            nationality: r['nationality']
+          )
+        );
       }
-      return lastRaceResults;
+      return constructors;
     } else {
       throw Exception('No se han encontrado carreras');
     }
@@ -281,16 +276,25 @@ class _HomeState extends State<Home> {
   @override
   void initState() {
     super.initState();
-    _listadoUltimoResultado = _getUltimoResultado();
+    _listadoEquipos = _getEquipos();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
      body: FutureBuilder(
-      future: _listadoUltimoResultado,
+      future: _listadoEquipos,
       builder: (context, snapshot) {
-        return Text(snapshot.data);
+        if (snapshot.hasData) {
+          List <Constructors> constructores = snapshot.data;
+          return ListView.builder(
+            itemCount: constructores.length,
+            itemBuilder: (context, index) {
+              return Text("${constructores[index].name}");
+          });
+        } else {
+          return Text('Mal');
+        }
       },
       ),
     ); 
@@ -413,7 +417,7 @@ class _CarrerasState extends State<Carreras> {
                                 width: 250,
                                 errorBuilder: (context, error, stackTrace) {
                                   return Image.network(
-                                    'https://i.ibb.co/xS8L4fy/donmiguel.png',
+                                    'https://dc722jrlp2zu8.cloudfront.net/media/teachers/miguel-campos-front.png',
                                     width: 250,
                                   );
                                 },
