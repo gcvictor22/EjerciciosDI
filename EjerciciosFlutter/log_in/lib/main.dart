@@ -108,7 +108,7 @@ class HomePage extends StatelessWidget {
                 Navigator.push(context,
                     MaterialPageRoute(builder: (_) => const Login()));
               },
-              child: Text('Salir')),
+              child: const Text('Salir')),
         ),
       ),
     );
