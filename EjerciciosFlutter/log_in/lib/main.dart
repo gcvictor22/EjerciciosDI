@@ -52,24 +52,23 @@ class LoginPage extends StatefulWidget {
   State<LoginPage> createState() => _LoginPageState();
 }
 
-class ElPutoUsuario {
+class Usuario {
   String? username;
   String? password;
 
-  ElPutoUsuario(String s, String t);
+  Usuario(String s, String t);
 }
 
 class _LoginPageState extends State<LoginPage> {
-  ElPutoUsuario elMaylor = ElPutoUsuario("", "");
+  Usuario user = Usuario("", "");
 
   Future comprobar() async {
     final response = await http.post(
         Uri.parse('http://localhost:8080/auth/login'),
         headers: {'Content-type': 'application/json'},
-        body: json.encode(
-            {'username': elMaylor.username, 'password': elMaylor.password}));
+        body: json.encode({'username': 'user1', 'password': '12345678'}));
 
-    if (response.statusCode == 401) {
+    if (response.statusCode == 201) {
       // ignore: use_build_context_synchronously
       Navigator.push(
           context,
@@ -115,8 +114,7 @@ class _LoginPageState extends State<LoginPage> {
                       borderRadius: BorderRadius.circular(15)),
                   child: Column(children: [
                     TextFormField(
-                        controller:
-                            TextEditingController(text: elMaylor.username),
+                        controller: TextEditingController(text: user.username),
                         decoration: const InputDecoration(
                             border: OutlineInputBorder(),
                             labelText: 'User Name',
@@ -124,8 +122,7 @@ class _LoginPageState extends State<LoginPage> {
                     const Text('\n'),
                     TextFormField(
                       obscureText: true,
-                      controller:
-                          TextEditingController(text: elMaylor.password),
+                      controller: TextEditingController(text: user.password),
                       decoration: const InputDecoration(
                           border: OutlineInputBorder(),
                           labelText: 'Password',
