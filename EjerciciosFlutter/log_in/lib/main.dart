@@ -66,7 +66,8 @@ class _LoginPageState extends State<LoginPage> {
     final response = await http.post(
         Uri.parse('http://localhost:8080/auth/login'),
         headers: {'Content-type': 'application/json'},
-        body: json.encode({'username': 'user1', 'password': '12345678'}));
+        body: json
+            .encode({'username': user.username, 'password': user.password}));
 
     if (response.statusCode == 201) {
       // ignore: use_build_context_synchronously
@@ -113,14 +114,14 @@ class _LoginPageState extends State<LoginPage> {
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(15)),
                   child: Column(children: [
-                    TextFormField(
+                    TextField(
                         controller: TextEditingController(text: user.username),
                         decoration: const InputDecoration(
                             border: OutlineInputBorder(),
                             labelText: 'User Name',
                             hintText: 'Enter valid mail id as abc@gmail.com')),
                     const Text('\n'),
-                    TextFormField(
+                    TextField(
                       obscureText: true,
                       controller: TextEditingController(text: user.password),
                       decoration: const InputDecoration(
