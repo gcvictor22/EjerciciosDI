@@ -61,6 +61,7 @@ class Usuario {
 
 class _LoginPageState extends State<LoginPage> {
   Usuario user = Usuario("", "");
+  int statCod = 0;
 
   Future comprobar() async {
     final response = await http.post(
@@ -77,12 +78,24 @@ class _LoginPageState extends State<LoginPage> {
             builder: (context) => HomePage(),
           ));
     } else {
-      // ignore: use_build_context_synchronously
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => MyApp(),
-          ));
+      statCod = response.statusCode;
+      mensajeError(statCod);
+    }
+  }
+
+  Widget mensajeError(status) {
+    if (status != 400 || status != 401 || status != 400) {
+      return const Text('Rellene los cambios');
+    } else if (status == 401 || status == 400) {
+      return const Text(
+        'El formato introducido no es correcto',
+        style: TextStyle(color: Colors.red, fontWeight: FontWeight.w600),
+      );
+    } else {
+      return const Text(
+        'No hemos encontrado ningún usuario con los datos introducidos',
+        style: TextStyle(color: Colors.red, fontWeight: FontWeight.w600),
+      );
     }
   }
 
@@ -114,16 +127,24 @@ class _LoginPageState extends State<LoginPage> {
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(15)),
                   child: Column(children: [
-                    TextField(
+                    mensajeError(statCod),
+                    const Text('\n'),
+                    TextFormField(
                         controller: TextEditingController(text: user.username),
+                        onChanged: (value) {
+                          user.username = value;
+                        },
                         decoration: const InputDecoration(
                             border: OutlineInputBorder(),
                             labelText: 'User Name',
                             hintText: 'Enter valid mail id as abc@gmail.com')),
                     const Text('\n'),
-                    TextField(
+                    TextFormField(
                       obscureText: true,
                       controller: TextEditingController(text: user.password),
+                      onChanged: (value) {
+                        user.password = value;
+                      },
                       decoration: const InputDecoration(
                           border: OutlineInputBorder(),
                           labelText: 'Password',
