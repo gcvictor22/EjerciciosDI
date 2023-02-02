@@ -86,7 +86,7 @@ class _NavigatorState extends State<Navigator> {
     return BottomNavigationBar(
       items: const [
         BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Pilotos'),
-        BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Inicio'),
+        BottomNavigationBarItem(icon: Icon(Icons.shield), label: 'Escuderías'),
         BottomNavigationBarItem(icon: Icon(Icons.flag), label: 'Carreras')
       ],
       currentIndex: selected,
@@ -113,7 +113,7 @@ class Pilotos extends StatefulWidget {
 }
 
 class _PilotosState extends State<Pilotos> {
-  Future<dynamic>? _listadoPilotos; 
+  Future<dynamic>? _listadoPilotos;
 
   _getColor(String nombre) {
     if (nombre == 'Alexander' || nombre == 'Nicholas' || nombre == 'Nyck') {
@@ -244,12 +244,11 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-
   Future<dynamic>? _listadoEquipos;
 
-  Future<dynamic> _getEquipos() async{
+  Future<dynamic> _getEquipos() async {
     final response = await http
-      .get(Uri.parse('https://ergast.com/api/f1/2022/constructors.json'));
+        .get(Uri.parse('https://ergast.com/api/f1/2022/constructors.json'));
 
     if (response.statusCode == 200) {
       String body = utf8.decode(response.bodyBytes);
@@ -258,14 +257,11 @@ class _HomeState extends State<Home> {
       List<Constructors> constructors = [];
 
       for (var r in jsonData['MRData']['ConstructorTable']['Constructors']) {
-        constructors.add(
-          Constructors(
+        constructors.add(Constructors(
             constructorId: r['constructorId'],
             url: r['url'],
             name: r['name'],
-            nationality: r['nationality']
-          )
-        );
+            nationality: r['nationality']));
       }
       return constructors;
     } else {
@@ -279,25 +275,90 @@ class _HomeState extends State<Home> {
     _listadoEquipos = _getEquipos();
   }
 
+  _getColor(String nombre) {
+    if (nombre == 'williams') {
+      return const Color.fromARGB(255, 0, 84, 153);
+    } else if (nombre == 'alpine') {
+      return Colors.blue;
+    } else if (nombre == 'haas') {
+      return Colors.red;
+    } else if (nombre == 'alphatauri') {
+      return Colors.blueGrey;
+    } else if (nombre == 'mercedes') {
+      return const Color.fromARGB(255, 5, 223, 212);
+    } else if (nombre == 'aston_martin') {
+      return Colors.teal;
+    } else if (nombre == 'ferrari') {
+      return const Color.fromARGB(255, 185, 12, 0);
+    } else if (nombre == 'red_bull') {
+      return Colors.blue[900];
+    } else if (nombre == 'mclaren') {
+      return Colors.orange[600];
+    } else {
+      return const Color.fromARGB(255, 119, 22, 15);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-     body: FutureBuilder(
-      future: _listadoEquipos,
-      builder: (context, snapshot) {
-        if (snapshot.hasData) {
-          List <Constructors> constructores = snapshot.data;
-          return ListView.builder(
-            itemCount: constructores.length,
-            itemBuilder: (context, index) {
-              return Text("${constructores[index].name}");
-          });
-        } else {
-          return Text('Mal');
-        }
-      },
+      body: FutureBuilder(
+        future: _listadoEquipos,
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            List<Constructors> constructores = snapshot.data;
+            return ListView.builder(
+                itemCount: constructores.length,
+                itemBuilder: (context, index) {
+                  return ListTile(
+                    title: Container(
+                      padding: const EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(15),
+                          border: Border.all(
+                              color: const Color.fromARGB(255, 196, 13, 0),
+                              width: 2)),
+                      child: Column(children: [
+                        Container(
+                            decoration: BoxDecoration(
+                                color: _getColor(constructores[index]
+                                    .constructorId
+                                    .toString()),
+                                borderRadius: BorderRadius.circular(1000)),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(1000),
+                              child: Image.network(
+                                'https://github.com/tmaurie/hello-f1-vue/blob/master/src/assets/img/cars/2022/${constructores[index].constructorId}.png?raw=true',
+                                width: 200,
+                                fit: BoxFit.fill,
+                                errorBuilder: (context, error, stackTrace) {
+                                  return Image.network(
+                                    'https://dc722jrlp2zu8.cloudfront.net/media/teachers/miguel-campos-front.png',
+                                    width: 200,
+                                  );
+                                },
+                              ),
+                            )),
+                        Text(
+                          "\n${constructores[index].name}",
+                          style: const TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.bold),
+                        ),
+                        Text(
+                            'Nacionalidad del constructor: ${constructores[index].nationality}'),
+                        Text(constructores[index].constructorId.toString())
+                      ]),
+                    ),
+                  );
+                });
+          }
+          return const Center(
+            heightFactor: 18,
+            child: CircularProgressIndicator(),
+          );
+        },
       ),
-    ); 
+    );
   }
 }
 
