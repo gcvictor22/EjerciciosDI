@@ -17,33 +17,15 @@ class MyApp extends StatelessWidget {
   }
 }
 
+class Usuario {
+  String? username;
+  String? password;
+  String? fullname;
+
+  Usuario(String s, String t, String f);
+}
+
 ////////////////////////////////////////
-
-class HomePage extends StatefulWidget {
-  const HomePage({super.key});
-
-  @override
-  State<HomePage> createState() => _HomePageState();
-}
-
-class _HomePageState extends State<HomePage> {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        body: Center(
-          heightFactor: 18,
-          child: ElevatedButton(
-              onPressed: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (_) => const LoginPage()));
-              },
-              child: const Text('userName')),
-        ),
-      ),
-    );
-  }
-}
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -52,15 +34,8 @@ class LoginPage extends StatefulWidget {
   State<LoginPage> createState() => _LoginPageState();
 }
 
-class Usuario {
-  String? username;
-  String? password;
-
-  Usuario(String s, String t);
-}
-
 class _LoginPageState extends State<LoginPage> {
-  Usuario user = Usuario("", "");
+  Usuario user = Usuario("", "", "");
   int statCod = 0;
 
   Future comprobar() async {
@@ -85,7 +60,7 @@ class _LoginPageState extends State<LoginPage> {
 
   Widget mensajeError(status) {
     if (status != 400 || status != 401 || status != 400) {
-      return const Text('Rellene los cambios');
+      return const Text('Rellene los campos');
     } else if (status == 401 || status == 400) {
       return const Text(
         'El formato introducido no es correcto',
@@ -120,7 +95,7 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 const Text('\n'),
                 Container(
-                  width: 250,
+                  width: 280,
                   margin: const EdgeInsets.only(top: 100),
                   padding: const EdgeInsets.all(25),
                   decoration: BoxDecoration(
@@ -152,7 +127,7 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                     const Text('\n'),
                     SizedBox(
-                        width: 200,
+                        width: 230,
                         child: ElevatedButton(
                           onHover: (value) {
                             Colors.lightBlue;
@@ -162,11 +137,77 @@ class _LoginPageState extends State<LoginPage> {
                             comprobar();
                           },
                         )),
+                    SizedBox(
+                      width: 230,
+                      child: Center(
+                          child: Row(
+                        children: [
+                          const Text('¿No tienes cuenta?',
+                              textAlign: TextAlign.center),
+                          TextButton(
+                              onPressed: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (_) => const LoginPage()));
+                              },
+                              child: const Text(
+                                'Resgitrame',
+                                textAlign: TextAlign.end,
+                              ))
+                        ],
+                      )),
+                    )
                   ]),
                 ),
               ],
             )),
       )),
     );
+  }
+}
+
+////////////////////////////////////////
+
+class HomePage extends StatefulWidget {
+  const HomePage({super.key});
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        body: Center(
+          heightFactor: 18,
+          child: ElevatedButton(
+              onPressed: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (_) => const LoginPage()));
+              },
+              child: const Text('userName')),
+        ),
+      ),
+    );
+  }
+}
+
+////////////////////////////////////////
+
+
+class RegisterPage extends StatefulWidget {
+  const RegisterPage({super.key});
+
+  @override
+  State<RegisterPage> createState() => _RegisterPageState();
+}
+
+class _RegisterPageState extends State<RegisterPage> {
+  @override
+  Widget build(BuildContext context) {
+    return Container();
   }
 }

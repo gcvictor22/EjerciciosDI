@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(home: HomePage());
+    return const MaterialApp(home: HomePage(), debugShowCheckedModeBanner: false,);
   }
 }
 
@@ -54,6 +54,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        
         appBar: AppBar(
             title: Center(
               child: Image.network(
