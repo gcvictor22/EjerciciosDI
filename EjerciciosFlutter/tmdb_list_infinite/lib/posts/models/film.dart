@@ -1,92 +1,97 @@
-class Film {
-  int? page;
-  List<Results>? results;
-  int? totalPages;
-  int? totalResults;
+class FilmsResponse {
+  FilmsResponse({
+    required this.page,
+    required this.results,
+    required this.totalPages,
+    required this.totalResults,
+  });
+  late final int page;
+  late final List<Film> results;
+  late final int totalPages;
+  late final int totalResults;
 
-  Film({this.page, this.results, this.totalPages, this.totalResults});
-
-  Film.fromJson(Map<String, dynamic> json) {
+  FilmsResponse.fromJson(Map<String, dynamic> json) {
     page = json['page'];
-    if (json['results'] != null) {
-      results = <Results>[];
-      json['results'].forEach((v) {
-        results!.add(Results.fromJson(v));
-      });
-    }
+    results = List.from(json['results']).map((e) => Film.fromJson(e)).toList();
     totalPages = json['total_pages'];
     totalResults = json['total_results'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['page'] = page;
-    if (results != null) {
-      data['results'] = results!.map((v) => v.toJson()).toList();
-    }
-    data['total_pages'] = totalPages;
-    data['total_results'] = totalResults;
-    return data;
+    final _data = <String, dynamic>{};
+    _data['page'] = page;
+    _data['results'] = results.map((e) => e.toJson()).toList();
+    _data['total_pages'] = totalPages;
+    _data['total_results'] = totalResults;
+    return _data;
   }
 }
 
-class Results {
-  bool? adult;
-  String? backdropPath;
-  List<int>? genreIds;
-  int? id;
-  String? originalLanguage;
-  String? originalTitle;
-  String? overview;
-  String? posterPath;
-  String? releaseDate;
-  String? title;
-  bool? video;
-  int? voteCount;
+class Film {
+  Film({
+    required this.adult,
+    required this.backdropPath,
+    required this.genreIds,
+    required this.id,
+    required this.originalLanguage,
+    required this.originalTitle,
+    required this.overview,
+    required this.popularity,
+    required this.posterPath,
+    required this.releaseDate,
+    required this.title,
+    required this.video,
+    //required this.voteAverage,
+    required this.voteCount,
+  });
+  late final bool adult;
+  late final String backdropPath;
+  late final List<int> genreIds;
+  late final int id;
+  late final String originalLanguage;
+  late final String originalTitle;
+  late final String overview;
+  late final double popularity;
+  late final String posterPath;
+  late final String releaseDate;
+  late final String title;
+  late final bool video;
+  //late final double voteAverage;
+  late final int voteCount;
 
-  Results(
-      {this.adult,
-      this.backdropPath,
-      this.genreIds,
-      this.id,
-      this.originalLanguage,
-      this.originalTitle,
-      this.overview,
-      this.posterPath,
-      this.releaseDate,
-      this.title,
-      this.video,
-      this.voteCount});
-
-  Results.fromJson(Map<String, dynamic> json) {
+  Film.fromJson(Map<String, dynamic> json) {
     adult = json['adult'];
     backdropPath = json['backdrop_path'];
-    genreIds = json['genre_ids'].cast<int>();
+    genreIds = List.castFrom<dynamic, int>(json['genre_ids']);
     id = json['id'];
     originalLanguage = json['original_language'];
     originalTitle = json['original_title'];
     overview = json['overview'];
+    popularity = json['popularity'];
     posterPath = json['poster_path'];
     releaseDate = json['release_date'];
     title = json['title'];
     video = json['video'];
+    //voteAverage = json['vote_average'];
     voteCount = json['vote_count'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['adult'] = adult;
-    data['backdrop_path'] = backdropPath;
-    data['genre_ids'] = genreIds;
-    data['id'] = id;
-    data['original_language'] = originalLanguage;
-    data['original_title'] = originalTitle;
-    data['overview'] = overview;
-    data['poster_path'] = posterPath;
-    data['release_date'] = releaseDate;
-    data['title'] = title;
-    data['video'] = video;
-    data['vote_count'] = voteCount;
-    return data;
+    final _data = <String, dynamic>{};
+    _data['adult'] = adult;
+    _data['backdrop_path'] = backdropPath;
+    _data['genre_ids'] = genreIds;
+    _data['id'] = id;
+    _data['original_language'] = originalLanguage;
+    _data['original_title'] = originalTitle;
+    _data['overview'] = overview;
+    _data['popularity'] = popularity;
+    _data['poster_path'] = posterPath;
+    _data['release_date'] = releaseDate;
+    _data['title'] = title;
+    _data['video'] = video;
+    //x_data['vote_average'] = voteAverage;
+    _data['vote_count'] = voteCount;
+    return _data;
   }
 }

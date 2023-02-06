@@ -62,12 +62,34 @@ class PostBloc extends Bloc<PostEvent, PostState> {
     }
   }
 
-  Future<List<Results>> _fetchPosts([int startIndex = 1]) async {
+  Future<List<Film>> _fetchPosts([int startIndex = 1]) async {
     final response = await httpClient.get(
       Uri.parse(
           'https://api.themoviedb.org/3/movie/popular?api_key=0ba0b777730807c26c3194f77131d60f&language=es-ES&page=$startIndex'),
     );
     if (response.statusCode == 200) {
+      return FilmsResponse.fromJson(jsonDecode(response.body)).results;
+    } else {
+      throw Exception();
+    }
+    /*
+      return body.map((dynamic json) {
+        final map = json as Map<String, dynamic>;
+        return Results(
+            adult: map['adult'],
+            backdropPath: map['backdropPath'],
+            genreIds: map['genreIds'],
+            id: map['id'],
+            originalLanguage: map['originalLanguage'],
+            originalTitle: map['originalTitle'],
+            overview: map['overview'],
+            posterPath: map['posterPath'],
+            releaseDate: map['releaseDate'],
+            title: map['title'],
+            video: map['video'],
+            voteCount: map['voteCount']);
+      }).toList();
+      /*
       String body = utf8.decode(response.bodyBytes);
       final jsonData = jsonDecode(body);
 
@@ -89,7 +111,9 @@ class PostBloc extends Bloc<PostEvent, PostState> {
             voteCount: f['voteCount']));
       }
       return listadoPeliculas;
+      */
     }
     throw Exception('error fetching posts');
+  }*/
   }
 }
