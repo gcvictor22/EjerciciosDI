@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:tmdb_list_infinite/posts/widgets/widgets.dart';
-
-import '../bloc/film_bloc.dart';
+import 'package:tmdb_list_infinite/posts/films/bloc/film_bloc.dart';
+import 'package:tmdb_list_infinite/posts/films/widgets/widgets.dart';
 
 class FilmsList extends StatefulWidget {
   const FilmsList({super.key});

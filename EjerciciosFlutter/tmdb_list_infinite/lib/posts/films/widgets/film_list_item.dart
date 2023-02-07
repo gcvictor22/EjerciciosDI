@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tmdb_list_infinite/posts/models/film.dart';
+import 'package:tmdb_list_infinite/posts/films/models/film.dart';
 
 class FilmListItem extends StatelessWidget {
   const FilmListItem({super.key, required this.result});
