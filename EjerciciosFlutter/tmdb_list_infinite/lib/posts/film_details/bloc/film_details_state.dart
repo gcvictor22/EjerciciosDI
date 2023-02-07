@@ -4,30 +4,26 @@ enum FilmDetailstStatus { initial, success, failure }
 
 class FilmDetailsState extends Equatable {
   const FilmDetailsState(
-    {
-      this.status = FilmDetailstStatus.initial,
-      this.filmDetails =  const <Map<String, dynamic>>[]
-    }
-  );
+      {this.status = FilmDetailstStatus.initial, this.filmDetails});
 
   final FilmDetailstStatus status;
-  final List<Map<String, dynamic>> filmDetails;
+  final FilmDetails? filmDetails;
 
   FilmDetailsState copyWith({
     FilmDetailstStatus? status,
-    List<Map<String, dynamic>>? filmDetails,
-  }){
+    FilmDetails? filmDetails,
+  }) {
     return FilmDetailsState(
       status: status ?? this.status,
       filmDetails: filmDetails ?? this.filmDetails,
     );
   }
-  
-    @override
-    String toString() {
+
+  @override
+  String toString() {
     return '''FilmState { status: $status }''';
   }
 
   @override
-  List<Object> get props => [status, filmDetails];
+  List<Object> get props => [status];
 }

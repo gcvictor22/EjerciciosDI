@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tmdb_list_infinite/posts/film_details/view/details_page.dart';
 import 'package:tmdb_list_infinite/posts/films/models/film.dart';
 
 class FilmListItem extends StatelessWidget {
@@ -24,7 +25,10 @@ class FilmListItem extends StatelessWidget {
       ),
       child: TextButton(
         onPressed: () {
-          print(result.id);
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (_) => FilmDetailsPage(id: result.id)));
         },
         child: Container(
           padding: const EdgeInsets.all(10),

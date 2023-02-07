@@ -7,4 +7,7 @@ abstract class FilmDetailsEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class FilmDetailsFetched extends FilmDetailsEvent {}
+class FilmDetailsFetched extends FilmDetailsEvent {
+  const FilmDetailsFetched(this.id);
+  final int id;
+}
