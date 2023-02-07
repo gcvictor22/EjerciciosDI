@@ -1,2 +1,2 @@
-export 'posts_list.dart';
-export 'posts_page.dart';
+export 'films_list.dart';
+export 'films_page.dart';

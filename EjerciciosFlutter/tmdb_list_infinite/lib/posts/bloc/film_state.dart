@@ -1,24 +1,24 @@
-part of 'post_bloc.dart';
+part of 'film_bloc.dart';
 
-enum PostStatus { initial, success, failure }
+enum FilmStatus { initial, success, failure }
 
-class PostState extends Equatable {
-  const PostState({
-    this.status = PostStatus.initial,
+class FilmState extends Equatable {
+  const FilmState({
+    this.status = FilmStatus.initial,
     this.films = const <Film>[],
     this.hasReachedMax = false,
   });
 
-  final PostStatus status;
+  final FilmStatus status;
   final List<Film> films;
   final bool hasReachedMax;
 
-  PostState copyWith({
-    PostStatus? status,
+  FilmState copyWith({
+    FilmStatus? status,
     List<Film>? films,
     bool? hasReachedMax,
   }) {
-    return PostState(
+    return FilmState(
       status: status ?? this.status,
       films: films ?? this.films,
       hasReachedMax: hasReachedMax ?? this.hasReachedMax,
@@ -27,7 +27,7 @@ class PostState extends Equatable {
 
   @override
   String toString() {
-    return '''PostState { status: $status, hasReachedMax: $hasReachedMax, posts: ${films.length} }''';
+    return '''FilmState { status: $status, hasReachedMax: $hasReachedMax, films: ${films.length} }''';
   }
 
   @override

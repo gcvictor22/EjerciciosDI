@@ -1,18 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tmdb_list_infinite/posts/widgets/widgets.dart';
 
-import '../bloc/post_bloc.dart';
-import '../widgets/bottom_loader.dart';
-import '../widgets/post_list_item.dart';
+import '../bloc/film_bloc.dart';
 
-class PostsList extends StatefulWidget {
-  const PostsList({super.key});
+class FilmsList extends StatefulWidget {
+  const FilmsList({super.key});
 
   @override
-  State<PostsList> createState() => _PostsListState();
+  State<FilmsList> createState() => _FilmsListState();
 }
 
-class _PostsListState extends State<PostsList> {
+class _FilmsListState extends State<FilmsList> {
   final _scrollController = ScrollController();
 
   @override
@@ -23,28 +22,28 @@ class _PostsListState extends State<PostsList> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<PostBloc, PostState>(
+    return BlocBuilder<FilmBloc, FilmState>(
       builder: (context, state) {
         switch (state.status) {
-          case PostStatus.failure:
-            return const Center(child: Text('failed to fetch posts'));
-          case PostStatus.success:
+          case FilmStatus.failure:
+            return const Center(child: Text('failed to fetch films'));
+          case FilmStatus.success:
             if (state.films.isEmpty) {
-              return const Center(child: Text('no posts'));
+              return const Center(child: Text('no films'));
             }
             return ListView.builder(
               itemBuilder: (BuildContext context, int index) {
                 return index >= state.films.length
                     ? const BottomLoader()
-                    : PostListItem(result: state.films[index]);
+                    : FilmListItem(result: state.films[index]);
               },
               itemCount: state.hasReachedMax
                   ? state.films.length
                   : state.films.length + 1,
               controller: _scrollController,
             );
-          case PostStatus.initial:
-            return const Center(child: CircularProgressIndicator());
+          case FilmStatus.initial:
+            return const LoadListPage();
         }
       },
     );
@@ -59,7 +58,7 @@ class _PostsListState extends State<PostsList> {
   }
 
   void _onScroll() {
-    if (_isBottom) context.read<PostBloc>().add(PostFetched());
+    if (_isBottom) context.read<FilmBloc>().add(FilmFetched());
   }
 
   bool get _isBottom {
