@@ -1,7 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tmdb_list_infinite/posts/film_details/bloc/film_details_bloc.dart';
-import 'package:tmdb_list_infinite/posts/film_details/view/details_list.dart';
+import 'package:tmdb_list_infinite/posts/film_details/widgets/details_list.dart';
+import 'package:tmdb_list_infinite/posts/film_details/widgets/load_details_page.dart';
 import 'package:tmdb_list_infinite/posts/films/widgets/load_list_page.dart';
 
 class FilmDetailsList extends StatefulWidget {
@@ -25,7 +26,7 @@ class _FilmDetailsListState extends State<FilmDetailsList> {
             }
             return FilmDetailsPageView(details: state.filmDetails!);
           case FilmDetailstStatus.initial:
-            return const LoadListPage();
+            return const FilmDetailsLoadPage();
         }
       },
     );

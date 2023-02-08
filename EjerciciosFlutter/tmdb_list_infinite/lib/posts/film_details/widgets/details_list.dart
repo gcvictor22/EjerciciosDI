@@ -50,14 +50,18 @@ class FilmDetailsPageView extends StatelessWidget {
                 child: Column(
                   children: [
                     const Text(
-                      '\Productora',
+                      'Productora',
                       style: TextStyle(fontWeight: FontWeight.w800),
                     ),
                     Text('\n${details.productionCompanies[0].name!}\n'),
                     SizedBox(
                       width: 150,
                       child: Image.network(
-                          'https://image.tmdb.org/t/p/w500${details.productionCompanies[0].logoPath}'),
+                          'https://image.tmdb.org/t/p/w500${details.productionCompanies[0].logoPath}'
+                          , errorBuilder: (context, error, stackTrace) => SizedBox(
+                            height: 100,
+                            child: Image.network('https://dc722jrlp2zu8.cloudfront.net/media/teachers/miguel-campos-front.png'),
+                          )),
                     )
                   ],
                 ),

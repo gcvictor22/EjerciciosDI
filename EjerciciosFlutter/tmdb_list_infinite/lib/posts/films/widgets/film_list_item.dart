@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tmdb_list_infinite/posts/film_details/view/details_page.dart';
+import 'package:tmdb_list_infinite/posts/film_details/widgets/details_page.dart';
 import 'package:tmdb_list_infinite/posts/films/models/film.dart';
 
 class FilmListItem extends StatelessWidget {
